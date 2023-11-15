@@ -14,7 +14,7 @@ module.exports = {
       case 'slots':
         slotsCommand.execute(message, args, userData);
         break;
-      case 'daily': // Handle the daily command
+      case 'daily': 
         dailyCommand.execute(message, args, userData);
         break;
       default:
