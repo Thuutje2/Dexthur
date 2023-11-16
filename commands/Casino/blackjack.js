@@ -1,188 +1,202 @@
-const { ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const { ActionRowBuilder, EmbedBuilder, ButtonBuilder } = require('@discordjs/builders');
+const { query } = require('../../database');
 
 module.exports = {
   name: 'blackjack',
   description: 'Play a game of blackjack.',
   category: 'Casino',
-  async execute(message, args, userData) {
-    const betAmount = parseInt(args[0]) || 1;
-    if (userData.balance < betAmount) {
-      return message.reply("You don't have enough coins to place that bet.");
+
+  async execute(message, args) {
+    // Check if the user provided a valid bet
+    const bet = parseInt(args[0]);
+
+    if (isNaN(bet) || bet <= 0) {
+      return message.reply('Please provide a valid bet amount greater than 0.');
     }
 
-    const suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
-    const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+    // Fetch the current balance from the database
+    const currentBalanceResult = await query('SELECT balance FROM users WHERE user_id = $1', [message.author.id]);
+    const currentBalance = (currentBalanceResult.rows[0] && currentBalanceResult.rows[0].balance) || 0;
 
-    let deck = [];
-
-    function drawCard() {
-      const card = deck.pop();
-      if (!card) {
-        deck = shuffleDeck();
-        return drawCard();
-      }
-      return card;
+    // Check if the user has a valid balance to play blackjack
+    if (currentBalance < bet) {
+      return message.reply('You don\'t have enough coins to place that bet.');
     }
 
-    function shuffleDeck() {
-      const shuffledDeck = [];
-      for (const suit of suits) {
-        for (const rank of ranks) {
-          shuffledDeck.push(`${rank} of ${suit}`);
-        }
-      }
-      for (let i = shuffledDeck.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffledDeck[i], shuffledDeck[j]] = [shuffledDeck[j], shuffledDeck[i]];
-      }
-      return shuffledDeck;
-    }
+    // Set up the blackjack game
+    const playerHand = [];
+    const dealerHand = [];
 
-    let playerHand = [drawCard(), drawCard()];
-    let dealerHand = [drawCard(), drawCard()];
-
-    const playerHandString = `**Your hand:** ${playerHand.join(', ')}`;
-    const dealerHandString = `**Dealer's hand:** Face-up card: ${dealerHand[0]}, Hidden card`;
-    await message.reply(`${playerHandString}\n${dealerHandString}`);
-
-
-    const row = new ActionRowBuilder()
-      .addComponents(
-        new ButtonBuilder()
-          .setCustomId('hit')
-          .setLabel('Hit')
-          .setStyle(1), // PRIMARY-stijl
-        new ButtonBuilder()
-          .setCustomId('stand')
-          .setLabel('Stand')
-          .setStyle(2) // SECONDARY-stijl
-      );
-
-    try {
-      const reply = await message.reply({ content: 'Do you want to hit or stand?', components: [row] });
-
-      const filter = (interaction) => interaction.customId === 'hit' || interaction.customId === 'stand';
-      const collector = reply.createMessageComponentCollector({ filter, time: 15000 });
-
-      collector.on('collect', async (interaction) => {
-        if (interaction.customId === 'hit') {
-          await handleHit(reply);
-        } else if (interaction.customId === 'stand') {
-          await handleStand(reply);
-          collector.stop(); // Stop de collector na de 'stand'-actie
-        }
-      });
-
-      collector.on('end', (collected) => {
-        if (collected.size === 0) {
-          message.channel.send('Time is up. The game has ended.');
-        }
-      });
-    } catch (error) {
-      console.error('Error sending message with buttons:', error);
-    }
-
-    // Functie om de waarde van een hand te berekenen
-    function calculateHandValue(hand) {
+    // Function to calculate the value of a hand
+    const calculateHandValue = (hand) => {
       let value = 0;
       let hasAce = false;
 
       for (const card of hand) {
-        const rank = card.split(' ')[0];
+        const cardValue = card === 'A' ? 11 : isNaN(card) ? 10 : parseInt(card);
+        value += cardValue;
 
-        if (rank === 'A') {
+        if (card === 'A') {
           hasAce = true;
-          value += 11;
-        } else if (['K', 'Q', 'J'].includes(rank)) {
-          value += 10;
-        } else {
-          value += parseInt(rank);
         }
       }
 
+      // Adjust the value if there's an Ace and the total value is greater than 21
       if (hasAce && value > 21) {
         value -= 10;
       }
 
       return value;
+    };
+
+    // Function to deal a random card
+    const dealCard = () => {
+      const cards = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+      return cards[Math.floor(Math.random() * cards.length)];
+    };
+
+    // Deal initial cards
+    playerHand.push(dealCard(), dealCard());
+    dealerHand.push(dealCard(), dealCard());
+
+    // Set up buttons for the player's turn
+    const row = new ActionRowBuilder()
+      .addComponents(
+        new ButtonBuilder()
+          .setCustomId('hit')
+          .setLabel('Hit')
+          .setStyle(1), // Numeric value for PRIMARY
+        new ButtonBuilder()
+          .setCustomId('stand')
+          .setLabel('Stand')
+          .setStyle(2) // Numeric value for SECONDARY
+      );
+
+    const initialEmbed = new EmbedBuilder()
+      .setColor(0x0099ff) // Set color
+      .setTitle('Blackjack')
+      .addFields(
+        { name: 'Your Hand', value: `${playerHand.join(', ')} (Value: ${calculateHandValue(playerHand)})` },
+        { name: 'Dealer\'s Hand', value: `${dealerHand[0]} and ?` },
+        { name: 'Balance', value: `Your Balance: ${currentBalance} coins` },
+        { name: 'Current Bet', value: `Current Bet: ${bet} coins` }
+      )
+      .setDescription('Choose whether to hit or stand.');
+
+    const initialMessage = await message.reply({ embeds: [initialEmbed], components: [row] });
+
+    // Function to handle the player's turn
+    const playerTurn = async () => {
+      const filter = (interaction) => interaction.user.id === message.author.id;
+      const collector = initialMessage.createMessageComponentCollector({ filter, time: 60000 });
+
+      collector.on('collect', async (interaction) => {
+        if (interaction.customId === 'hit') {
+          // Deal a new card to the player
+          playerHand.push(dealCard());
+
+          // Check if the player busted
+          if (calculateHandValue(playerHand) > 21) {
+            collector.stop('bust');
+          }
+
+          // Update the embed with the new hand
+          const updatedEmbed = new EmbedBuilder()
+            .setColor(0x0099ff)
+            .setTitle('Blackjack')
+            .addFields(
+              { name: 'Your Hand', value: `${playerHand.join(', ')} (Value: ${calculateHandValue(playerHand)})` },
+              { name: 'Dealer\'s Hand', value: `${dealerHand[0]} and ?` },
+              { name: 'Balance', value: `Your Balance: ${currentBalance} coins` },
+              { name: 'Current Bet', value: `Current Bet: ${bet} coins` }
+            )
+            .setDescription('Choose whether to hit or stand.');
+
+          await interaction.update({ embeds: [updatedEmbed], components: [row] });
+        } else if (interaction.customId === 'stand') {
+          collector.stop('stand');
+        }
+      });
+
+      // ...
+
+collector.on('end', async (collected, reason) => {
+  if (reason === 'bust' || reason === 'stand') {
+    // Player busted or stood, or the dealer wins
+    const bustEmbed = new EmbedBuilder()
+      .setColor(0xff0000)
+      .setTitle('Blackjack - Bust')
+      .addFields(
+        { name: 'Your Hand', value: `${playerHand.join(', ')} (Value: ${calculateHandValue(playerHand)})` },
+        { name: 'Dealer\'s Hand', value: `${dealerHand.join(', ')} (Value: ${calculateHandValue(dealerHand)})` },
+      );
+
+    // Deduct the bet from the balance if the dealer wins
+    const updatedBalance = currentBalance - bet;
+
+    if (reason === 'bust') {
+      message.reply({ embeds: [bustEmbed], components: [] });
+    } else if (reason === 'stand') {
+      // Player stood, now it's the dealer's turn
+      await dealerTurn(bet);
     }
 
-    // Logica voor de 'hit' knop
-    async function handleHit(reply) {
-      const newCard = drawCard();
-      playerHand.push(newCard);
-      const playerHandString = playerHand.join(', ');
+    // Update the user's balance in the database
+    await query('UPDATE users SET balance = $1 WHERE user_id = $2', [updatedBalance, message.author.id]);
+  }
+});
 
-      reply.channel.send(`You drew a new card: ${newCard}\nYour hand: ${playerHandString}`);
+    };
 
-      if (calculateHandValue(playerHand) > 21) {
-        reply.channel.send('Bust! Your hand value is over 21. You lose.');
-        return;
-      }
-
-      const row = new ActionRowBuilder()
-        .addComponents(
-          new ButtonBuilder()
-            .setCustomId('hit')
-            .setLabel('Hit')
-            .setStyle(1),
-          new ButtonBuilder()
-            .setCustomId('stand')
-            .setLabel('Stand')
-            .setStyle(2)
-        );
-
-      reply.edit({ content: 'Do you want to hit or stand?', components: [row] });
-    }
-
-    // Logica voor de 'stand' knop
-    async function handleStand(reply) {
+    // Function to handle the dealer's turn
+    const dealerTurn = async (bet) => {
+      // Deal cards to the dealer until they reach a hand value of 17 or higher
       while (calculateHandValue(dealerHand) < 17) {
-        const newCard = drawCard();
-        dealerHand.push(newCard);
+        dealerHand.push(dealCard());
       }
 
-      const playerHandString = playerHand.join(', ');
-      const dealerHandString = dealerHand.join(', ');
-
-      reply.channel.send(`Your hand: ${playerHandString}\nDealer's hand: ${dealerHandString}`);
-
-      const winner = determineWinner(playerHand, dealerHand);
-
-      if (winner === 'player') {
-        const winnings = betAmount * 2;
-        userData.balance += winnings;
-        message.channel.send(`Congratulations! You win ${winnings} coins!`);
-      } else if (winner === 'dealer') {
-        userData.balance -= betAmount; // Verlies de inzet
-        message.channel.send(`Sorry, you lose ${betAmount} coins. Better luck next time.`);
-      } else {
-        userData.balance += betAmount; // Teruggave van de inzet bij een gelijkspel
-        message.channel.send(`It's a tie! The game is a draw. Your ${betAmount} coins are returned.`);
-      }
-
-      reply.edit({ components: [] }); // Verwijder de knoppen na het einde van het spel
-    }
-
-    // Functie om de winnaar van het spel te bepalen
-    function determineWinner(playerHand, dealerHand) {
+      // Determine the winner
       const playerValue = calculateHandValue(playerHand);
       const dealerValue = calculateHandValue(dealerHand);
 
-      if (playerValue > 21) {
-        return 'dealer';
-      } else if (dealerValue > 21) {
-        return 'player';
-      } else if (playerValue > dealerValue) {
-        return 'player';
-      } else if (dealerValue > playerValue) {
-        return 'dealer';
+      let resultMessage;
+      let betMultiplier = 2; // Default multiplier for a win
+
+      if (playerValue > 21 || (dealerValue <= 21 && dealerValue >= playerValue)) {
+        // Dealer wins or player busts
+        resultMessage = 'Dealer wins.';
+        betMultiplier = 0; // Player loses the bet
       } else {
-        return 'tie';
+        // Player wins
+        resultMessage = 'You win!';
       }
-    }
+
+      // Update the embed with the final hands and result
+      const resultEmbed = new EmbedBuilder()
+        .setColor(0x0099ff)
+        .setTitle('Blackjack - Results')
+        .addFields(
+          { name: 'Your Hand', value: `${playerHand.join(', ')} (Value: ${calculateHandValue(playerHand)})` },
+          { name: 'Dealer\'s Hand', value: `${dealerHand.join(', ')} (Value: ${calculateHandValue(dealerHand)})` },
+          { name: 'Result', value: resultMessage },
+          { name: 'Balance', value: `Your Balance: ${currentBalance + bet * betMultiplier} coins` },
+          { name: 'Current Bet', value: `Current Bet: ${bet} coins` }
+        );
+
+      message.reply({ embeds: [resultEmbed], components: [] });
+
+      // Update the user's balance in the database
+      await query('UPDATE users SET balance = $1 WHERE user_id = $2', [currentBalance + bet * betMultiplier, message.author.id]);
+    };
+
+    // Start the player's turn
+    await playerTurn();
   },
 };
+
+
+
+
 
 
 

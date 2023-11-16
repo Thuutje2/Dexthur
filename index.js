@@ -28,7 +28,7 @@ client.on('messageCreate', async (message) => {
     try {
       await command.execute(message, args, client);
     } catch (error) {
-      console.error(`Error executing command "${commandName}": ${error.message}`);
+      console.error(`Error executing command "${commandName}": ${error.message}` + '\n' + error.stack);
       message.reply('Er is een fout opgetreden bij het uitvoeren van het commando.');
     }
   }
