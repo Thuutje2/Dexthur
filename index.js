@@ -16,10 +16,7 @@ const client = new Client({
 const commandHandler = require('./handlers/command_handler');
 commandHandler(client);
 
-// Command Map (if needed)
-// client.commands = new Map();
-
-client.on('messageCreate', (message) => {
+client.on('messageCreate', async (message) => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
   const args = message.content.slice(prefix.length).split(/ +/);
@@ -28,7 +25,12 @@ client.on('messageCreate', (message) => {
   const command = client.commands.get(commandName);
 
   if (command) {
-    command.execute(message, args, client);
+    try {
+      await command.execute(message, args, client);
+    } catch (error) {
+      console.error(`Error executing command "${commandName}": ${error.message}`);
+      message.reply('Er is een fout opgetreden bij het uitvoeren van het commando.');
+    }
   }
 });
 
@@ -37,6 +39,8 @@ client.once('ready', () => {
 });
 
 client.login(token);
+
+
 
 
 
