@@ -1,3 +1,4 @@
+const { EmbedBuilder } = require('@discordjs/builders');
 const db = require('../../database');
 
 module.exports = {
@@ -16,10 +17,16 @@ module.exports = {
         return message.reply('Your inventory is empty.');
       }
 
-      // Bouw een bericht op met de inventarisgegevens
-      const inventoryMessage = userInventory.map(item => `${item.item_name}: ${item.quantity}`).join('\n');
+      // Bouw het bericht op met de inventarisgegevens
+      const inventoryMessage = userInventory.map(item => `**${item.item_name}:** ${item.quantity}`).join('\n');
 
-      message.reply(`Your inventory:\n${inventoryMessage}`);
+      // Maak een embed aan met EmbedBuilder
+      const inventoryEmbed = new EmbedBuilder()
+        .setTitle(`${message.author.username}'s Inventory`)
+        .setDescription(inventoryMessage)
+        .setColor(0x0099ff); 
+
+      message.reply({ embeds: [inventoryEmbed] });
     } catch (error) {
       console.error('Error fetching inventory:', error);
       message.reply('An error occurred while fetching your inventory.');

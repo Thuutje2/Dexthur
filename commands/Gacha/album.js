@@ -6,6 +6,11 @@ module.exports = {
   usage: '!album <album_name>',
   category: 'Gacha',
   async execute(message, args) {
+
+    if (!args || args.length === 0) {
+      return message.reply('Please provide the name of the album. Usage: !album <album_name>');
+    }
+    
     const albumName = args[0];
 
     try {

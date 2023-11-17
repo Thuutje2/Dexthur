@@ -1,3 +1,4 @@
+const { EmbedBuilder } = require('@discordjs/builders');
 const db = require('../../database');
 
 module.exports = {
@@ -15,12 +16,19 @@ module.exports = {
       }
 
       // Bouw het bericht op met de beschikbare items en hun prijzen
-      const storeMessage = storeItems.map(item => `${item.item_name}: ${item.item_price} coins`).join('\n');
+      const storeMessage = storeItems.map(item => `**${item.item_name}:** ${item.item_price} coins`).join('\n');
 
-      message.reply(`Items available in the store:\n${storeMessage}`);
+      // Maak een embed aan met EmbedBuilder
+      const storeEmbed = new EmbedBuilder()
+        .setTitle('Items available in the store')
+        .setDescription(storeMessage)
+        .setColor(0x0099ff); 
+
+      message.reply({ embeds: [storeEmbed] });
     } catch (error) {
       console.error('Error fetching store items:', error);
       message.reply('An error occurred while fetching store items.');
     }
   },
 };
+
