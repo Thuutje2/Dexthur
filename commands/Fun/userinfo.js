@@ -3,6 +3,7 @@ const { EmbedBuilder } = require('@discordjs/builders');
 module.exports = {
   name: 'userinfo',
   description: 'Get information about a user.',
+  aliases: ['ui'],
   execute(message, args) {
     const {guild, channel} = message
     const user = message.mentions.users.first() || message.guild.members.cache.get(args[0])?.user || message.author;

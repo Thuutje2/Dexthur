@@ -4,6 +4,7 @@ const { query } = require('../../database');
 module.exports = {
   name: 'daily',
   description: 'Claim your daily reward.',
+  aliases: ['d'],
   category: 'Casino',
   cooldown: 24 * 60 * 60, // Cooldown in seconds (24 hours)
 

@@ -4,6 +4,7 @@ const { query } = require('../../database');
 module.exports = {
   name: 'blackjack',
   description: 'Play a game of blackjack.',
+  aliases: ['bj'],
   category: 'Casino',
 
   async execute(message, args) {
