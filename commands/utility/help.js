@@ -15,7 +15,7 @@ module.exports = {
         { name: '💰 Economy', value: '`Adduser` \n `Balance` \n `Buy` \n `Store` \n `Inventory` \n `Daily` \n `Monthly` \n `Yearly`', inline: true },
         { name: '😙 Fun', value: '`Ping` \n `userinfo` \n `server`', inline: true },
         { name: '📝 ToDo List', value: '`!Todo` Explanation for todo!', inline: true },
-        { name: '⚒️ Admin', value: '`clear` \n `additem` \n `removeitem`', inline: true }
+        { name: '⚒️ Admin', value: '`clear` \n `additem` \n `removeitem` \n `ideas` \n `addidea` \n `removeidea`', inline: true }
       );
 
     const row = new ActionRowBuilder()

@@ -97,6 +97,9 @@ client.on('interactionCreate', async interaction => {
         { name: '`Clear`', value: 'Clear messages. `!Clear <amount>`' },
         { name: '`Additem`', value: 'Add a new item or role to the store. `!Additem <item_name> <item_price> <item_type>`' },
         { name: '`Removeitem`', value: 'Remove an item or role from the store. `!Removeitem <item_name>`' },
+        { name: '`Ideas`', value: 'View the ideas list for admins. `!Ideas`' },
+        { name: '`Addidea`', value: 'Add an idea to the ideas list. `!Addidea <idea>`' },
+        { name: '`Removeidea`', value: 'Remove an idea from the ideas list. `!Removeidea <idea_number>`' },
       );
 
     interaction.update({ embeds: [adminEmbed], components: [] });
