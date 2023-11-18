@@ -70,6 +70,7 @@ client.on('interactionCreate', async interaction => {
         { name: '`Buy`', value: 'Buy an item or role from the store. `!Buy <item_name>`' },
         { name: '`Store`', value: 'View items available in the store. `!Store`' },
         { name: '`Inventory`', value: 'View your inventory. `!Inventory`' },
+        { name: '`Work`', value: 'Work and earn money. `!Work`'},
         { name: '`Daily`', value: 'Claim your daily reward. `!Daily`' },
         { name: '`Monthly`', value: 'Claim your monthly reward. `!Monthly`' },
         { name: '`Yearly`', value: 'Claim your yearly reward. `!Yearly`' },

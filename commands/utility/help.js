@@ -12,7 +12,7 @@ module.exports = {
       .setDescription('List of all available commands.')
       .addFields(
         { name: '🃏 Casino', value: '`Slots` \n `Blackjack` \n `Roulette` \n `Coinflip`', inline: true },
-        { name: '💰 Economy', value: '`Adduser` \n `Balance` \n `Buy` \n `Store` \n `Inventory` \n `Daily` \n `Monthly` \n `Yearly`', inline: true },
+        { name: '💰 Economy', value: '`Adduser` \n `Balance` \n `Buy` \n `Store` \n `Inventory` \n `Work` \n `Daily` \n `Monthly` \n `Yearly`', inline: true },
         { name: '😙 Fun', value: '`Ping` \n `random` \n `userinfo` \n `server`', inline: true },
         { name: '📝 ToDo List', value: '`!Todo` Explanation for todo!', inline: true },
         { name: '⚒️ Admin', value: '`clear` \n `additem` \n `removeitem` \n `ideas` \n `addidea` \n `removeidea`', inline: true }
