@@ -83,6 +83,7 @@ client.on('interactionCreate', async interaction => {
       .setDescription('List of fun commands.')
       .addFields(
         { name: '`Ping`', value: 'Ping. `!Ping`' },
+        { name: '`Random`', value: 'Generate a random number between 1 and 100. `!Random`'},
         { name: '`Userinfo`', value: 'Get information about a user. `!Userinfo <user>`' },
         { name: '`Server`', value: 'Get information about the server. `!Server`' },
       );
