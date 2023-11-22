@@ -1,3 +1,5 @@
+const db = require('../../database');
+
 // Voeg dit toe aan je bestaande code
 module.exports = {
     name: 'buypack',

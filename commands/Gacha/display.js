@@ -32,22 +32,21 @@ module.exports = {
         .setDescription('Check out the stickers in the album!')
         .setTimestamp();
 
-      // Vervang deze query met de juiste methode om stickergegevens op te halen uit je database
       const stickersResult = await db.query('SELECT * FROM stickers WHERE album_id = $1', [album.album_id]);
       const stickers = stickersResult.rows;
       console.log('Stickers:', stickers);
 
-      // Voeg elke sticker toe aan de embed
       stickers.forEach(sticker => {
         albumEmbed.addFields({
-          name: `Sticker ${sticker.sticker_id}`,
-          value: `[View Sticker](${sticker.image_url})`,
+          name: `Sticker ${sticker.sticker_name}`,
+          value: '\u200b', // To ensure each field has content
+          attachment: sticker.image_url,
           inline: true,
         });
       });
 
       // Stuur de embed naar het kanaal als er stickers zijn, anders geef een melding weer
-      if (albumEmbed.fields && albumEmbed.fields.length > 0) {
+      if (stickers.length > 0) {
         message.channel.send({ embeds: [albumEmbed] });
       } else {
         message.reply('There are no stickers in this album.');
@@ -58,6 +57,7 @@ module.exports = {
     }
   },
 };
+
 
 
 
