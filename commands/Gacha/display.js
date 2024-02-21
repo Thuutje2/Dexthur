@@ -1,62 +1,81 @@
-const { EmbedBuilder } = require('@discordjs/builders');
+const { EmbedBuilder, ButtonBuilder, ActionRowBuilder } = require('@discordjs/builders');
+const { createCanvas, loadImage } = require('canvas');
+const { AttachmentBuilder } = require('discord.js');
 const db = require('../../database');
 
 module.exports = {
   name: 'display',
-  description: 'View a full album.',
+  description: 'Bekijk een volledig album.',
   usage: '!display <album_name>',
   category: 'Gacha',
-  async execute(message, args) {
+  async execute(interaction, args) {
     try {
-      // Controleer of het album-naam is opgegeven
       if (!args[0]) {
-        return message.reply('Please provide an album name.');
+        return interaction.reply('Geef alsjeblieft de naam van een album op.');
       }
 
-      // Vervang deze query met de juiste methode om album- en stickergegevens op te halen uit je database
       const albumName = args[0];
       const result = await db.query('SELECT * FROM albums WHERE album_name = $1', [albumName]);
 
-      // Controleer of het album bestaat
       if (!result.rows[0]) {
-        return message.reply('Album not found.');
+        return interaction.reply('Album niet gevonden.');
       }
 
       const album = result.rows[0];
-      console.log('Album:', album);
 
-      // Maak een embed voor het album met EmbedBuilder
-      const albumEmbed = new EmbedBuilder()
-        .setColor(0x0099ff)
-        .setTitle(`Album: ${album.album_name}`)
-        .setDescription('Check out the stickers in the album!')
-        .setTimestamp();
+      console.log('Album resultaat:', album);
 
       const stickersResult = await db.query('SELECT * FROM stickers WHERE album_id = $1', [album.album_id]);
       const stickers = stickersResult.rows;
-      console.log('Stickers:', stickers);
 
-      stickers.forEach(sticker => {
-        albumEmbed.addFields({
-          name: `Sticker ${sticker.sticker_name}`,
-          value: '\u200b', // To ensure each field has content
-          attachment: sticker.image_url,
-          inline: true,
-        });
-      });
+      console.log('Stickers resultaat:', stickers);
 
-      // Stuur de embed naar het kanaal als er stickers zijn, anders geef een melding weer
-      if (stickers.length > 0) {
-        message.channel.send({ embeds: [albumEmbed] });
-      } else {
-        message.reply('There are no stickers in this album.');
+      if (stickers.length === 0) {
+        return interaction.reply('Dit album bevat geen stickers.');
       }
+
+      // Canvas setup
+      const canvas = createCanvas(600, 600);
+      const ctx = canvas.getContext('2d');
+
+      // Load each image and draw it on the canvas
+      for (let i = 0; i < stickers.length; i++) {
+        const image = await loadImage(stickers[i].image_url);
+        ctx.drawImage(image, i * 150, 0, 150, 150); // Adjust the positioning and size as needed
+      }
+
+      // Convert the canvas to a data URL
+      const dataUrl = canvas.toDataURL();
+
+      // Create an embed with the merged image
+      const embed = new EmbedBuilder()
+        .setColor(0x0099ff)
+        .setTitle(`Sticker Album: ${album.album_name}`)
+        .setImage(dataUrl);
+
+      const row = new ActionRowBuilder()
+        .addComponents(
+          new ButtonBuilder().setCustomId('previous').setLabel('Vorige').setStyle(1),
+          new ButtonBuilder().setCustomId('next').setLabel('Volgende').setStyle(1),
+        );
+
+      await interaction.reply({ content: 'Stickeralbum weergeven:', embeds: [embed], components: [row] });
     } catch (error) {
       console.error(error);
-      message.reply('There was an error retrieving the album.');
+      interaction.reply('Er is een fout opgetreden bij het ophalen van het album.');
     }
   },
 };
+
+
+
+
+
+
+
+
+
+
 
 
 

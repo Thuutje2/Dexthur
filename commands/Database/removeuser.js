@@ -7,7 +7,10 @@ module.exports = {
   category: 'Casino',
   async execute(message, args, userData) {
     try {
-      // Check if the user exists in the database
+      // Remove user's todos first
+      await db.query('DELETE FROM todo_list WHERE user_id = $1', [message.author.id]);
+
+      // Then, check if the user exists in the database
       const userExists = await db.query('SELECT 1 FROM users WHERE user_id = $1', [message.author.id]);
 
       if (userExists.rows.length) {
@@ -24,3 +27,4 @@ module.exports = {
     }
   },
 };
+

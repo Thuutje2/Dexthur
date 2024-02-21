@@ -17,8 +17,11 @@ module.exports = {
         return message.reply('Please provide a valid idea number to remove.');
       }
 
-      // Haal alle ideeën op uit de database
-      const result = await query('SELECT * FROM ideas');
+      // Haal het server-ID op
+      const serverId = message.guild.id;
+
+      // Haal alle ideeën op uit de database voor de huidige server
+      const result = await query('SELECT * FROM ideas WHERE server_id = $1', [serverId]);
       const ideasList = result.rows;
 
       if (ideaIndex < 0 || ideaIndex >= ideasList.length) {
@@ -28,10 +31,11 @@ module.exports = {
       // Verwijder het idee uit de database
       await query('DELETE FROM ideas WHERE idea_id = $1', [ideasList[ideaIndex].idea_id]);
 
-      message.reply(`Idea #${ideaIndex + 1} removed: "${ideasList[ideaIndex].idea_text}"`);
+      message.reply(`Idea #${ideaIndex + 1} removed for this server: "${ideasList[ideaIndex].idea_text}"`);
     } catch (error) {
       console.error('Error removing idea:', error);
       message.reply('An error occurred while removing the idea.');
     }
   },
 };
+

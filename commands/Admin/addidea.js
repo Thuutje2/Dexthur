@@ -17,13 +17,17 @@ module.exports = {
         return message.reply('Please provide a description for the idea.');
       }
 
-      // Voeg het nieuwe idee toe aan de database
-      await query('INSERT INTO ideas (idea_text) VALUES ($1)', [ideaText]);
+      // Haal het server-ID op
+      const serverId = message.guild.id;
 
-      message.reply(`Idea added: "${ideaText}"`);
+      // Voeg het nieuwe idee toe aan de database met het server-ID
+      await query('INSERT INTO ideas (server_id, idea_text) VALUES ($1, $2)', [serverId, ideaText]);
+
+      message.reply(`Idea added for this server: "${ideaText}"`);
     } catch (error) {
       console.error('Error adding idea:', error);
       message.reply('An error occurred while adding the idea.');
     }
   },
 };
+

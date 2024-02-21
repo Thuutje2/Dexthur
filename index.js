@@ -17,6 +17,10 @@ const client = new Client({
 const commandHandler = require('./handlers/command_handler');
 commandHandler(client);
 
+// Laad interactie-handlers
+const interactionHandler = require('./handlers/interaction_handler');
+interactionHandler(client);
+
 // 
 client.on('messageCreate', async (message) => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
@@ -70,6 +74,8 @@ client.on('interactionCreate', async interaction => {
         { name: '`Buy`', value: 'Buy an item or role from the store. `!Buy <item_name>`' },
         { name: '`Store`', value: 'View items available in the store. `!Store`' },
         { name: '`Inventory`', value: 'View your inventory. `!Inventory`' },
+        { name: '`Give`', value: 'Give money to another user. `!Give <user> <amount>`' },
+        { name: '`Leaderboard`', value: 'View the leaderboard. `!Leaderboard`' },
         { name: '`Work`', value: 'Work and earn money. `!Work`'},
         { name: '`Daily`', value: 'Claim your daily reward. `!Daily`' },
         { name: '`Monthly`', value: 'Claim your monthly reward. `!Monthly`' },
@@ -105,6 +111,16 @@ client.on('interactionCreate', async interaction => {
       );
 
     interaction.update({ embeds: [adminEmbed], components: [] });
+  } else if (customId === 'help_videogames') {
+    const videogamesEmbed = new EmbedBuilder()
+      .setColor(0x0099ff)
+      .setTitle('Video Games Information')
+      .setDescription('List of video games information commands.')
+      .addFields(
+        { name: '`SteamProfile`', value: 'Get information about a Steam profile. `!SteamProfile <steam_id>`' },
+      );
+
+    interaction.update({ embeds: [videogamesEmbed], components: [] });
   }
 });
 

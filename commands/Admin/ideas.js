@@ -12,13 +12,14 @@ module.exports = {
         return message.reply('You do not have the necessary permissions to view the ideas list.');
       }
 
-      // Voor het ophalen van ideeën van de database
-      const result = await query('SELECT * FROM ideas');
+      // Voor het ophalen van ideeën van de database voor de huidige server
+      const serverId = message.guild.id;
+      const result = await query('SELECT * FROM ideas WHERE server_id = $1', [serverId]);
       const ideasList = result.rows;
 
       // Embed wordt gemaakt op basis van de opgehaalde ideeën
       if (ideasList.length === 0) {
-        return message.reply('The ideas list is currently empty.');
+        return message.reply('The ideas list for this server is currently empty.');
       }
 
       const ideasMessage = ideasList.map((idea, index) => `**#${index + 1}:** ${idea.idea_text}`).join('\n');
@@ -27,7 +28,7 @@ module.exports = {
       const ideasListEmbed = new EmbedBuilder()
         .setColor(0x0099ff)
         .setTitle('Ideas List (Admins Only)')
-        .setDescription('Current ideas list:')
+        .setDescription('Current ideas list for this server:')
         .setAuthor({
           name: message.author.username,
           icon_url: url,
@@ -48,3 +49,4 @@ module.exports = {
     }
   },
 };
+
