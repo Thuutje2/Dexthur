@@ -10,17 +10,35 @@ const steam = new SteamAPI(config.steamapikey);
 module.exports = {
   name: 'steamprofile',
   permissions: [],
-  description: 'Ontvang informatie over een Steam-gebruikersprofiel.',
+  description: 'Get information about a Steam user profile and their top games',
   aliases: ['steam', 'sp'],
   async execute(message, args, client) {
     try {
+      // Validate input
+      if (!args[0]) {
+        return message.channel.send('You need to provide a Steam ID. Example: `!steamprofile 76561198077579912`');
+      }
+
       const steamID = args[0];
+
+      // Log the steamID for debugging
+      console.log(`Received Steam ID: ${steamID}`);
+
+      // Validate Steam ID format (basic validation)
+      if (!/^\d+$/.test(steamID)) {
+        return message.channel.send('the Steam ID provided is invalid or there was an error fetching data from Steam');
+      }
+
+      // Fetch user summary and owned games
       const user = await steam.getUserSummary(steamID);
       const games = await steam.getUserOwnedGames(steamID);
 
-      if (!user || !user.nickname || !user.avatar || !user.steamID || !user.personaState) {
+      // Log the fetched user data for debugging
+      console.log(`Fetched user data: ${JSON.stringify(user)}`);
+
+      if (!user || !user.nickname || !user.avatar || !user.steamID || user.personaState === undefined) {
         console.error('Ongeldige gebruikersgegevens ontvangen van de Steam API:', user);
-        throw new Error('Ongeldige gebruikersgegevens ontvangen van de Steam API');
+        throw new Error('Invalid user data received from the Steam API');
       }
 
       const profileEmbed = new EmbedBuilder()
@@ -29,9 +47,9 @@ module.exports = {
           .setThumbnail(user.avatar.medium)
           .addFields(
               { name: 'Steam ID', value: user.steamID },
-              { name: 'Echte naam', value: user.realName || 'N/A' },
+              { name: 'Real name', value: user.realName || 'N/A' },
               { name: 'Status', value: user.personaState === 1 ? 'Online' : 'Offline' },
-              { name: 'Aantal spellen', value: String(games.length) }
+              { name: 'Total Games', value: String(games.length) }
           );
 
       if (games.length > 0) {
@@ -40,23 +58,28 @@ module.exports = {
           const gameInfo = await steam.getGameDetails(game.appID); // Haal game details op
           const gameName = gameInfo.name;
           const gameArtwork = gameInfo.header_image; // Het spelafbeelding
-            const gamePlayTime = Math.floor(game.playTime / 60); // Speeltijd in uren
+          const gamePlayTime = Math.floor(game.playTime / 60); // Speeltijd in uren
 
-
-          profileEmbed.addFields({ name: gameName , value: gamePlayTime.toString() + " uur", inline: true, image: gameArtwork });
+          profileEmbed.addFields({ name: gameName, value: `${gamePlayTime} uur`, inline: true });
         }
       } else {
-        profileEmbed.addFields({ name: 'Top Games', value: 'Geen spellen beschikbaar' });
+        profileEmbed.addFields({ name: 'Top Games', value: 'No games' });
       }
 
-      const content = 'Informatie over het Steam-profiel:';
+      const content = 'Information about the Steam profile';
       message.channel.send({ content, embeds: [profileEmbed] });
     } catch (error) {
       console.error(error);
-      message.channel.send('Er is een fout opgetreden bij het ophalen van gegevens van Steam.');
+      if (error.message.includes('Invalid/no id provided')) {
+        message.channel.send('Invalid Steam ID provided or there was an error fetching data from Steam');
+      } else {
+        message.channel.send('An error occurred while fetching the Steam profile. Please try again later.');
+      }
     }
   },
 };
+
+
 
 
 

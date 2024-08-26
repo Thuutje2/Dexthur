@@ -27,7 +27,7 @@ module.exports = {
             message.channel.send({ embeds: [embed] });
         } catch (error) {
             console.error('Error occurred in guessLeaderboard command', error);
-            message.reply('Er is een fout opgetreden bij het ophalen van de leaderboard.');
+            message.reply('An error occurred while fetching the leaderboard. Please try again later.');
         }
     }
 }

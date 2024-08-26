@@ -24,16 +24,16 @@ module.exports = {
         description: 'Play casino games and earn coins.',
         commands: [
           { name: '`Slots`', value: 'Play the slots. `!Slots <bet>`' },
-          { name: '`Blackjack`', value: 'Play a game of blackjack. `!Blackjack <bet>`' },
-          { name: '`Roulette`', value: 'Play a game of roulette. `!Roulette <bet>`' },
-          { name: '`Coinflip`', value: 'Flip a coin and bet on the outcome. `!Coinflip <bet> <heads/tails>`' }
+          { name: '`Blackjack`', value: 'Play a game of blackjack. `!Blackjack <bet>`, `!bj <bet>`' },
+          { name: '`Roulette`', value: 'Play a game of roulette. `!Roulette <bet>`,`!rl <bet>` ' },
+          { name: '`Coinflip`', value: 'Flip a coin and bet on the outcome. `!Coinflip <bet> <heads/tails>`, `!cf <bet> <heads/tails>`' }
         ]
       },
       {
         title: '💰 Economy Commands',
         description: 'Manage your economy and earn coins.',
         commands: [
-          { name: '`Adduser`', value: 'Add a user to the database. `!Adduser`' },
+          { name: '`Adduser`', value: 'Add yourself to the database. `!Adduser`' },
           { name: '`Balance`', value: 'Check your balance. `!Balance`' },
           { name: '`Buy`', value: 'Buy an item or role from the store. `!Buy <item_name>`' },
           { name: '`Store`', value: 'View items available in the store. `!Store`' },
@@ -79,10 +79,13 @@ module.exports = {
         ]
       },
       {
-        title: '🎮 Video Games Information Commands',
-        description: 'Get information about video games.',
+        title: '🎮 Games Commands',
+        description: 'Get information of play games',
         commands: [
-          { name: '`SteamProfile`', value: 'Get information about a Steam user. `!SteamProfile <steam_id>`' },
+          { name: '`steamprofile`', value: 'Get information about a Steam user. `!SteamProfile <steam_id>`' },
+          {name: '`guessprofile`', value: 'Show the profile of the user for the Disney character guessing game. `!gp`'},
+          {name: '`guessLeaderboard`', value: 'Show the leaderboard for the Disney character guessing game. `!glb`'},
+          {name: '`guess`', value: 'Guess the Disney character. `!guess <charactername>`'}
         ]
       }
     ];

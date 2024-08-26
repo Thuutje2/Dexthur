@@ -12,8 +12,7 @@ module.exports = (client) => {
     for (const file of commandFiles) {
       const command = require(`../commands/${category}/${file}`);
       client.commands.set(command.name, command);
-      
-      // Voeg hier het volgende toe om aliassen correct in te stellen
+
       if (command.aliases) {
         for (const alias of command.aliases) {
           client.commands.set(alias, command);

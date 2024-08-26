@@ -34,7 +34,7 @@ module.exports = {
                     const timeRemaining = guessCooldown - timeDifference;
                     const remainingHours = Math.floor(timeRemaining / (1000 * 60 * 60));
                     const remainingMinutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-                    return message.reply(`Probeer een nieuw character te raden over ${remainingHours} uur en ${remainingMinutes} minuten.`);
+                    return message.reply(`Try guessing a new character in ${remainingHours} hours and ${remainingMinutes} minutes.`);
                 }
             }
 
@@ -97,7 +97,7 @@ module.exports = {
 
                 const embed = new EmbedBuilder()
                     .setTitle('Correct Guess!')
-                    .setDescription(`Het personage was ${dailyCharacter.name}.\nJe hebt ${pointsEarned} punten verdiend!\nStreak: ${streak}`)
+                    .setDescription(`The character was ${dailyCharacter.name}.\nYou earned ${pointsEarned} points!\nStreak: ${streak}`)
                     .setImage(dailyCharacter.image);
 
                 // Stuur het embed terug naar het kanaal
@@ -111,20 +111,20 @@ module.exports = {
                     // Stel het embed op met de hints op basis van het aantal mislukte pogingen
                     const embed = new EmbedBuilder()
                         .setTitle('Guess the Disney Character')
-                        .setDescription('Raad het Disney-personage!')
+                        .setDescription('Guess the character!')
                         .addFields({ name: 'Hints', value: dailyCharacterHints.slice(0, failedAttempts).join('\n') });
 
                     // Stuur het embed terug naar het kanaal
                     return message.channel.send({ embeds: [embed] });
                 } else {
                     // Als het geraden personage incorrect is en de gebruiker geen hints meer heeft, laat de gebruiker door raden
-                    return message.reply(`Helaas, dat is niet correct. Blijf raden!`);
+                    return message.reply(`Unfortunately, you have run out of hints. The character was ${dailyCharacter.name}. Try guessing a new character tomorrow.`);
                 }
             }
 
         } catch (error) {
             console.error('Er is een fout opgetreden bij het raden van het personage:', error);
-            message.channel.send('Er is een fout opgetreden bij het raden van het personage.');
+            message.channel.send('An error occurred while guessing the character. Please try again later.');
         }
     }
 };

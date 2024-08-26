@@ -33,7 +33,7 @@ module.exports = {
             message.channel.send({ embeds: [embed] });
         } catch (error) {
             console.error('Error occurred in guessProfile command', error);
-            message.reply('Er is een fout opgetreden bij het ophalen van het profiel.');
+            message.reply('An error occurred while fetching the profile. Please try again later.');
         }
     }
 }
