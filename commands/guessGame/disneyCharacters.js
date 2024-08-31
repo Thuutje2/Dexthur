@@ -4,6 +4,7 @@ const { query } = require('../../database');
 module.exports = {
     name: 'disneycharacters',
     description: 'Available Disney characters to guess.',
+    aliases: ['dc', 'characters'],
     async execute(message, args) {
         try {
             // Query to get all characters and their corresponding series or films
@@ -28,7 +29,6 @@ module.exports = {
 
                 const embed = new EmbedBuilder()
                     .setTitle('Disney Characters')
-                    .setThumbnail('https://imgur.com/gallery/disney-8A6Agig')
                     .setDescription('Here are the Disney characters grouped by their series/film:')
                     .setColor(0x0099FF)
                     .setFooter({ text: `Page ${Math.floor(i / pageSize) + 1} of ${Math.ceil(seriesArray.length / pageSize)}` });
@@ -36,7 +36,7 @@ module.exports = {
                 currentSeries.forEach(([series, characters]) => {
                     embed.addFields({
                         name: '🔹' + series,
-                        value: characters.join(', '),
+                        value: characters.map(name => `\`${name}\``).join(', '),
                     });
                 });
 

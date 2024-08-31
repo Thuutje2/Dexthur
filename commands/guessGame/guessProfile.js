@@ -26,7 +26,7 @@ module.exports = {
                 .setThumbnail(targetUser.displayAvatarURL())
                 .addFields(
                     { name: 'Points', value: `${profile.points.toString()} points` },
-                    { name: 'Streak', value: `${profile.streak.toString()} days` },
+                    { name: '🔥 Streak', value: `${profile.streak.toString()} days` },
                 );
 
             // Stuur de embed naar de gebruiker

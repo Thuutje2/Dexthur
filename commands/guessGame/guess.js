@@ -25,7 +25,7 @@ module.exports = {
                 const timeDifference = currentTime - lastGuessDate;
 
                 // Controleer of de gebruiker binnen de cooldown-periode valt
-                if (userGuessData.failed_attempts >= 5) {
+                if (userGuessData.failed_attempts >= 6) {
                     if (timeDifference < guessCooldown) {
                         const timeRemaining = guessCooldown - timeDifference;
                         const remainingHours = Math.floor(timeRemaining / (1000 * 60 * 60));
@@ -38,9 +38,23 @@ module.exports = {
                         userGuessData.hints_given = 0;
                     }
                 }
+
+                // Controleer of de gebruiker moet wachten tot middernacht na een correcte gok
+                if (userGuessData.last_correct_guess_date) {
+                    const lastCorrectGuessDate = new Date(userGuessData.last_correct_guess_date);
+                    const nextAvailableGuessDate = new Date(lastCorrectGuessDate);
+                    nextAvailableGuessDate.setHours(24, 0, 0, 0); // Zet naar middernacht van de volgende dag
+
+                    if (currentTime < nextAvailableGuessDate) {
+                        const timeRemaining = nextAvailableGuessDate - currentTime;
+                        const remainingHours = Math.floor(timeRemaining / (1000 * 60 * 60));
+                        const remainingMinutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+                        return message.reply(`You have to wait until ${nextAvailableGuessDate.toLocaleTimeString()} before you can guess again.`);
+                    }
+                }
             } else {
                 // Als de gebruiker niet bestaat in de database, voeg deze dan toe met initiële waarden
-                await query('INSERT INTO User_Points (user_id, username, points, last_guess_date, streak, daily_character_id, failed_attempts, hints_given) VALUES ($1, $2, 0, null, 0, null, 0, 0)', [message.author.id, message.author.username]);
+                await query('INSERT INTO User_Points (user_id, username, points, last_guess_date, last_correct_guess_date, streak, daily_character_id, failed_attempts, hints_given) VALUES ($1, $2, 0, null, null, 0, null, 0, 0)', [message.author.id, message.author.username]);
                 userGuessData = {
                     failed_attempts: 0,
                     streak: 0,
@@ -95,14 +109,17 @@ module.exports = {
                     case 4:
                         pointsEarned = 10;
                         break;
-                    default:
+                    case 5:
                         pointsEarned = 5;
+                        break;
+                    default:
+                        pointsEarned = 0;
                         break;
                 }
 
-                // Update de laatste gokdatum, streak, en punten voor de gebruiker in de database
+                // Update de laatste gokdatum, streak, punten en last_correct_guess_date voor de gebruiker in de database
                 const newPoints = (userGuessData.points || 0) + pointsEarned;
-                await query('UPDATE User_Points SET last_guess_date = $1, streak = $2, points = $3, failed_attempts = 0, daily_character_id = null WHERE user_id = $4', [currentTime, streak, newPoints, message.author.id]);
+                await query('UPDATE User_Points SET last_guess_date = $1, last_correct_guess_date = $2, streak = $3, points = $4, failed_attempts = 0, daily_character_id = null WHERE user_id = $5', [currentTime, currentTime, streak, newPoints, message.author.id]);
 
                 const embed = new EmbedBuilder()
                     .setTitle('Correct Guess!')
@@ -118,7 +135,7 @@ module.exports = {
 
                 await query('UPDATE User_Points SET failed_attempts = $1, hints_given = $2 WHERE user_id = $3', [failedAttempts, hintsGiven, message.author.id]);
 
-                if (hintsGiven < 5) {
+                if (failedAttempts < 6) {
                     const embed = new EmbedBuilder()
                         .setTitle('Guess the Disney Character')
                         .setDescription('Guess the character!')
@@ -127,6 +144,7 @@ module.exports = {
 
                     return message.channel.send({ embeds: [embed] });
                 } else {
+                    // Update de database om te reflecteren dat de hints zijn opgeraken en reset het dagelijkse personage
                     await query('UPDATE User_Points SET daily_character_id = null WHERE user_id = $1', [message.author.id]);
                     return message.reply(`Unfortunately, you have run out of hints. The character was ${dailyCharacter.name}. Try guessing a new character tomorrow.`);
                 }
@@ -138,6 +156,8 @@ module.exports = {
         }
     }
 };
+
+
 
 
 
