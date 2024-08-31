@@ -18,6 +18,10 @@ module.exports = {
                 return message.reply('This user has not played the Disney Character Guessing Game yet.');
             }
 
+            // Haal de favoriete gegevens van de gebruiker op
+            const favoritesResult = await query('SELECT * FROM user_favorites WHERE user_id = $1', [targetUser.id]);
+            const favorites = favoritesResult.rows[0] || {};
+
             // Bouw een embed met de profielgegevens
             const embed = new EmbedBuilder()
                 .setTitle('Disney Character Guessing Game Profile for ' + targetUser.username)
@@ -27,6 +31,8 @@ module.exports = {
                 .addFields(
                     { name: 'Points', value: `${profile.points.toString()} points` },
                     { name: '🔥 Streak', value: `${profile.streak.toString()} days` },
+                    { name: 'Favorite Character', value: favorites.favorite_character_name || 'Not set' },
+                    { name: 'Favorite Serie or Film', value: favorites.favorite_series_film || 'Not set' }
                 );
 
             // Stuur de embed naar de gebruiker
@@ -37,3 +43,4 @@ module.exports = {
         }
     }
 }
+

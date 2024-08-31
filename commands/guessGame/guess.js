@@ -49,7 +49,7 @@ module.exports = {
                         const timeRemaining = nextAvailableGuessDate - currentTime;
                         const remainingHours = Math.floor(timeRemaining / (1000 * 60 * 60));
                         const remainingMinutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-                        return message.reply(`You have to wait until ${nextAvailableGuessDate.toLocaleTimeString()} before you can guess again.`);
+                        return message.reply(`You have to wait until ${nextAvailableGuessDate.toLocaleTimeString()} before you can guess again. (${remainingHours} hours and ${remainingMinutes} minutes remaining)`);
                     }
                 }
             } else {
@@ -142,11 +142,16 @@ module.exports = {
                         .setColor(0xc56af0)
                         .addFields({ name: 'Hints', value: dailyCharacterHints.slice(0, hintsGiven).join('\n') });
 
-                    return message.channel.send({ embeds: [embed] });
+                    message.channel.send({ embeds: [embed] });
                 } else {
                     // Update de database om te reflecteren dat de hints zijn opgeraken en reset het dagelijkse personage
                     await query('UPDATE User_Points SET daily_character_id = null WHERE user_id = $1', [message.author.id]);
-                    return message.reply(`Unfortunately, you have run out of hints. The character was ${dailyCharacter.name}. Try guessing a new character tomorrow.`);
+
+                    const timeRemaining = guessCooldown - timeDifference;
+                    const remainingHours = Math.floor(timeRemaining / (1000 * 60 * 60));
+                    const remainingMinutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+
+                    return message.reply(`Unfortunately, you have run out of hints. The character was ${dailyCharacter.name}. Try guessing a new character tomorrow. You will be able to guess again in ${remainingHours} hours and ${remainingMinutes} minutes.`);
                 }
             }
 
@@ -156,6 +161,8 @@ module.exports = {
         }
     }
 };
+
+
 
 
 
