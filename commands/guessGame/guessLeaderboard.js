@@ -20,7 +20,7 @@ module.exports = {
 
             // Voeg de top 10 van de leaderboard toe aan de embed
             leaderboard.forEach((user, index) => {
-                embed.addFields({name: `${index + 1}. ${user.username}`, value: `Points: ${user.points}, Streak: ${user.streak}`});
+                embed.addFields({name: `${index + 1}. ${user.username}`, value: `Points: ${user.points}, Correct guesses count: ${user.streak}`});
             });
 
             // Stuur de embed naar de gebruiker

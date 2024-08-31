@@ -9,8 +9,8 @@ module.exports = {
         try {
             let targetUser = message.mentions.users.first() || message.author;
 
-            // Haal de profielgegevens van de gebruiker op uit de database
-            const profileResult = await query('SELECT * FROM user_points WHERE user_id = $1', [targetUser.id]);
+            // Haal de profielgegevens van de gebruiker op uit de User_Points tabel
+            const profileResult = await query('SELECT * FROM User_Points WHERE user_id = $1', [targetUser.id]);
             const profile = profileResult.rows[0];
 
             // Als het profiel niet bestaat, geef een melding en stop de uitvoering van het commando
@@ -22,17 +22,29 @@ module.exports = {
             const favoritesResult = await query('SELECT * FROM user_favorites WHERE user_id = $1', [targetUser.id]);
             const favorites = favoritesResult.rows[0] || {};
 
+
+            // next cooldown
+            const guessCooldown = 24 * 60 * 60 * 1000; // 24 uur in milliseconden
+            const currentTime = new Date();
+            const lastGuessTime = new Date(profile.last_guess_date);
+            const timeDifference = currentTime - lastGuessTime;
+            const timeRemaining = guessCooldown - timeDifference;
+            const remainingHours = Math.floor(timeRemaining / (1000 * 60 * 60));
+            const remainingMinutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+
+
             // Bouw een embed met de profielgegevens
             const embed = new EmbedBuilder()
-                .setTitle('Disney Character Guessing Game Profile for ' + targetUser.username)
+                .setTitle(targetUser.username + `'s Profile`)
                 .setColor(0x0099FF)
                 .setTimestamp()
                 .setThumbnail(targetUser.displayAvatarURL())
                 .addFields(
-                    { name: 'Points', value: `${profile.points.toString()} points` },
-                    { name: '🔥 Streak', value: `${profile.streak.toString()} days` },
-                    { name: 'Favorite Character', value: favorites.favorite_character_name || 'Not set' },
-                    { name: 'Favorite Serie or Film', value: favorites.favorite_series_film || 'Not set' }
+                    { name: '⏳ Next Guess Available In', value: `${remainingHours} hours and ${remainingMinutes} minutes` },
+                    { name: '📈 Total Points', value: `${profile.points.toString()} points` },
+                    { name: '🔥 Correct guesses count:', value: `${profile.streak.toString()} ` },
+                    { name: '🩷 Favorite Character', value: favorites.favorite_character_name || 'Not set' },
+                    { name: '🩷 Favorite Serie or Film', value: favorites.favorite_series_film || 'Not set' },
                 );
 
             // Stuur de embed naar de gebruiker
@@ -43,4 +55,6 @@ module.exports = {
         }
     }
 }
+
+
 
