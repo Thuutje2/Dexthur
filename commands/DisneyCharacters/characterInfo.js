@@ -2,9 +2,9 @@ const { EmbedBuilder } = require('@discordjs/builders');
 const { query } = require('../../database');
 
 module.exports = {
-    name: 'infochar',
+    name: 'characterInfo',
     description: 'Character information',
-    aliases: ['ic'],
+    aliases: ['ci'],
     async execute(message, args) {
         try {
             const character = args.join(' ').toLowerCase();
@@ -23,8 +23,9 @@ module.exports = {
 
             const embed = new EmbedBuilder()
                 .setTitle(characterInformation.name)
+                .setDescription(characterInformation.series_film)
                 .setImage(characterInformation.image)
-                .setColor(0x78f06a);
+                .setColor(0xf0c0e3);
 
 
             message.channel.send({ embeds: [embed] });

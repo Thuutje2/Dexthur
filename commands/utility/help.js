@@ -11,40 +11,33 @@ module.exports = {
         title: 'Pages in this help menu',
         description: 'Use the buttons below to navigate through the help menu.',
         commands: [
-            { name: '`Page 1`', value: '🎲 Casino Commands' },
-            { name: '`Page 2`', value: '💰 Economy Commands' },
-            { name: '`Page 3`', value: '😙 Fun Commands' },
-            { name: '`Page 4`', value: '📝 ToDo List Commands' },
-            { name: '`Page 5`', value: '⚒️ Admin Commands' },
-            { name: '`Page 6`', value: '👑 Disney Guess Game Commands'},
-            { name: '`Page 7`', value: '🎮 Video Games Information Commands' },
+            { name: '`Page 1`', value: '👑 Disney Guess Game Commands'},
+            { name: '`Page 2`', value: '⚒️ Admin Commands' },
+            { name: '`Page 3`', value: '🎮 Video Games Information Commands' },
+            { name: '`Page 4`', value: '😙 Fun Commands' }
         ]
       },
       {
-        title: '🃏 Casino Commands',
-        description: 'Play casino games and earn coins.',
+        title: '👑 Disney Guess Game Commands',
+        description: 'Commands for the Disney Guess Game.',
         commands: [
-          { name: 'Slots', value: 'Play the slots. `!Slots <bet>`' },
-          { name: 'Blackjack', value: 'Play a game of blackjack. `!Blackjack <bet>`, `!bj <bet>`' },
-          { name: 'Roulette', value: 'Play a game of roulette. `!Roulette <bet>`,`!rl <bet>` ' },
-          { name: 'Coinflip', value: 'Flip a coin and bet on the outcome. `!Coinflip <bet> <heads/tails>`, `!cf <bet> <heads/tails>`' }
+          { name: 'Information about the game', value: 'Get information about the Disney character guessing game. `!DisneyGuessGame or !dgg`'},
+          { name: 'Set your favorite character', value: 'Set your favorite character. `!dfc <charactername>`' },
+          { name: 'Set your favorite series/film', value: 'Set your favorite series/film. `!dfsm <series/film>`' }
         ]
       },
       {
-        title: '💰 Economy Commands',
-        description: 'Manage your economy and earn coins.',
+        title: '⚒️ Admin Commands',
+        description: 'Commands for server administrators.',
         commands: [
-          { name: 'Adduser', value: 'Add yourself to the database. `!Adduser`' },
-          { name: 'Balance', value: 'Check your balance. `!Balance`' },
-          { name: 'Buy', value: 'Buy an item or role from the store. `!Buy <item_name>`' },
-          { name: 'Store', value: 'View items available in the store. `!Store`' },
-          { name: 'Inventory', value: 'View your inventory. `!Inventory`' },
-          { name: 'Give', value: 'Give money to another user. `!Give <user> <amount>`' },
-          { name: 'Leaderboard', value: 'View the leaderboard. `!Leaderboard`' },
-          { name: 'Work', value: 'Work and earn money. `!Work`'},
-          { name: 'Daily', value: 'Claim your daily reward. `!Daily`' },
-          { name: 'Monthly', value: 'Claim your monthly reward. `!Monthly`' },
-          { name: 'Yearly', value: 'Claim your yearly reward. `!Yearly`' }
+          { name: 'Clear', value: 'Clear messages. `!Clear <amount>`' },
+        ]
+      },
+      {
+        title: '🎮 Games Commands',
+        description: 'Get information of play games',
+        commands: [
+          {name: 'steamprofile', value: 'Get information about a Steam user. `!SteamProfile <steam_id>`' }
         ]
       },
       {
@@ -55,48 +48,6 @@ module.exports = {
           { name: 'Random', value: 'Generate a random number between 1 and 100. `!Random`' },
           { name: 'Userinfo', value: 'Get information about a user. `!Userinfo <user>`' },
           { name: 'Server', value: 'Get information about the server. `!Server`' }
-        ]
-      },
-      {
-        title: '📝 ToDo List Commands',
-        description: 'Manage your todo list.',
-        commands: [
-          { name: 'Add Todo', value: '`!todo add <description>`' },
-          { name: 'List Todos', value: '`!todo list`' },
-          { name: 'Check Off Todo', value: '`!todo check <number>`' },
-          { name: 'Remove Todo', value: '`!todo remove <number>`' }
-        ]
-      },
-      {
-        title: '⚒️ Admin Commands',
-        description: 'Commands for server administrators.',
-        commands: [
-          { name: 'Clear', value: 'Clear messages. `!Clear <amount>`' },
-          { name: 'Additem', value: 'Add an item to the store. `!Additem <item_name> <price>`' },
-          { name: 'Removeitem', value: 'Remove an item from the store. `!Removeitem <item_name>`' },
-          { name: 'Ideas', value: 'View the ideas list. `!Ideas`' },
-          { name: 'Addidea', value: 'Add an idea to the ideas list. `!Addidea <idea>`' },
-          { name: 'Removeidea', value: 'Remove an idea from the ideas list. `!Removeidea <idea_number>`' }
-        ]
-      },
-      {
-        title: '👑 Disney Guess Game Commands',
-        description: 'Commands for the Disney Guess Game.',
-        commands: [
-          { name: 'Guess', value: 'Guess the Disney character. `!guess <charactername>`' },
-          { name: 'GuessProfile', value: 'Show the profile of the user for the Disney character guessing game. `!gp`' },
-          { name: 'DisneyCharacters', value: 'Get a list of Disney characters. `!DisneyCharacters or !dc`' },
-          { name: 'GuessLeaderboard', value: 'Show the leaderboard for the Disney character guessing game. `!glb`' },
-          { name: 'Information about the game', value: 'Get information about the Disney character guessing game. `!DisneyGuessGame or !dgg`'},
-          { name: 'Set your favorite character', value: 'Set your favorite character. `!dfc <charactername>`' },
-          { name: 'Set your favorite series/film', value: 'Set your favorite series/film. `!dfsm <series/film>`' }
-        ]
-      },
-      {
-        title: '🎮 Games Commands',
-        description: 'Get information of play games',
-        commands: [
-          {name: 'steamprofile', value: 'Get information about a Steam user. `!SteamProfile <steam_id>`' }
         ]
       },
 

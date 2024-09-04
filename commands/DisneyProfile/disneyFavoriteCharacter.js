@@ -11,6 +11,13 @@ module.exports = {
             return message.reply(`Usage: !character <character_name>. Please provide the name of your favorite Disney character.`);
         }
 
+        const profileResult = await query('SELECT * FROM User_Points WHERE user_id = $1', [message.author.id]);
+        const profile = profileResult.rows[0];
+
+        if (!profile) {
+            return message.reply('You have not played the Disney Character Guessing Game yet. Please play the game first before setting your favorite character.');
+        }
+
         // Combine all arguments into a single string for character name
         const characterName = args.join(' ');
 

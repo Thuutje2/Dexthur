@@ -11,6 +11,13 @@ module.exports = {
             return message.reply(`Usage: !series <series_or_film>. Please provide the name of your favorite Disney series or film.`);
         }
 
+        const profileResult = await query('SELECT * FROM User_Points WHERE user_id = $1', [message.author.id]);
+        const profile = profileResult.rows[0];
+
+        if (!profile) {
+            return message.reply('You have not played the Disney Character Guessing Game yet. Please play the game first before setting your favorite serie or film.');
+        }
+
         // Combine all arguments into a single string for series/film
         const seriesOrFilm = args.join(' ');
 

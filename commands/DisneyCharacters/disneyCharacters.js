@@ -10,6 +10,8 @@ module.exports = {
             // Query to get all characters and their corresponding series or films
             const result = await query('SELECT series_film, name FROM disney_characters ORDER BY series_film ASC, name ASC');
 
+            const totalCharacters = result.rows.length;
+
             // Create an object to group characters by their series/film
             const seriesFilms = {};
             result.rows.forEach(row => {
@@ -21,7 +23,7 @@ module.exports = {
 
             // Convert the object to an array of embeds (pages)
             const embeds = [];
-            const pageSize = 5; // Number of series/films per page
+            const pageSize = 7; // Number of series/films per page
             const seriesArray = Object.entries(seriesFilms);
 
             for (let i = 0; i < seriesArray.length; i += pageSize) {
@@ -29,7 +31,8 @@ module.exports = {
 
                 const embed = new EmbedBuilder()
                     .setTitle('Disney Characters')
-                    .setDescription('Here are the Disney characters grouped by their series/film:')
+                    .setDescription(`Total characters: ${totalCharacters}\n` +
+                        'Here are the Disney characters grouped by their series/film:')
                     .setColor(0x0099FF)
                     .setFooter({ text: `Page ${Math.floor(i / pageSize) + 1} of ${Math.ceil(seriesArray.length / pageSize)}` });
 
