@@ -32,6 +32,7 @@ module.exports = {
                 const embed = new EmbedBuilder()
                     .setTitle("New Characters to guess")
                     .setDescription(`Total new characters: ${totalNewCharacters}\n`)
+                    .setColor(0x0099FF)
                     .setFooter({ text: `Page ${Math.floor(i / pageSize) + 1} of ${Math.ceil(seriesArray.length / pageSize)}` });
 
                 currentSeries.forEach(([series, characters]) => {
