@@ -1,7 +1,6 @@
 const { EmbedBuilder } = require('@discordjs/builders');
 const { query } = require('../../database');
-
-const guessCooldown = 24 * 60 * 60 * 1000; // 24 uur in milliseconden
+const { getCooldownTime, cooldown } = require('../../cooldown');
 
 module.exports = {
     name: 'guess',
@@ -25,15 +24,11 @@ module.exports = {
             const currentTime = new Date();
 
             if (userGuessData) {
-                const lastGuessDate = new Date(userGuessData.last_guess_date);
-                const timeDifference = currentTime - lastGuessDate;
+                const cooldownData = getCooldownTime(userGuessData.last_guess_date);
 
                 if (userGuessData.failed_attempts >= 6) {
-                    if (timeDifference < guessCooldown) {
-                        const timeRemaining = guessCooldown - timeDifference;
-                        const remainingHours = Math.floor(timeRemaining / (1000 * 60 * 60));
-                        const remainingMinutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-                        return message.reply(`Try guessing a new character in ${remainingHours} hours and ${remainingMinutes} minutes.`);
+                    if (cooldownData.timeRemaining > 0) {
+                        return message.reply(`Try guessing a new character in ${cooldownData.remainingHours} hours and ${cooldownData.remainingMinutes} minutes.`);
                     } else {
                         await query('UPDATE User_Points SET failed_attempts = 0, hints_given = 0 WHERE user_id = $1', [message.author.id]);
                         userGuessData.failed_attempts = 0;
@@ -42,15 +37,12 @@ module.exports = {
                 }
 
                 if (userGuessData.last_correct_guess_date) {
-                    const lastCorrectGuessDate = new Date(userGuessData.last_correct_guess_date);
-                    const nextAvailableGuessDate = new Date(lastCorrectGuessDate);
+                    const nextAvailableGuessDate = new Date(userGuessData.last_correct_guess_date);
                     nextAvailableGuessDate.setHours(24, 0, 0, 0);
 
                     if (currentTime < nextAvailableGuessDate) {
-                        const timeRemaining = nextAvailableGuessDate - currentTime;
-                        const remainingHours = Math.floor(timeRemaining / (1000 * 60 * 60));
-                        const remainingMinutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-                        return message.reply(`You have to wait until ${nextAvailableGuessDate.toLocaleTimeString()} before you can guess again. (${remainingHours} hours and ${remainingMinutes} minutes remaining)`);
+                        const cooldownData = getCooldownTime(userGuessData.last_correct_guess_date);
+                        return message.reply(`You have to wait until ${nextAvailableGuessDate.toLocaleTimeString()} before you can guess again. (${cooldownData.remainingHours} hours and ${cooldownData.remainingMinutes} minutes remaining)`);
                     }
                 }
             } else {
@@ -63,7 +55,7 @@ module.exports = {
                 };
             }
 
-            if (!userGuessData.daily_character_id || (new Date() - new Date(userGuessData.last_guess_date) > guessCooldown)) {
+            if (!userGuessData.daily_character_id || (new Date() - new Date(userGuessData.last_guess_date) > cooldown)) {
                 const dailyCharacterResult = await query('SELECT * FROM disney_characters ORDER BY RANDOM() LIMIT 1');
                 const dailyCharacter = dailyCharacterResult.rows[0];
 
@@ -133,11 +125,9 @@ module.exports = {
                 } else {
                     await query('UPDATE User_Points SET daily_character_id = null, streak = 0 WHERE user_id = $1', [message.author.id]);
 
-                    const timeRemaining = guessCooldown - timeDifference;
-                    const remainingHours = Math.floor(timeRemaining / (1000 * 60 * 60));
-                    const remainingMinutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+                    const cooldownData = getCooldownTime(currentTime);
 
-                    return message.reply(`Unfortunately, you have run out of hints. The character was ${dailyCharacter.name}. Try guessing a new character tomorrow. You will be able to guess again in ${remainingHours} hours and ${remainingMinutes} minutes.`);
+                    return message.reply(`Unfortunately, you have run out of hints. The character was **${dailyCharacter.name}**. Try guessing a new character tomorrow. You will be able to guess again in ${cooldownData.remainingHours} hours and ${cooldownData.remainingMinutes} minutes.`);
                 }
             }
 
@@ -147,6 +137,8 @@ module.exports = {
         }
     }
 };
+
+
 
 
 

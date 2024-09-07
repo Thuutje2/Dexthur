@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('@discordjs/builders');
 const { query } = require('../../database');
+const { getCooldownTime } = require('../../cooldown');
 
 module.exports = {
     name: 'guessProfile',
@@ -22,16 +23,8 @@ module.exports = {
             const favoritesResult = await query('SELECT * FROM user_favorites WHERE user_id = $1', [targetUser.id]);
             const favorites = favoritesResult.rows[0] || {};
 
-
             // next cooldown
-            const guessCooldown = 24 * 60 * 60 * 1000; // 24 uur in milliseconden
-            const currentTime = new Date();
-            const lastGuessTime = new Date(profile.last_guess_date);
-            const timeDifference = currentTime - lastGuessTime;
-            const timeRemaining = guessCooldown - timeDifference;
-            const remainingHours = Math.floor(timeRemaining / (1000 * 60 * 60));
-            const remainingMinutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-
+            const cooldown = getCooldownTime(profile.last_guess_date);
 
             // Bouw een embed met de profielgegevens
             const embed = new EmbedBuilder()
@@ -40,7 +33,7 @@ module.exports = {
                 .setTimestamp()
                 .setThumbnail(targetUser.displayAvatarURL())
                 .addFields(
-                    { name: '⏳ Next Guess Available In', value: `${remainingHours} hours and ${remainingMinutes} minutes` },
+                    { name: '⏳ Next Guess Available In', value: `${cooldown.remainingHours} hours and ${cooldown.remainingMinutes} minutes` },
                     { name: '📈 Total Points', value: `${profile.points.toString()} points` },
                     { name: '🔥 Correct guesses count:', value: `${profile.streak.toString()} ` },
                     { name: '🩷 Favorite Character', value: favorites.favorite_character_name || 'Not set' },
