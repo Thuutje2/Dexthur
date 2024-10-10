@@ -13,8 +13,7 @@ module.exports = {
         commands: [
             { name: '`Page 1`', value: '👑 Disney Guess Game Commands'},
             { name: '`Page 2`', value: '⚒️ Admin Commands' },
-            { name: '`Page 3`', value: '🎮 Video Games Information Commands' },
-            { name: '`Page 4`', value: '😙 Fun Commands' }
+            { name: '`Page 3`', value: '😙 Fun Commands' }
         ]
       },
       {
@@ -31,13 +30,6 @@ module.exports = {
         description: 'Commands for server administrators.',
         commands: [
           { name: 'Clear', value: 'Clear messages. `!Clear <amount>`' },
-        ]
-      },
-      {
-        title: '🎮 Games Commands',
-        description: 'Get information of play games',
-        commands: [
-          {name: 'steamprofile', value: 'Get information about a Steam user. `!SteamProfile <steam_id>`' }
         ]
       },
       {
