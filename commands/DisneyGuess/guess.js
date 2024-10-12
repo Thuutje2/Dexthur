@@ -42,7 +42,7 @@ module.exports = {
 
                     if (currentTime < nextAvailableGuessDate) {
                         const cooldownData = getCooldownTime(userGuessData.last_correct_guess_date);
-                        return message.reply(`You have to wait until ${nextAvailableGuessDate.toLocaleTimeString()} before you can guess again. (${cooldownData.remainingHours} hours and ${cooldownData.remainingMinutes} minutes remaining)`);
+                        return message.reply(`You have to wait until ${cooldownData.remainingHours} before you can guess again. (${cooldownData.remainingHours} hours and ${cooldownData.remainingMinutes} minutes remaining)`);
                     }
                 }
             } else {
