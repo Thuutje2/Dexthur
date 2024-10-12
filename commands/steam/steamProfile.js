@@ -2,7 +2,6 @@
 // const SteamAPI = require('steamapi');
 // const fs = require('fs');
 //
-// const rawConfig = fs.readFileSync('config.json');
 // const config = JSON.parse(rawConfig);
 //
 // const steam = new SteamAPI(config.steamapikey);
