@@ -13,7 +13,8 @@ module.exports = {
         commands: [
             { name: '`Page 1`', value: '👑 Disney Guess Game Commands'},
             { name: '`Page 2`', value: '⚒️ Admin Commands' },
-            { name: '`Page 3`', value: '😙 Fun Commands' }
+            { name: '`Page 3`', value: '😙 Fun Commands' },
+            { name: '`Page 4`', value: '🔧 Helping the bot' }
         ]
       },
       {
@@ -40,6 +41,13 @@ module.exports = {
           { name: 'Random', value: 'Generate a random number between 1 and 100. `!Random`' },
           { name: 'Userinfo', value: 'Get information about a user. `!Userinfo <user>`' },
           { name: 'Server', value: 'Get information about the server. `!Server`' }
+        ]
+      },
+      {
+        title: '🔧 Helping the bot',
+        description: 'Commands to help the bot and its developers.',
+        commands: [
+          { name: 'Idea', value: 'Send an idea to the ideas chat for the developers. `!Idea <idea>`' },
         ]
       },
 
