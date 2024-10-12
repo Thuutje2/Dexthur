@@ -1,6 +1,7 @@
+require('dotenv').config();
+
 const { Client, GatewayIntentBits } = require('discord.js');
 const fs = require('fs');
-const { prefix, token } = require('./config.json');
 const { EmbedBuilder } = require('@discordjs/builders');
 const client = new Client({
   intents: [
@@ -12,6 +13,9 @@ const client = new Client({
     GatewayIntentBits.GuildPresences,
   ],
 });
+
+const prefix = process.env.PREFIX;
+const token = process.env.TOKEN;
 
 // Load commands
 const commandHandler = require('./handlers/command_handler');

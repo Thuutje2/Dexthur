@@ -1,0 +1,11 @@
+{
+  "token": "MTE3MzcxMzY4NTcxMDExODk2Mw.G01RuO.Vg5xV6ETd7hMKrSYL8MzRB3_OJ5KpEQ89RdRg8",
+  "prefix": "!",
+  "database": {
+    "user": "postgres",
+    "host": "localhost",
+    "database": "GachaCards",
+    "password": "Dexter2002!",
+    "port": 5432
+  }
+}
