@@ -7,6 +7,10 @@ module.exports = {
     description: 'Guess the Disney character.',
     async execute(message, args) {
         try {
+            console.log("Last guess date from DB:", userGuessData.last_guess_date);
+            console.log("Current time:", currentTime);
+            console.log("Next available guess date:", nextAvailableGuessDate);
+
             if (args.length === 0) {
                 return message.reply('Use: !guess <character name> to guess a Disney character.');
             }
