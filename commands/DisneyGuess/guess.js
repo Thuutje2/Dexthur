@@ -8,41 +8,45 @@ module.exports = {
     async execute(message, args) {
         try {
             if (args.length === 0) {
-                return message.reply('Use: !guess <character name> to guess a Disney character.');
+                return message.reply('Gebruik: !guess <character name> om een Disney-personage te raden.');
             }
 
             const guessedCharacter = args.join(' ').toLowerCase();
-            const userResult = await query('SELECT * FROM User_Points WHERE user_id = $1', [message.author.id]);
 
+            // Check if user exists
+            const userResult = await query('SELECT * FROM User_Points WHERE user_id = $1', [message.author.id]);
             if (userResult.rowCount === 0) {
                 await query('INSERT INTO users (user_id, username) VALUES ($1, $2)', [message.author.id, message.author.username]);
             }
 
-            let userGuessData = await query('SELECT * FROM User_Points WHERE user_id = $1', [message.author.id]).then(res => res.rows[0]);
+            let userPointsResult = await query('SELECT * FROM User_Points WHERE user_id = $1', [message.author.id]);
+            let userGuessData = userPointsResult.rows[0];
+
             const currentTime = new Date();
 
+            // Handle initial setup of user data
             if (!userGuessData) {
                 await query('INSERT INTO User_Points (user_id, username, points, last_guess_date, last_correct_guess_date, streak, daily_character_id, failed_attempts, hints_given) VALUES ($1, $2, 0, null, null, 0, null, 0, 0)', [message.author.id, message.author.username]);
                 userGuessData = {
                     failed_attempts: 0,
                     streak: 0,
                     daily_character_id: null,
-                    hints_given: 0,
-                    points: 0
+                    hints_given: 0
                 };
             }
 
-            // Check if the user is on cooldown or has a character set
+            // Check cooldown for the current character
             if (userGuessData.daily_character_id) {
                 if (userGuessData.last_correct_guess_date) {
                     const nextAvailableGuessDate = new Date(userGuessData.last_correct_guess_date);
                     nextAvailableGuessDate.setTime(nextAvailableGuessDate.getTime() + fifteenMinutes);
                     if (currentTime < nextAvailableGuessDate) {
                         const cooldownData = getCooldownTime(userGuessData.last_correct_guess_date);
-                        return message.reply(`You have to wait until ${cooldownData.remainingMinutes} minutes before you can guess again.`);
+                        return message.reply(`Je moet wachten tot ${cooldownData.remainingMinutes} minuten voordat je opnieuw kunt raden.`);
                     }
                 }
 
+                // If all hints are used, inform user and reset character
                 if (userGuessData.failed_attempts >= 6) {
                     const dailyCharacterResult = await query('SELECT * FROM disney_characters WHERE id = $1', [userGuessData.daily_character_id]);
                     const dailyCharacter = dailyCharacterResult.rows[0];
@@ -51,26 +55,19 @@ module.exports = {
                     await query('UPDATE User_Points SET daily_character_id = null, streak = 0 WHERE user_id = $1', [message.author.id]);
 
                     const cooldownData = getCooldownTime(currentTime);
-                    return message.reply(`You've used all hints. The character was **${dailyCharacter.name}**. You will be able to guess again in ${cooldownData.remainingMinutes} minutes.`);
+                    return message.reply(`Je hebt alle hints gebruikt. Het personage was **${dailyCharacter.name}**. Je kunt weer raden in ${cooldownData.remainingMinutes} minuten.`);
                 }
             }
 
-            let dailyCharacter;
+            // Fetch a new character since the cooldown is up or no character exists
+            const dailyCharacterResult = await query('SELECT * FROM disney_characters ORDER BY RANDOM() LIMIT 1');
+            const dailyCharacter = dailyCharacterResult.rows[0];
 
-            // Fetch a new character if no current character or if cooldown is up
-            if (!userGuessData.daily_character_id || userGuessData.failed_attempts >= 6) {
-                const dailyCharacterResult = await query('SELECT * FROM disney_characters ORDER BY RANDOM() LIMIT 1');
-                dailyCharacter = dailyCharacterResult.rows[0];
-
-                await query('UPDATE User_Points SET daily_character_id = $1, last_guess_date = $2, failed_attempts = 0, hints_given = 0 WHERE user_id = $3', [dailyCharacter.id, currentTime, message.author.id]);
-                userGuessData.daily_character_id = dailyCharacter.id;
-                userGuessData.failed_attempts = 0;
-                userGuessData.hints_given = 0;
-            } else {
-                // Fetch the current character
-                const characterResult = await query('SELECT * FROM disney_characters WHERE id = $1', [userGuessData.daily_character_id]);
-                dailyCharacter = characterResult.rows[0];
-            }
+            // Update the user points with the new character
+            await query('UPDATE User_Points SET daily_character_id = $1, last_guess_date = $2, failed_attempts = 0, hints_given = 0 WHERE user_id = $3', [dailyCharacter.id, currentTime, message.author.id]);
+            userGuessData.daily_character_id = dailyCharacter.id;
+            userGuessData.failed_attempts = 0;
+            userGuessData.hints_given = 0;
 
             const dailyCharacterHints = dailyCharacter.hints;
 
@@ -94,7 +91,7 @@ module.exports = {
 
                 const embed = new EmbedBuilder()
                     .setTitle('Correct Guess!')
-                    .setDescription(`The character was ${dailyCharacter.name}.\nYou earned ${pointsEarned} points!\nCorrect guesses count: ${streak}`)
+                    .setDescription(`Het personage was ${dailyCharacter.name}.\nJe hebt ${pointsEarned} punten verdiend!\nCorrect geraden: ${streak}`)
                     .setImage(dailyCharacter.image)
                     .setColor(0x78f06a);
 
@@ -108,7 +105,7 @@ module.exports = {
                 if (failedAttempts < 6) {
                     const embed = new EmbedBuilder()
                         .setTitle('Guess the Disney Character')
-                        .setDescription('Guess the character!')
+                        .setDescription('Raad het personage!')
                         .setColor(0xc56af0)
                         .addFields({ name: 'Hints', value: dailyCharacterHints.slice(0, hintsGiven).join('\n') });
 
@@ -117,6 +114,7 @@ module.exports = {
                     // Reset attempts and set the new character
                     await query('UPDATE User_Points SET daily_character_id = null, streak = 0 WHERE user_id = $1', [message.author.id]);
 
+                    // Fetch a new character after hints are exhausted
                     const newDailyCharacterResult = await query('SELECT * FROM disney_characters ORDER BY RANDOM() LIMIT 1');
                     const newDailyCharacter = newDailyCharacterResult.rows[0];
 
@@ -124,17 +122,17 @@ module.exports = {
 
                     const cooldownData = getCooldownTime(currentTime);
 
-                    return message.reply(`Unfortunately, you have run out of hints. The character was **${dailyCharacter.name}**. You will be able to guess again in ${cooldownData.remainingMinutes} minutes.`);
+                    return message.reply(`Helaas, je hebt geen hints meer. Het personage was **${dailyCharacter.name}**. Je kunt weer raden in ${cooldownData.remainingMinutes} minuten.`);
                 }
             }
 
         } catch (error) {
-            console.error('An error occurred while guessing the character:', error);
-            message.channel.send('An error occurred while guessing the character. Please try again later.');
+            console.error('Er is een fout opgetreden bij het raden van het personage:', error);
+            message.channel.send('Er is een fout opgetreden tijdens het raden van het personage. Probeer het later opnieuw.');
         }
     }
-
 };
+
 
 
 
