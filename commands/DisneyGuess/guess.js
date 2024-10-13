@@ -29,7 +29,7 @@ module.exports = {
                 };
             }
 
-            // Check the cooldown
+            // Check if cooldown is still active from last correct guess
             if (userGuessData.last_correct_guess_date) {
                 const cooldownData = getCooldownTime(userGuessData.last_correct_guess_date);
                 if (cooldownData.timeRemaining > 0) {
@@ -37,20 +37,23 @@ module.exports = {
                 }
             }
 
-            // Generate a new character if needed (no daily character or cooldown expired)
-            if (!userGuessData.daily_character_id || (new Date() - new Date(userGuessData.last_guess_date) > fifteenMinutes)) {
+            // Fetch the daily character (only fetch new one if there is none or it's the first guess)
+            let dailyCharacter;
+            if (!userGuessData.daily_character_id) {
                 const dailyCharacterResult = await query('SELECT * FROM disney_characters ORDER BY RANDOM() LIMIT 1');
-                const dailyCharacter = dailyCharacterResult.rows[0];
+                dailyCharacter = dailyCharacterResult.rows[0];
 
+                // Update the user's data with the new daily character and reset attempts
                 await query('UPDATE User_Points SET daily_character_id = $1, last_guess_date = $2, failed_attempts = 0, hints_given = 0 WHERE user_id = $3', [dailyCharacter.id, currentTime, message.author.id]);
+
                 userGuessData.daily_character_id = dailyCharacter.id;
                 userGuessData.failed_attempts = 0;
                 userGuessData.hints_given = 0;
+            } else {
+                const characterResult = await query('SELECT * FROM disney_characters WHERE id = $1', [userGuessData.daily_character_id]);
+                dailyCharacter = characterResult.rows[0];
             }
 
-            // Fetch the daily character
-            const characterResult = await query('SELECT * FROM disney_characters WHERE id = $1', [userGuessData.daily_character_id]);
-            const dailyCharacter = characterResult.rows[0];
             const dailyCharacterHints = dailyCharacter.hints;
 
             // Guess logic
@@ -59,6 +62,7 @@ module.exports = {
                 const pointsEarned = [50, 40, 30, 20, 10, 5][userGuessData.failed_attempts] || 0;
                 const newPoints = (userGuessData.points || 0) + pointsEarned;
 
+                // Update user points and reset for the next day
                 await query('UPDATE User_Points SET last_guess_date = $1, last_correct_guess_date = $2, streak = $3, points = $4, failed_attempts = 0, daily_character_id = null WHERE user_id = $5', [currentTime, currentTime, streak, newPoints, message.author.id]);
 
                 const embed = new EmbedBuilder()
@@ -72,6 +76,7 @@ module.exports = {
                 const failedAttempts = userGuessData.failed_attempts + 1;
                 const hintsGiven = Math.min(failedAttempts, dailyCharacterHints.length);
 
+                // Update failed attempts and hints
                 await query('UPDATE User_Points SET failed_attempts = $1, hints_given = $2 WHERE user_id = $3', [failedAttempts, hintsGiven, message.author.id]);
 
                 if (failedAttempts < 6) {
@@ -83,6 +88,7 @@ module.exports = {
 
                     message.channel.send({ embeds: [embed] });
                 } else {
+                    // Max attempts reached, reset the daily character
                     await query('UPDATE User_Points SET daily_character_id = null, streak = 0 WHERE user_id = $1', [message.author.id]);
                     const cooldownData = getCooldownTime(currentTime);
 
@@ -96,6 +102,7 @@ module.exports = {
         }
     }
 };
+
 
 
 
