@@ -23,8 +23,9 @@ module.exports = {
             const favoritesResult = await query('SELECT * FROM user_favorites WHERE user_id = $1', [targetUser.id]);
             const favorites = favoritesResult.rows[0] || {};
 
-            // next cooldown
-            const cooldown = getCooldownTime(profile.last_guess_date);
+            // next cooldown - last_guess_date omzetten naar Date object
+            const lastGuessDate = new Date(profile.last_guess_date);
+            const cooldown = getCooldownTime(lastGuessDate);
 
             // Bouw een embed met de profielgegevens
             const embed = new EmbedBuilder()
@@ -33,7 +34,7 @@ module.exports = {
                 .setTimestamp()
                 .setThumbnail(targetUser.displayAvatarURL())
                 .addFields(
-                    { name: '⏳ Next Guess Available In', value: `${cooldown.remainingHours} hours and ${cooldown.remainingMinutes} minutes` },
+                    { name: '⏳ Next Guess Available In', value: `${cooldown.remainingMinutes} minutes` },
                     { name: '📈 Total Points', value: `${profile.points.toString()} points` },
                     { name: '🔥 Correct guesses count:', value: `${profile.streak.toString()} ` },
                     { name: '🩷 Favorite Character', value: favorites.favorite_character_name || 'Not set' },
@@ -48,6 +49,7 @@ module.exports = {
         }
     }
 }
+
 
 
 

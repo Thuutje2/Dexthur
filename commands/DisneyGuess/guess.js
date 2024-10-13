@@ -28,7 +28,7 @@ module.exports = {
 
                 if (userGuessData.failed_attempts >= 6) {
                     if (cooldownData.timeRemaining > 0) {
-                        return message.reply(`Try guessing a new character in ${cooldownData.remainingHours} hours and ${cooldownData.remainingMinutes} minutes.`);
+                        return message.reply(`Try guessing a new character ${cooldownData.remainingMinutes} minutes.`);
                     } else {
                         await query('UPDATE User_Points SET failed_attempts = 0, hints_given = 0 WHERE user_id = $1', [message.author.id]);
                         userGuessData.failed_attempts = 0;
@@ -42,7 +42,7 @@ module.exports = {
 
                     if (currentTime < nextAvailableGuessDate) {
                         const cooldownData = getCooldownTime(userGuessData.last_correct_guess_date);
-                        return message.reply(`You have to wait until ${cooldownData.remainingHours} before you can guess again. (${cooldownData.remainingHours} hours and ${cooldownData.remainingMinutes} minutes remaining)`);
+                        return message.reply(`You have to wait until ${cooldownData.timeRemaining} before you can guess again. (${cooldownData.remainingMinutes} minutes remaining)`);
                     }
                 }
             } else {
@@ -127,7 +127,7 @@ module.exports = {
 
                     const cooldownData = getCooldownTime(currentTime);
 
-                    return message.reply(`Unfortunately, you have run out of hints. The character was **${dailyCharacter.name}**. Try guessing a new character tomorrow. You will be able to guess again in ${cooldownData.remainingHours} hours and ${cooldownData.remainingMinutes} minutes.`);
+                    return message.reply(`Unfortunately, you have run out of hints. The character was **${dailyCharacter.name}**. You will be able to guess again in ${cooldownData.remainingMinutes} minutes.`);
                 }
             }
 
