@@ -1,4 +1,4 @@
-const fifteenMinutes = 15 * 60 * 1000; // 15 minutes in milliseconds
+const fifteenMinutes = 15 * 60 * 1000; // 15 minuten in milliseconden
 
 function getCooldownTime(lastGuessDate) {
     const currentTime = new Date();
@@ -15,13 +15,12 @@ function getCooldownTime(lastGuessDate) {
     const timeRemaining = Math.max(timeDifference, 0); // Zorg ervoor dat we geen negatieve waarden krijgen
 
     if (timeRemaining > 0) {
-        const remainingMinutes = Math.floor(timeRemaining / (1000 * 60));
+        const remainingMinutes = Math.floor(timeRemaining / (1000 * 60)); // Omrekenen naar minuten
         console.log("Remaining minutes:", remainingMinutes);
         return { remainingMinutes, timeRemaining };
     }
     return { remainingMinutes: 0, timeRemaining: 0 };
 }
 
-module.exports = { getCooldownTime, fifteenMinutes };
 
 

@@ -38,7 +38,7 @@ module.exports = {
 
                 if (userGuessData.last_correct_guess_date) {
                     const nextAvailableGuessDate = new Date(userGuessData.last_correct_guess_date);
-                    nextAvailableGuessDate.setHours(24, 0, 0, 0);
+                    nextAvailableGuessDate.setTime(nextAvailableGuessDate.getTime() + fifteenMinutes);
 
                     if (currentTime < nextAvailableGuessDate) {
                         const cooldownData = getCooldownTime(userGuessData.last_correct_guess_date);
