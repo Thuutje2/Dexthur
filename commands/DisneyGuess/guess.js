@@ -14,6 +14,12 @@ module.exports = {
             const guessedCharacter = args.join(' ').toLowerCase();
             const currentTime = new Date();
 
+            const userExistResult = await query('SELECT * FROM users WHERE user_id = $1', [message.author.id]);
+            if (userExistResult.rowCount === 0) {
+                // Insert user into the 'users' table if they don't exist
+                await query('INSERT INTO users (user_id, username) VALUES ($1, $2)', [message.author.id, message.author.username]);
+            }
+
             // Fetch user data
             const userResult = await query('SELECT * FROM User_Points WHERE user_id = $1', [message.author.id]);
             let userGuessData = userResult.rowCount > 0 ? userResult.rows[0] : null;
