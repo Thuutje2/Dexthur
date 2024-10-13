@@ -12,30 +12,27 @@ module.exports = {
             }
 
             const guessedCharacter = args.join(' ').toLowerCase();
-
-            // Check if user exists
             const userResult = await query('SELECT * FROM User_Points WHERE user_id = $1', [message.author.id]);
+
             if (userResult.rowCount === 0) {
                 await query('INSERT INTO users (user_id, username) VALUES ($1, $2)', [message.author.id, message.author.username]);
             }
 
-            let userPointsResult = await query('SELECT * FROM User_Points WHERE user_id = $1', [message.author.id]);
-            let userGuessData = userPointsResult.rows[0];
-
+            let userGuessData = await query('SELECT * FROM User_Points WHERE user_id = $1', [message.author.id]).then(res => res.rows[0]);
             const currentTime = new Date();
 
-            // Handle initial setup of user data
             if (!userGuessData) {
                 await query('INSERT INTO User_Points (user_id, username, points, last_guess_date, last_correct_guess_date, streak, daily_character_id, failed_attempts, hints_given) VALUES ($1, $2, 0, null, null, 0, null, 0, 0)', [message.author.id, message.author.username]);
                 userGuessData = {
                     failed_attempts: 0,
                     streak: 0,
                     daily_character_id: null,
-                    hints_given: 0
+                    hints_given: 0,
+                    points: 0
                 };
             }
 
-            // Check cooldown for the current character
+            // Check if the user is on cooldown or has a character set
             if (userGuessData.daily_character_id) {
                 if (userGuessData.last_correct_guess_date) {
                     const nextAvailableGuessDate = new Date(userGuessData.last_correct_guess_date);
@@ -46,7 +43,6 @@ module.exports = {
                     }
                 }
 
-                // If all hints are used, inform user and reset character
                 if (userGuessData.failed_attempts >= 6) {
                     const dailyCharacterResult = await query('SELECT * FROM disney_characters WHERE id = $1', [userGuessData.daily_character_id]);
                     const dailyCharacter = dailyCharacterResult.rows[0];
@@ -59,13 +55,13 @@ module.exports = {
                 }
             }
 
-            // Fetch a new character if no current character or if cooldown is up
             let dailyCharacter;
+
+            // Fetch a new character if no current character or if cooldown is up
             if (!userGuessData.daily_character_id || userGuessData.failed_attempts >= 6) {
                 const dailyCharacterResult = await query('SELECT * FROM disney_characters ORDER BY RANDOM() LIMIT 1');
                 dailyCharacter = dailyCharacterResult.rows[0];
 
-                // Update the user points with the new character
                 await query('UPDATE User_Points SET daily_character_id = $1, last_guess_date = $2, failed_attempts = 0, hints_given = 0 WHERE user_id = $3', [dailyCharacter.id, currentTime, message.author.id]);
                 userGuessData.daily_character_id = dailyCharacter.id;
                 userGuessData.failed_attempts = 0;
@@ -121,7 +117,6 @@ module.exports = {
                     // Reset attempts and set the new character
                     await query('UPDATE User_Points SET daily_character_id = null, streak = 0 WHERE user_id = $1', [message.author.id]);
 
-                    // Fetch a new character after hints are exhausted
                     const newDailyCharacterResult = await query('SELECT * FROM disney_characters ORDER BY RANDOM() LIMIT 1');
                     const newDailyCharacter = newDailyCharacterResult.rows[0];
 
@@ -134,10 +129,11 @@ module.exports = {
             }
 
         } catch (error) {
-            console.error('Er is een fout opgetreden bij het raden van het personage:', error);
+            console.error('An error occurred while guessing the character:', error);
             message.channel.send('An error occurred while guessing the character. Please try again later.');
         }
     }
+
 };
 
 
