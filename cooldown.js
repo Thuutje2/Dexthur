@@ -12,12 +12,18 @@ function getCooldownTime(lastGuessDate) {
 
     if (timeRemaining > 0) {
         const remainingMinutes = Math.floor(timeRemaining / (1000 * 60));
-        return { remainingMinutes, timeRemaining };
+
+        // Converteer de nextAvailableGuessDate naar Amsterdam tijd
+        const formattedDate = nextAvailableGuessDate.toLocaleString('nl-NL', { timeZone: 'Europe/Amsterdam' });
+
+        return { remainingMinutes, timeRemaining, formattedDate };
     }
-    return { remainingMinutes: 0, timeRemaining: 0 };
+
+    return { remainingMinutes: 0, timeRemaining: 0, formattedDate: null };
 }
 
 module.exports = { getCooldownTime, fifteenMinutes };
+
 
 
 

@@ -28,21 +28,23 @@ module.exports = {
 
                 if (userGuessData.failed_attempts >= 6) {
                     if (cooldownData.timeRemaining > 0) {
-                        return message.reply(`Try guessing a new character ${cooldownData.remainingMinutes} minutes.`);
+                        return message.reply(`Try guessing a new character in ${cooldownData.remainingMinutes} minutes.`);
                     } else {
+                        // Reset failed attempts after cooldown
                         await query('UPDATE User_Points SET failed_attempts = 0, hints_given = 0 WHERE user_id = $1', [message.author.id]);
                         userGuessData.failed_attempts = 0;
                         userGuessData.hints_given = 0;
                     }
                 }
 
+                // Hier controleren we of de cooldown tijd is verstreken voor het nieuwe karakter
                 if (userGuessData.last_correct_guess_date) {
                     const nextAvailableGuessDate = new Date(userGuessData.last_correct_guess_date);
                     nextAvailableGuessDate.setTime(nextAvailableGuessDate.getTime() + fifteenMinutes);
 
                     if (currentTime < nextAvailableGuessDate) {
                         const cooldownData = getCooldownTime(userGuessData.last_correct_guess_date);
-                        return message.reply(`You have to wait until ${cooldownData.timeRemaining} before you can guess again. (${cooldownData.remainingMinutes} minutes remaining)`);
+                        return message.reply(`You have to wait until ${cooldownData.remainingMinutes} minutes before you can guess again.`);
                     }
                 }
             } else {
@@ -55,12 +57,9 @@ module.exports = {
                 };
             }
 
-            if (!userGuessData.daily_character_id || (new Date() - new Date(userGuessData.last_correct_guess_date) > fifteenMinutes)) {
-                const cooldownData = getCooldownTime(userGuessData.last_correct_guess_date);
-                if (cooldownData.timeRemaining > 0) {
-                    return message.reply(`Please wait ${cooldownData.remainingMinutes} minutes before you can guess again.`);
-                }
-
+            // Controleer of het tijd is om een nieuw karakter in te stellen
+            if (!userGuessData.daily_character_id || (currentTime - new Date(userGuessData.last_guess_date) > fifteenMinutes)) {
+                // Haal een nieuw karakter op alleen als de cooldown is verstreken
                 const dailyCharacterResult = await query('SELECT * FROM disney_characters ORDER BY RANDOM() LIMIT 1');
                 const dailyCharacter = dailyCharacterResult.rows[0];
 
@@ -71,6 +70,7 @@ module.exports = {
                 userGuessData.hints_given = 0;
             }
 
+            // Hier komt de logica voor het raden van het karakter
             const characterResult = await query('SELECT * FROM disney_characters WHERE id = $1', [userGuessData.daily_character_id]);
             const dailyCharacter = characterResult.rows[0];
             const dailyCharacterHints = dailyCharacter.hints;
@@ -142,6 +142,7 @@ module.exports = {
         }
     }
 };
+
 
 
 
