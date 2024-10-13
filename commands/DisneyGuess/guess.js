@@ -55,8 +55,8 @@ module.exports = {
                 };
             }
 
-            if (!userGuessData.daily_character_id || (new Date() - new Date(userGuessData.last_guess_date) > fifteenMinutes)) {
-                const cooldownData = getCooldownTime(userGuessData.last_guess_date);
+            if (!userGuessData.daily_character_id || (new Date() - new Date(userGuessData.last_correct_guess_date) > fifteenMinutes)) {
+                const cooldownData = getCooldownTime(userGuessData.last_correct_guess_date);
                 if (cooldownData.timeRemaining > 0) {
                     return message.reply(`Please wait ${cooldownData.remainingMinutes} minutes before you can guess again.`);
                 }
