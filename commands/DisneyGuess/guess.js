@@ -45,12 +45,21 @@ module.exports = {
                     }
                 }
 
-                // If all hints are used, inform user
+                // If all hints are used, inform user and reset character
                 if (userGuessData.failed_attempts >= 6) {
-                    return message.reply(`You've used all hints. The character was **${dailyCharacter.name}**. Please wait for 15 minutes before guessing again.`);
+                    const dailyCharacterResult = await query('SELECT * FROM disney_characters WHERE id = $1', [userGuessData.daily_character_id]);
+                    const dailyCharacter = dailyCharacterResult.rows[0];
+
+                    // Reset the daily_character_id to null to allow fetching a new character after cooldown
+                    await query('UPDATE User_Points SET daily_character_id = null, streak = 0 WHERE user_id = $1', [message.author.id]);
+
+                    const cooldownData = getCooldownTime(currentTime);
+                    return message.reply(`You've used all hints. The character was **${dailyCharacter.name}**. You will be able to guess again in ${cooldownData.remainingMinutes} minutes.`);
                 }
-            } else {
-                // Fetch a new character if none is currently being guessed
+            }
+
+            // Fetch a new character if none is currently being guessed
+            if (!userGuessData.daily_character_id || userGuessData.failed_attempts >= 6) {
                 const dailyCharacterResult = await query('SELECT * FROM disney_characters ORDER BY RANDOM() LIMIT 1');
                 const dailyCharacter = dailyCharacterResult.rows[0];
 
@@ -105,13 +114,13 @@ module.exports = {
 
                     message.channel.send({ embeds: [embed] });
                 } else {
+                    // Reset attempts and set the new character
                     await query('UPDATE User_Points SET daily_character_id = null, streak = 0 WHERE user_id = $1', [message.author.id]);
 
                     // Fetch a new character after hints are exhausted
-                    const dailyCharacterResult = await query('SELECT * FROM disney_characters ORDER BY RANDOM() LIMIT 1');
-                    const newDailyCharacter = dailyCharacterResult.rows[0];
+                    const newDailyCharacterResult = await query('SELECT * FROM disney_characters ORDER BY RANDOM() LIMIT 1');
+                    const newDailyCharacter = newDailyCharacterResult.rows[0];
 
-                    // Reset attempts and set the new character
                     await query('UPDATE User_Points SET daily_character_id = $1, failed_attempts = 0, hints_given = 0 WHERE user_id = $2', [newDailyCharacter.id, message.author.id]);
 
                     const cooldownData = getCooldownTime(currentTime);
@@ -126,6 +135,7 @@ module.exports = {
         }
     }
 };
+
 
 
 
