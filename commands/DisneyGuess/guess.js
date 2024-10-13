@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('@discordjs/builders');
 const { query } = require('../../database');
-const { getCooldownTime, cooldown } = require('../../cooldown');
+const { getCooldownTime, fifteenMinutes } = require('../../cooldown');
 
 module.exports = {
     name: 'guess',
@@ -24,7 +24,7 @@ module.exports = {
             const currentTime = new Date();
 
             if (userGuessData) {
-                const cooldownData = getCooldownTime(userGuessData.last_guess_date);
+                const cooldownData = getCooldownTime(userGuessData.last_correct_guess_date);
 
                 if (userGuessData.failed_attempts >= 6) {
                     if (cooldownData.timeRemaining > 0) {
@@ -55,7 +55,12 @@ module.exports = {
                 };
             }
 
-            if (!userGuessData.daily_character_id || (new Date() - new Date(userGuessData.last_guess_date) > cooldown)) {
+            if (!userGuessData.daily_character_id || (new Date() - new Date(userGuessData.last_guess_date) > fifteenMinutes)) {
+                const cooldownData = getCooldownTime(userGuessData.last_guess_date);
+                if (cooldownData.timeRemaining > 0) {
+                    return message.reply(`Please wait ${cooldownData.remainingMinutes} minutes before you can guess again.`);
+                }
+
                 const dailyCharacterResult = await query('SELECT * FROM disney_characters ORDER BY RANDOM() LIMIT 1');
                 const dailyCharacter = dailyCharacterResult.rows[0];
 
