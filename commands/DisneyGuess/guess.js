@@ -107,6 +107,13 @@ module.exports = {
                 } else {
                     await query('UPDATE User_Points SET daily_character_id = null, streak = 0 WHERE user_id = $1', [message.author.id]);
 
+                    // Fetch a new character after hints are exhausted
+                    const dailyCharacterResult = await query('SELECT * FROM disney_characters ORDER BY RANDOM() LIMIT 1');
+                    const newDailyCharacter = dailyCharacterResult.rows[0];
+
+                    // Reset attempts and set the new character
+                    await query('UPDATE User_Points SET daily_character_id = $1, failed_attempts = 0, hints_given = 0 WHERE user_id = $2', [newDailyCharacter.id, message.author.id]);
+
                     const cooldownData = getCooldownTime(currentTime);
 
                     return message.reply(`Unfortunately, you have run out of hints. The character was **${dailyCharacter.name}**. You will be able to guess again in ${cooldownData.remainingMinutes} minutes.`);
@@ -118,7 +125,6 @@ module.exports = {
             message.channel.send('An error occurred while guessing the character. Please try again later.');
         }
     }
-
 };
 
 
