@@ -24,7 +24,7 @@ module.exports = {
             const favorites = favoritesResult.rows[0] || {};
 
             // next cooldown - last_guess_date omzetten naar Date object
-            const lastGuessDate = new Date(profile.last_guess_date);
+            const lastGuessDate = new Date(profile.last_correct_guess_date);
             const cooldown = getCooldownTime(lastGuessDate);
 
             // Bouw een embed met de profielgegevens

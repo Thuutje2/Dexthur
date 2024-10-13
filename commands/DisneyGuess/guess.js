@@ -39,7 +39,7 @@ module.exports = {
             if (userGuessData.last_correct_guess_date) {
                 const cooldownData = getCooldownTime(userGuessData.last_correct_guess_date);
                 if (cooldownData.timeRemaining > 0) {
-                    return message.reply(`You must wait until ${cooldownData.formattedDate} to guess again. (${cooldownData.remainingMinutes} minutes remaining)`);
+                    return message.reply(`You must wait ${cooldownData.formattedDate} to guess again. (${cooldownData.remainingMinutes} minutes remaining)`);
                 }
             }
 
