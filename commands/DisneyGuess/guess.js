@@ -13,6 +13,7 @@ module.exports = {
 
             const guessedCharacter = args.join(' ').toLowerCase();
 
+            // Check if user exists
             const userResult = await query('SELECT * FROM User_Points WHERE user_id = $1', [message.author.id]);
             if (userResult.rowCount === 0) {
                 await query('INSERT INTO users (user_id, username) VALUES ($1, $2)', [message.author.id, message.author.username]);
@@ -50,7 +51,7 @@ module.exports = {
                     const dailyCharacterResult = await query('SELECT * FROM disney_characters WHERE id = $1', [userGuessData.daily_character_id]);
                     const dailyCharacter = dailyCharacterResult.rows[0];
 
-                    // Reset the daily_character_id to null to allow fetching a new character after cooldown
+                    // Reset the daily_character_id to allow fetching a new character after cooldown
                     await query('UPDATE User_Points SET daily_character_id = null, streak = 0 WHERE user_id = $1', [message.author.id]);
 
                     const cooldownData = getCooldownTime(currentTime);
@@ -58,7 +59,7 @@ module.exports = {
                 }
             }
 
-            // Fetch a new character if none is currently being guessed
+            // Fetch a new character if none is currently being guessed or if cooldown is up
             if (!userGuessData.daily_character_id || userGuessData.failed_attempts >= 6) {
                 const dailyCharacterResult = await query('SELECT * FROM disney_characters ORDER BY RANDOM() LIMIT 1');
                 const dailyCharacter = dailyCharacterResult.rows[0];
@@ -135,6 +136,7 @@ module.exports = {
         }
     }
 };
+
 
 
 
