@@ -59,20 +59,23 @@ module.exports = {
                 }
             }
 
-            // Fetch a new character if none is currently being guessed or if cooldown is up
+            // Fetch a new character if no current character or if cooldown is up
+            let dailyCharacter;
             if (!userGuessData.daily_character_id || userGuessData.failed_attempts >= 6) {
                 const dailyCharacterResult = await query('SELECT * FROM disney_characters ORDER BY RANDOM() LIMIT 1');
-                const dailyCharacter = dailyCharacterResult.rows[0];
+                dailyCharacter = dailyCharacterResult.rows[0];
 
+                // Update the user points with the new character
                 await query('UPDATE User_Points SET daily_character_id = $1, last_guess_date = $2, failed_attempts = 0, hints_given = 0 WHERE user_id = $3', [dailyCharacter.id, currentTime, message.author.id]);
                 userGuessData.daily_character_id = dailyCharacter.id;
                 userGuessData.failed_attempts = 0;
                 userGuessData.hints_given = 0;
+            } else {
+                // Fetch the current character
+                const characterResult = await query('SELECT * FROM disney_characters WHERE id = $1', [userGuessData.daily_character_id]);
+                dailyCharacter = characterResult.rows[0];
             }
 
-            // Fetch the current character
-            const characterResult = await query('SELECT * FROM disney_characters WHERE id = $1', [userGuessData.daily_character_id]);
-            const dailyCharacter = characterResult.rows[0];
             const dailyCharacterHints = dailyCharacter.hints;
 
             // Check if the guessed character is correct
@@ -136,6 +139,7 @@ module.exports = {
         }
     }
 };
+
 
 
 
