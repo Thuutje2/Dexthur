@@ -12,6 +12,9 @@ module.exports = {
             }
 
             const guessedCharacter = args.join(' ').toLowerCase();
+            if (!await isCharacterValid(guessedCharacter)) {
+                return message.reply(`The character ${guessedCharacter} is not valid. Please try again.`);
+            }
             const currentTime = new Date();
 
             const userExistResult = await query('SELECT * FROM users WHERE user_id = $1', [message.author.id]);
@@ -40,6 +43,14 @@ module.exports = {
                 const cooldownData = getCooldownTime(userGuessData.last_correct_guess_date);
                 if (cooldownData.timeRemaining > 0) {
                     return message.reply(`You must wait ${cooldownData.formattedDate} to guess again. (${cooldownData.remainingMinutes} minutes remaining)`);
+                }
+            }
+
+            // Check if cooldown is still active after exhausting hints
+            if (userGuessData.failed_attempts >= 6) {
+                const cooldownData = getCooldownTime(currentTime);
+                if (cooldownData.timeRemaining > 0) {
+                    return message.reply(`You've run out of hints. You must wait ${cooldownData.formattedDate} to guess again. (${cooldownData.remainingMinutes} minutes remaining)`);
                 }
             }
 
@@ -73,7 +84,7 @@ module.exports = {
 
                 const embed = new EmbedBuilder()
                     .setTitle('Correct Guess!')
-                    .setDescription(`The character was ${dailyCharacter.name}.\nYou earned ${pointsEarned} points!\nCorrect guesses count: ${streak}`)
+                    .setDescription(`The character was **${dailyCharacter.name}**.\n From **${dailyCharacter.series_film}** \nYou earned **${pointsEarned}** points!\nCorrect guesses count: **${streak}**`)
                     .setImage(dailyCharacter.image)
                     .setColor(0x78f06a);
 
@@ -94,11 +105,11 @@ module.exports = {
 
                     message.channel.send({ embeds: [embed] });
                 } else {
-                    // Max attempts reached, reset the daily character
+                    // Max attempts reached, reset the daily character and apply cooldown
                     await query('UPDATE User_Points SET daily_character_id = null, streak = 0 WHERE user_id = $1', [message.author.id]);
                     const cooldownData = getCooldownTime(currentTime);
 
-                    return message.reply(`You've run out of hints. The character was **${dailyCharacter.name}**. Try again after ${cooldownData.remainingMinutes} minutes.`);
+                    return message.reply(`You've run out of hints. The character was **${dailyCharacter.name}**, From **${dailyCharacter.series_film}**. You must wait ${cooldownData.formattedDate} to guess again. (${cooldownData.remainingMinutes} minutes remaining)`);
                 }
             }
 
@@ -108,6 +119,46 @@ module.exports = {
         }
     }
 };
+
+// Helper function to check if the guessed character is valid
+async function isCharacterValid(guessedCharacter) {
+    const characterResult = await query('SELECT * FROM disney_characters WHERE LOWER(name) = $1', [guessedCharacter]);
+    return characterResult.rowCount > 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
