@@ -36,7 +36,7 @@ module.exports = {
                 .addFields(
                     { name: '⏳ Next Guess Available In', value: `${cooldown.remainingMinutes} minutes` },
                     { name: '📈 Total Points', value: `${profile.points.toString()} points` },
-                    { name: '🔥 Correct guesses count:', value: `${profile.streak.toString()} ` },
+                    { name: '🔥 Correct guesses streak:', value: `${profile.streak.toString()} ` },
                     { name: '🩷 Favorite Character', value: favorites.favorite_character_name || 'Not set' },
                     { name: '🩷 Favorite Serie or Film', value: favorites.favorite_series_film || 'Not set' },
                 );
