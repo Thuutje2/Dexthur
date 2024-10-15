@@ -84,7 +84,7 @@ module.exports = {
 
                 const embed = new EmbedBuilder()
                     .setTitle('Correct Guess!')
-                    .setDescription(`The character was **${dailyCharacter.name}**.\n From **${dailyCharacter.series_film}** \nYou earned **${pointsEarned}** points!\nCorrect guesses count: **${streak}**`)
+                    .setDescription(`The character was **${dailyCharacter.name}**.\n From **${dailyCharacter.series_film}** \nYou earned **${pointsEarned}** points!\nCorrect guesses streak: **${streak}**`)
                     .setImage(dailyCharacter.image)
                     .setColor(0x78f06a);
 
