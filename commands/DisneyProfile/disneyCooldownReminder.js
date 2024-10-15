@@ -1,4 +1,4 @@
-const { getCooldownTime } = require('../../functions/cooldown.js');
+const { getCooldownTime } = require('../../cooldown');
 const { EmbedBuilder } = require('@discordjs/builders');
 const { query } = require('../../database');
 
