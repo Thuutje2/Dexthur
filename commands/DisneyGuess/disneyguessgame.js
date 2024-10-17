@@ -11,7 +11,7 @@ module.exports = {
             .addFields(
                 { name: '📝 How to Play', value: 'Start guessing by using the command `!guess <character name>`. Replace `<character name>` with the name of the Disney character you think is correct.' },
                 { name: '\n\n🔍 Hints', value: 'You receive hints for incorrect attempts. The number of hints you receive depends on the number of failed attempts. After 6 incorrect attempts, you will no longer receive hints.\n\n'},
-                { name: '⏲️ Waiting Time', value: 'After each attempt, whether correct or incorrect, you must wait 15 minutes before you can guess again.\n'},
+                { name: '⏲️ Waiting Time', value: 'After each correct attempt, you must wait 15 minutes before you can guess again.\n'},
                 { name: '\n\n 🏆 Points and Streaks', value: '• **Points**: You earn points based on how quickly you guess the correct Disney character. The fewer incorrect attempts, the more points you earn.\n  ⚪ Guess 1: 50 points\n  ⚪ Guess 2: 40 points\n  ⚪ Guess 3: 30 points\n  ⚪ Guess 4: 20 points\n  ⚪ Guess 5: 10 points\n  ⚪ Guess 6: 5 points\n  ⚪ Incorrect answer: 0 points\n\n• **Correct Guesses Streak**: When you guess a character correctly, your streak increases by 1, but if you make a wrong guess, the streak resets to 0.' },
                 { name: '\n\n 📊 Leaderboard', value: 'Check the leaderboard with the command `!glb` to see who has the most points and longest correct count.' },
                 { name: '\n\n 📋 Profile', value: 'View your profile with the command `!gp` to see your total points, correct guesses count, favorite character, and favorite serie or film.' },
