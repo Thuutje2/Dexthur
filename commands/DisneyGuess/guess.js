@@ -36,12 +36,13 @@ module.exports = {
                 };
             }
 
-            // Check cooldown from last correct guess
-            if (userGuessData.last_correct_guess_date) {
-                const cooldownData = getCooldownTime(userGuessData.last_correct_guess_date);
-                if (cooldownData.timeRemaining > 0) {
-                    return message.reply(`You must wait ${cooldownData.formattedDate} to guess again. (${cooldownData.remainingMinutes} minutes remaining)`);
-                }
+            // Check cooldown from last correct or failed guess
+            const cooldownData = userGuessData.last_correct_guess_date ?
+                getCooldownTime(userGuessData.last_correct_guess_date) :
+                getCooldownTime(userGuessData.last_failed_guess_date);
+
+            if (cooldownData.timeRemaining > 0) {
+                return message.reply(`You must wait ${cooldownData.formattedDate} to guess again. (${cooldownData.remainingMinutes} minutes remaining)`);
             }
 
             // Fetch the daily character (only fetch new one if there is none or it's the first guess)
@@ -81,20 +82,8 @@ module.exports = {
                 const failedAttempts = userGuessData.failed_attempts + 1;
                 const hintsGiven = Math.min(failedAttempts, dailyCharacterHints.length);
 
-                // Only update last_failed_guess_date if it's a new failed attempt
+                // Update failed_attempts, hints_given, and set last_failed_guess_date if 6 failed attempts
                 await query('UPDATE User_Points SET failed_attempts = $1, hints_given = $2 WHERE user_id = $3', [failedAttempts, hintsGiven, message.author.id]);
-
-                // Check if cooldown is still active from last failed guess only after 6 attempts
-                if (failedAttempts >= 6) {
-                    if (userGuessData.last_failed_guess_date) {
-                        const failedCooldownData = getCooldownTime(userGuessData.last_failed_guess_date);
-                        if (failedCooldownData.timeRemaining > 0) {
-                            return message.reply(`You must wait ${failedCooldownData.formattedDate} before you can guess again. (${failedCooldownData.remainingMinutes} minutes remaining)`);
-                        }
-                    }
-                    // Set last_failed_guess_date only if it's a new failure
-                    await query('UPDATE User_Points SET last_failed_guess_date = $1 WHERE user_id = $2', [currentTime, message.author.id]);
-                }
 
                 if (failedAttempts < 6) {
                     const embed = new EmbedBuilder()
@@ -104,11 +93,13 @@ module.exports = {
                         .addFields({ name: 'Hints', value: dailyCharacterHints.slice(0, hintsGiven).join('\n') });
 
                     message.channel.send({ embeds: [embed] });
-                } else {
+                } else if (failedAttempts === 6) {
+                    await query('UPDATE User_Points SET daily_character_id = null, failed_attempts = 0, last_failed_guess_date = $1 WHERE user_id = $2', [currentTime, message.author.id]);
+
                     const correctCharacterName = dailyCharacter.name;
                     const correctCharacterFilm = dailyCharacter.series_film;
 
-                    return message.reply(`You've run out of hints. The character was **${correctCharacterName}**, From **${correctCharacterFilm}**.`);
+                    message.reply(`You've run out of hints. The character was **${correctCharacterName}**, From **${correctCharacterFilm}**. You can try again right now.`);
                 }
             }
         } catch (error) {
@@ -123,3 +114,5 @@ async function isCharacterValid(guessedCharacter) {
     const characterResult = await query('SELECT * FROM disney_characters WHERE LOWER(name) = $1', [guessedCharacter]);
     return characterResult.rowCount > 0;
 }
+
+
