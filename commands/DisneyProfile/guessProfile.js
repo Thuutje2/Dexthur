@@ -23,9 +23,16 @@ module.exports = {
             const favoritesResult = await query('SELECT * FROM user_favorites WHERE user_id = $1', [targetUser.id]);
             const favorites = favoritesResult.rows[0] || {};
 
-            // next cooldown - last_guess_date omzetten naar Date object
-            const lastGuessDate = new Date(profile.last_correct_guess_date);
-            const cooldown = getCooldownTime(lastGuessDate);
+            // Convert last guess dates to Date objects
+            const lastCorrectGuessDate = new Date(profile.last_correct_guess_date);
+            const lastFailedGuessDate = new Date(profile.last_failed_guess_date);
+
+            // Bepaal welke cooldown we moeten gebruiken
+            const now = new Date();
+            const lastRelevantGuessDate = lastFailedGuessDate > lastCorrectGuessDate ? lastFailedGuessDate : lastCorrectGuessDate;
+
+            // Haal de cooldown informatie op
+            const cooldown = getCooldownTime(lastRelevantGuessDate);
 
             // Bouw een embed met de profielgegevens
             const embed = new EmbedBuilder()
