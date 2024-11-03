@@ -8,9 +8,10 @@ module.exports = {
     execute(message) {
         try {
             const survivors = survivorInformation.survivors.map(survivor => survivor.name).join('\n');
+            const totalSurvivors = survivorInformation.survivors.length;
             const embed = new EmbedBuilder()
                 .setTitle('List of all survivors')
-                .setDescription(survivors)
+                .setDescription(`**Total Survivors:** ${totalSurvivors}\n\n` + survivors)
                 .setColor(0xf0c0e3);
 
             message.channel.send({ embeds: [embed] });

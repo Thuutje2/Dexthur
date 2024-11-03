@@ -16,7 +16,7 @@ module.exports = {
                 return message.channel.send(`No information found for survivor: ${survivor}`);
             }
 
-            const { name, gender, role, origin, cost, image, perks } = survivorData;
+            const { name, gender, role, origin, image, perks } = survivorData;
 
             // Pad naar de survivor-afbeelding
             const imagePath = path.join(__dirname, image);
@@ -32,7 +32,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setTitle(name)
                 .setThumbnail('attachment://' + path.basename(imagePath))
-                .setDescription(`**Gender:** ${gender}\n**Role:** ${role}\n**Origin:** ${origin}\n**Cost:** ${cost}`)
+                .setDescription(`**Gender:** ${gender}\n**Role:** ${role}\n**Origin:** ${origin}`)
                 .setImage('attachment://perks.png')
                 .setColor(0xf0c0e3);
 

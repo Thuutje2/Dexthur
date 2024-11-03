@@ -5,23 +5,22 @@
       "gender": "Man",
       "role": "Nervous Leader",
       "origin": "American",
-      "cost": "free",
       "image": "images/survivors/DwightFairfield.png",
       "perks": [
         {
           "name": "Bond",
           "description": "The Auras of all other Survivors are revealed to you within `20/28/36` metres",
-          "image": "images/perks/bond.png"
+          "image": "images/survivorPerks/bond.png"
         },
         {
           "name": "Prove Thyself",
           "description": "Increases the Repair speed by a stack-able `6/8/10` % per other Survivor within `4 metres` of your location, up to a maximum of `18/24/30` %.\nProve Thyself extends its effect to all Survivors within its range.\n\nSurvivors can only be affected by one instance of Prove Thyself at a time.",
-          "image": "images/perks/proveThyself.png"
+          "image": "images/survivorPerks/proveThyself.png"
         },
         {
           "name": "Leader",
           "description": "You are able to organise a team to cooperate more efficiently.\nOther Survivors within `8 metres` of your location benefit from the following effect:\n\nIncreases the Action speeds for Cleansing, Gate-Opening, Healing, Sabotaging, Searching, and Unhooking by `15/20/25` %.\nThis effect lingers for `15` seconds after leaving the Area of Effect.\nSurvivors can only be affected by one instance of Leader at a time.",
-          "image": "images/perks/leader.png"
+          "image": "images/survivorPerks/leader.png"
         }
       ]
     },
@@ -30,27 +29,105 @@
       "gender": "Woman",
       "role": "Energetic Athlete",
       "origin": "American",
-      "cost": "free",
       "image": "images/survivors/MegThomas.png",
       "perks": [
         {
           "name": "Quick & Quiet",
           "description": "You do not make as much noise as others when quickly vaulting over obstacles or hiding in Lockers.\nSuppresses both the Loud Noise Notification and the sound effects triggered by rushing to vault Windows, Pallets, or rushing to enter or exit Lockers.\nQuick & Quiet has a cool-down of `30/25/20` seconds.",
-          "image": "images/perks/quickAndQuiet.png"
+          "image": "images/survivorPerks/quickAndQuiet.png"
         },
         {
           "name": "Sprint Burst",
           "description": "Starting to run triggers Sprint Burst:\nGrants a `+50` % Haste Status Effect for `3 seconds`.\nSprint Burst causes the Exhausted Status Effect for `60/50/40` seconds.\nSprint Burst cannot be used when Exhausted.",
-          "image": "images/perks/sprintBurst.png"
+          "image": "images/survivorPerks/sprintBurst.png"
         },
         {
           "name": "Adrenaline",
           "description": "You are fuelled by unexpecting energy when on the verge of escape.\nOnce the Exit Gates are powered, Adrenaline activates:\n\nInstantly heal the equivalent of `1 Health State`.\nGrants a `+50` % Haste Status Effect for `3 seconds`.\nAdrenaline ignores an existing Exhausted Status Effect , but causes it for `60/50/40` seconds.",
-          "image": "images/perks/adrenaline.png"
+          "image": "images/survivorPerks/adrenaline.png"
+        }
+      ]
+    },
+    {
+      "name": "Claudette Morel",
+      "gender": "Woman",
+      "role": "Studious Botanist",
+      "origin": "Canadian",
+      "image": "images/survivors/ClaudetteMorel.png",
+      "perks": [
+        {
+          "name": "Botany Knowledge",
+          "description": "You transform plants found around the campfire into tinctures that slow down bleeding.\nIncreases your Healing speed by `30/40/50` %.\nReduces the Healing efficiency of Med-Kits by `-20` %.",
+          "image": "images/survivorPerks/botanyKnowledge.png"
+        },
+        {
+          "name": "Empathy",
+          "description": "Unlocks potential in your Aura-reading ability:\nThe Auras of injured or dying Survivors are revealed to you within `64/96/128` metres.",
+          "image": "images/survivorPerks/empathy.png"
+        },
+        {
+          "name": "Self-Care",
+          "description": "Unlocks the Self-Care ability, allowing you to self-heal without needing a Med-Kit at `25/30/35` % of the normal Healing speed.",
+          "image": "images/survivorPerks/self-Care.png"
+        }
+      ]
+    },
+    {
+      "name": "Jake Park",
+      "gender": "Man",
+      "role": "Solitary Survivalist",
+      "origin": "South Korean",
+      "image": "images/survivors/JakePark.png",
+      "perks": [
+        {
+          "name": "Calm Spirit",
+          "description": "Animals seem to trust you as they often stay calm in your presence.\nPrevents Crows from being alerted by your proximity and flying off, unless they are being stepped on.\nSuppresses the urge to scream from any cause at all times.\nSuppresses all noises related to unlocking Chests, and cleansing or blessing Totems.\nReduces the Interaction speeds with Chests and Totems by `40/35/30` %.",
+          "image": "images/survivorPerks/calmSpirit.png"
+        },
+        {
+          "name": "Iron Will",
+          "description": "You are able to concentrate and enter a meditative-like state to numb some pain.\nReduces the volume of Grunts of Pain while in the Injured State by `80/90/100` %.\nIron Will cannot be used when suffering from Exhaustion, but does not cause the Exhausted Status Effect.",
+          "image": "images/survivorPerks/ironWill.png"
+        },
+        {
+          "name": "Saboteur",
+          "description": "Unlocks potential in your Aura-reading ability:\nWhile the Killer is carrying another Survivor, the Auras of all Hooks within `56 metres` of their original Pick-up location are revealed to you:\nThe Auras of normal Hooks are white.\nThe Auras of Scourge Hooks are yellow.\nUnlocks the ability to sabotage Hooks without Toolboxes:\n\nIncreases the Sabotage speed without a Toolbox by `+30` %.\nThis effect has a cool-down of `70/65/60` seconds after use.",
+          "image": "images/survivorPerks/saboteur.png"
+        }
+      ]
+    },
+    {
+      "name": "Nea Karlsson",
+      "gender": "Woman",
+      "role": "Urban Artist",
+      "origin": "Swedish",
+      "image": "images/survivors/NeaKarlsson.png",
+      "perks": [
+        {
+          "name": "Balanced Landing",
+          "description": "Your agility and cat-like relexes are incomparable.\nWhen falling from height, you benefit from the following effects:\n\nReduces the duration of the Stagger upon landing by `-75` %.\nSuppresses all noises associated with falling.\nGrants a `+50` % Haste Status Effect for `3 seconds` upon landing.\nBalanced Landing causes the Exhausted Status Effect for `60/50/40` seconds.\nBalanced Landing cannot be used when Exhausted.",
+          "image": "images/survivorPerks/balancedLanding.png"
+        },
+        {
+          "name": "Streetwise",
+          "description": "Long nights out taught you to do a lot with what you have got.\nIncreases the Efficiency of your Items by `15/20/25` %.\nStreetwise extends its effect to all other Survivors within `8 metres` of your location and lingers for `15 seconds.`",
+          "image": "images/survivorPerks/streetwise.png"
+        },
+        {
+          "name": "Urban Evasion",
+          "description": "Years of evading the cops taught you a thing or two about stealth.\nIncreases your Crouching Movement speed by `90/95/100` %.",
+          "image": "images/survivorPerks/urbanEvasion.png"
         }
       ]
     }
+
   ],
+
+
+
+
+
+
   "killers": [
     {
       "name": "The Trapper",
