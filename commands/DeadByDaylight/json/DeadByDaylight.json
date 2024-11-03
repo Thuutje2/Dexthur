@@ -191,6 +191,198 @@
           "image": "images/survivorPerks/Bill/unbreakable.png"
         }
       ]
+    },
+    {
+      "name": "Feng Min",
+      "gender": "Woman",
+      "role": "Focused Competitor",
+      "origin": "Chinese",
+      "image": "images/survivors/FengMin.png",
+      "perks": [
+        {
+          "name": "Alert",
+          "description": "Your acute senses are on high alert.\nWhenever the Killer performs the Break or Damage Action, Alert triggers:\n\nTheir Aura is revealed to you for `3/4/5` seconds.",
+          "image": "images/survivorPerks/Feng/alert.png"
+        },
+        {
+          "name": "Lithe",
+          "description": "Performing a Rushed Vault triggers Lithe:\nGrants a `+50` % Haste Status Effect for `3` seconds.\nLithe causes the Exhausted Status Effect for `60/50/40` seconds.\nLithe cannot be used when Exhausted.",
+          "image": "images/survivorPerks/Feng/lithe.png"
+        },
+        {
+          "name": "Technician",
+          "description": "You are apt at handling machinery with the greatest care and precision.\nWhen repairing a Generator, the following effects apply:\n\nReduces the audible range of your Repair noises by `-8` metres.\nSuppresses the explosion and accompanying Loud Noise Notification when failing a Skill Check.\nFailing a Skill Check instantly regresses the Generator by `5/4/3` % of its maximum possible Progression in addition to the default Progression penalty.",
+          "image": "images/survivorPerks/Feng/technician.png"
+        }
+      ]
+    },
+    {
+      "name": "David King",
+      "gender": "Man",
+      "role": "Rugged Scrapper",
+      "origin": "English",
+      "image": "images/survivors/DavidKing.png",
+      "perks": [
+        {
+          "name": "Dead Hard",
+          "description": "You can take a beating.\nAfter being unhooked or unhooking yourself, Dead Hard activates whenever you are injured and running, and allows you to tap into your adrenaline bank to avoid taking further damage:\n\nPress the Active Ability button to trigger the Endurance Status Effect for `0.5` seconds.\nDead Hard deactivates after use.\nDead Hard causes the Exhausted Status Effect for `60/50/40` seconds.\nDead Hard cannot be used when Exhausted.",
+          "image": "images/survivorPerks/David/deadHard.png"
+        },
+        {
+          "name": "No Mither",
+          "description": "Go on out, kid, it is just a scratch.\nYour thick blood coagulates practically instantly.\nThe following effects apply permanently during the Trial:\n\nSuffer from the Broken Status Effect.\nSuppresses the creation of Pools of Blood.\nReduces the volume of Grunts of Pain while either in the Injured or the Dying State by `25/50/75` %.\nIncreases your Recovery speed by `15/20/25` %.\nUnlocks the Self-Recovery ability, allowing you to fully recover from the Dying State.",
+          "image": "images/survivorPerks/David/noMither.png"
+        },
+        {
+          "name": "We're Gonna Live Forever",
+          "description": "Your few friends deserve the best protection.\nYou benefit from the following effect when healing a dying Survivor:\n\nIncreases your Healing speed by `+100` %.\nAny dying Survivor you heal back to the Injured State benefits from the following effect:\nGrants the Endurance Status Effect for `6/8/10` seconds.\nThis effect can only be triggered once every `30` seconds.",
+          "image": "images/survivorPerks/David/wereGonnaLiveForever.png"
+        }
+      ]
+    },
+    {
+      "name": "Quentin Smith",
+      "gender": "Man",
+      "role": "Resolute Dreamwalker",
+      "origin": "American",
+      "image": "images/survivors/QuentinSmith.png",
+      "perks": [
+        {
+          "name": "Pharmacy",
+          "description": "You have a knack for finding medicine.\nWhenever you are in the Injured State, Pharmacy activates:\n\nIncreases the Unlocking speed of Chests by `40/60/80` %.\nReduces the Hearing range of noises related to Unlocking by `-8` metres.\nGuarantees an Emergency Med-Kit when unlocking a Chest.",
+          "image": "images/survivorPerks/Quentin/pharmacy.png"
+        },
+        {
+          "name": "Vigil",
+          "description": "You look over your friends even in dire situations.\nIncreases the Recovery rate from the following Status Effects by `20/25/30` %:\nThe Blindness, Broken, Exhausted, Exposed, Haemorrhage, Hindered, Mangled, and Oblivious Status Effects.\nVigil extends its effect to all Survivors within `8` metres of your location and lingers for `15` seconds.",
+          "image": "images/survivorPerks/Quentin/vigil.png"
+        },
+        {
+          "name": "Wake Up!",
+          "description": "Unlocks potential in your Aura-reading ability.\nOnce all Generators are completed, Wake Up! activates:\n\nThe Auras of the Exit Gate Switches are revealed to you within `128` metres.\nYour Aura is revealed to all other Survivors within `128` metres of your location while opening an Exit Gate.\nIncreases your Gate-Opening speed by `15/20/25` %.",
+          "image": "images/survivorPerks/Quentin/wakeUp.png"
+        }
+      ]
+    },
+    {
+      "name": "David Tapp",
+      "gender": "Man",
+      "role": "Detective",
+      "origin": "American",
+      "image": "images/survivors/DavidTapp.png",
+      "perks": [
+        {
+          "name": "Detective's Hunch",
+          "description": "Unlocks potential in your Aura-reading ability.\nAfter a Generator is completed, the Auras of Generators, Chests, and Totems within `32/48/64` metres are revealed to you for `10` seconds.",
+          "image": "images/survivorPerks/Tapp/detectivesHunch.png"
+        },
+        {
+          "name": "Stake Out",
+          "description": "When within the Killer's Terror Radius for 15 seconds, and not in a chase, gain a Token up to a maximum of `2/3/4` Tokens. When performing a Good Skill Check, each Token consumed converts it into a Great Skill Check.",
+          "image": "images/survivorPerks/Tapp/stakeOut.png"
+        },
+        {
+          "name": "Tenacity",
+          "description": "Allows you to crawl `30/40/50` % faster and recover at the same time while in the Dying State.",
+          "image": "images/survivorPerks/Tapp/tenacity.png"
+        }
+      ]
+    },
+    {
+      "name": "Kate Denson",
+      "gender": "Woman",
+      "role": "Hopeful Songbird",
+      "origin": "American",
+      "image": "images/survivors/KateDenson.png",
+      "perks": [
+        {
+          "name": "Dance With Me",
+          "description": "When performing a Rushed Action to vault a Window or exit a Locker, Dance With Me triggers its effect:\nSuppresses the creation of Scratch Marks for 3 seconds.\nDance With Me has a cool-down of `30/25/20` seconds.",
+          "image": "images/survivorPerks/Kate/danceWithMe.png"
+        },
+        {
+          "name": "Windows of Opportunity",
+          "description": "Unlocks the ability to see Auras of pallets and windows within `24/28/32` metres.",
+          "image": "images/survivorPerks/Kate/windowsOfOpportunity.png"
+        },
+        {
+          "name": "Boil Over",
+          "description": "While being carried by the Killer:\n- Your Struggle Effects on the Killer are increased by `60/70/80` %.\n- You obscure the Killer's ability to see Hook Auras within 16 metres.",
+          "image": "images/survivorPerks/Kate/boilOver.png"
+        }
+      ]
+    },
+    {
+      "name": "Adam Francis",
+      "gender": "Man",
+      "role": "Resourceful Teacher",
+      "origin": "Jamaican",
+      "image": "images/survivors/AdamFrancis.png",
+      "perks": [
+        {
+          "name": "Diversion",
+          "description": "Diversion charges while inside the Terror Radius without being chased by the Killer.\nAfter charging for `30/25/20` seconds, it activates:\nPress the Active Ability button while crouched and motionless to throw a pebble in the direction you are facing, creating a distraction for the Killer 20 metres away from your location:\nTriggers a Loud Noise Notification.\nCreates fake Scratch Marks.",
+          "image": "images/survivorPerks/Adam/diversion.png"
+        },
+        {
+          "name": "Deliverance",
+          "description": "After performing a safe Hook rescue, Deliverance activates. When you are unhooked for the first time, Deliverance gives you a 100 % chance to unhook yourself, but you become Broken for `100/80/60` seconds.",
+          "image": "images/survivorPerks/Adam/deliverance.png"
+        },
+        {
+          "name": "Autodidact",
+          "description": "You start the Trial with a -25 % progression penalty for Skill Checks to heal Survivors. For every successful Skill Check completed while healing, gain a Token up to a maximum of `3/4/5` Tokens, increasing Skill Check progression bonus by +15 % per Token.",
+          "image": "images/survivorPerks/Adam/autodidact.png"
+        }
+      ]
+    },
+    {
+      "name": "Jeff Johansen",
+      "gender": "Man",
+      "role": "Vigilant Outcast",
+      "origin": "Canadian",
+      "image": "images/survivors/JeffJohansen.png",
+      "perks": [
+        {
+          "name": "Breakdown",
+          "description": "When you are unhooked or unhook yourself, the Hook breaks, and the Killer's Aura is revealed to you for `4/5/6` seconds.",
+          "image": "images/survivorPerks/Jeff/breakdown.png"
+        },
+        {
+          "name": "Aftercare",
+          "description": "The Auras of the last `1/2/3` Survivor(s) are permanently revealed to you, once any of the following conditions have been met:\n\nYou have unhooked them.\nThey have unhooked you.\nYou have completed a Healing action on them.\nThey have completed a Healing action on you.\nThose Survivors also have your Aura revealed to them.\nAftercare resets its effect once you are hooked.",
+          "image": "images/survivorPerks/Jeff/aftercare.png"
+        },
+        {
+          "name": "Distortion",
+          "description": "Start the Trial with 1 Token.\nWhenever the Killer attempts to read your Aura, Distortion activates and consumes -1 Token, applying the following effects for 8/10/12 seconds:\n\nBlocks your Aura from being read.\nSuppresses the creation of your Scratch Marks.\nFor every 30 seconds spent in a Chase, Distortion recharges +1 Token, up to a maximum of 2 Tokens.\nDistortion does not activate when you are in the Dying State.",
+          "image": "images/survivorPerks/Jeff/distortion.png"
+        }
+      ]
+    },
+    {
+      "name": "Jane Romero",
+      "gender": "Woman",
+      "role": "Empowering Broadcast",
+      "origin": "American",
+      "image": "images/survivors/JaneRomero.png",
+      "perks": [
+        {
+          "name": "Solidarity",
+          "description": "While injured, healing a Survivor without using a Med-Kit also heals you by `50/60/70` % of the healing progression.",
+          "image": "images/survivorPerks/Jane/solidarity.png"
+        },
+        {
+          "name": "Poised",
+          "description": "After a Generator is completed, you leave no Scratch Marks for `10/12/14` seconds.",
+          "image": "images/survivorPerks/Jane/poised.png"
+        },
+        {
+          "name": "Head On",
+          "description": "After hiding inside a Locker for 3 seconds, Head On activates. While Head On is activated, performing a rushed action to leave the Locker stuns the Killer for 3 seconds if they are within range. Head On causes the Exhausted Status Effect for `60/50/40` seconds.",
+          "image": "images/survivorPerks/Jane/headOn.png"
+        }
+      ]
     }
   ],
 
