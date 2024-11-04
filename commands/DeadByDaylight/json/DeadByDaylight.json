@@ -431,6 +431,102 @@
           "image": "images/survivorPerks/Nancy/innerStrength.png"
         }
       ]
+    },
+    {
+      "name": "Steve Harrington",
+      "gender": "Man",
+      "role": "Former Jock",
+      "origin": "American",
+      "image": "images/survivors/SteveHarrington.png",
+      "perks": [
+        {
+          "name": "Babysitter",
+          "description": "While you have a reputation for being self-centered, you risk it all to help those in need.\n\n- Whenever you unhook a Survivor, the Aura of the Killer is revealed to you for 8 seconds.\n- The unhooked Survivor benefits from the following effects for `20/25/30` seconds: Suppresses their Scratch Marks and Pools of Blood, and increases the strength of their Haste Status Effect by +10%.",
+          "image": "images/survivorPerks/Steve/babysitter.png"
+        },
+        {
+          "name": "Camaraderie",
+          "description": "Life has taught you the importance of friendship, which has given you strength.\n\n- If you are hooked and enter the Struggle Phase, Camaraderie activates: Pauses the Struggle Phase timer for `26/30/34` seconds as soon as any Survivor comes within 16 meters of your Hook.",
+          "image": "images/survivorPerks/Steve/camaraderie.png"
+        },
+        {
+          "name": "Second Wind",
+          "description": "You have learned to avoid awkward situations with parents. Part of you still thinks your best option is to run away and hope things will take care of themselves.\n\n- When you heal another Survivor for the equivalent of 1 Health State, Second Wind activates.\n- The next time you are unhooked or unhook yourself, you suffer from the Broken Status Effect until Second Wind deactivates.\n- You are automatically healed 1 Health State after `28/24/20` seconds.\n\nSecond Wind deactivates under these conditions:\n- Successfully being healed by Second Wind.\n- Being put into the Dying State before the timer elapses.\n\nSecond Wind does not activate if you already suffer from the Broken Status Effect.",
+          "image": "images/survivorPerks/Steve/secondWind.png"
+        }
+      ]
+    },
+    {
+      "name": "Yui Kimura",
+      "gender": "Woman",
+      "role": "Hardened Streetracer",
+      "origin": "Japanese",
+      "image": "images/survivors/YuiKimura.png",
+      "perks": [
+        {
+          "name": "Any Means Necessary",
+          "description": "You stand up for yourself, using whatever's on hand to gain an advantage.\n\n- Press and hold the Active Ability button for `6/5/4` seconds while standing beside a dropped Pallet to reset it to its upright position.\n- Grants the ability to see the Auras of all dropped but not yet destroyed Pallets in the environment.",
+          "image": "images/survivorPerks/Yui/anyMeansNecessary.png"
+        },
+        {
+          "name": "Breakout",
+          "description": "You kick into high gear when someone is in trouble, inspiring them to overcome any obstacle.\n\n- While within 5 meters of the Killer carrying another Survivor:\n  - Grants you a `5/6/7`% Haste Status Effect.\n  - Increases the carried Survivor's Wiggling speed by +25%.\n- Survivors can only be affected by one instance of Breakout at a time.",
+          "image": "images/survivorPerks/Yui/breakout.png"
+        },
+        {
+          "name": "Lucky Break",
+          "description": "You have had your share of scrapes and bruises, but luck is always on your side.\n\n- Whenever you are in the Injured State, Lucky Break activates:\n  - Suppresses your Pools of Blood and Scratch Marks for a maximum of `40/50/60` seconds, after which Lucky Break deactivates.\n- Each 1 second spent healing another Survivor recharges Lucky Break by 1 second up to its maximum Effect duration.\n\nLucky Break deactivates whenever you are Healthy or in the Dying State.",
+          "image": "images/survivorPerks/Yui/luckyBreak.png"
+        }
+      ]
+    },
+    {
+      "name": "Zarina Kassir",
+      "gender": "Woman",
+      "role": "Plucky Documentarian",
+      "origin": "Lebanese American",
+      "image": "images/survivors/ZarinaKassir.png",
+      "perks": [
+        {
+          "name": "For the People",
+          "description": "You risk life and injury for others.\n\n- While healthy and healing another Survivor without using a Med-Kit, press the Active Ability button to activate For the People:\n  - Trades 1 Health State with that Survivor:\n    - Instantly heals them to the Injured State if they were dying or suffering from the Deep Wound Status Effect.\n    - Instantly heals them to full health if they were injured.\n  - You yourself become injured and suffer from the Broken Status Effect for the next `80/70/60` seconds.\n  - You become the Killer's Obsession if not already.\n- Reduces your chance of becoming the initial Obsession by reducing the default value by -100%.\n- The Killer can only be obsessed with one Survivor at a time.",
+          "image": "images/survivorPerks/Zarina/forThePeople.png"
+        },
+        {
+          "name": "Off the Record",
+          "description": "You have learnt that a quiet approach is sometimes best.\n\n- After being unhooked or unhooking yourself, Off the Record activates for the next `60/70/80` seconds:\n  - Prevents your Aura from being revealed to the Killer if they attempt to read it.\n  - Suppresses Grunts of Pain when injured.\n  - Grants the Endurance Status Effect.\n  - Endurance is cancelled prematurely when performing a Conspicuous Action.\n- Off the Record deactivates once the Exit Gates are powered.",
+          "image": "images/survivorPerks/Zarina/offTheRecord.png"
+        },
+        {
+          "name": "Red Herring",
+          "description": "You have noticed that people pay attention to whatever makes the loudest noise.\n\n- After repairing a Generator for at least 3 seconds, its Aura is highlighted to you in yellow.\n  - The Generator stays highlighted until it is either fully repaired, you start repairing another Generator, or enter a Locker.\n- Entering a Locker will trigger a Loud Noise Notification for the Killer at the highlighted Generator's location.\n- Red Herring has a cool-down of `60/50/40` seconds.",
+          "image": "images/survivorPerks/Zarina/redHerring.png"
+        }
+      ]
+    },
+    {
+      "name": "Cheryl Mason",
+      "gender": "Woman",
+      "role": "Young Veteran of Terror",
+      "origin": "American",
+      "image": "images/survivors/CherylMason.png",
+      "perks": [
+        {
+          "name": "Blood Pact",
+          "description": "It is as if a latent part of yourself has awakened. You feel like you can reach out beyond yourself for assistance.\n\n- When either you or the Obsession become injured by any means, Blood Pact activates:\n  - Your Auras are constantly revealed to one another.\n  - Completing a Healing Action on the Obsession, or having them complete one on yourself, grants both of you a `5/6/7%` Haste Status Effect.\n  - This effect lasts for as long as you both remain within 16 metres of one another.\n- Blood Pact is temporarily disabled if you yourself are the Obsession.\n- Reduces your chance of becoming the initial Obsession by reducing the default value by -100%.\n- The Killer can only be obsessed with one Survivor at a time.",
+          "image": "images/survivorPerks/Cheryl/bloodPact.png"
+        },
+        {
+          "name": "Repressed Alliance",
+          "description": "You are accustomed to being hunted by malicious forces, and you have begun using it to your advantage.\n\n- After repairing Generators for a total of `55/50/45` seconds, Repressed Alliance activates:\n  - Press the Active Ability button to call upon The Entity to block the Generator you are currently repairing for 30 seconds, after which Repressed Alliance deactivates.\n  - The Aura of the blocked Generator is revealed to all Survivors in white.\n- Repressed Alliance can only be triggered when no other Survivors are repairing your Generator.",
+          "image": "images/survivorPerks/Cheryl/repressedAlliance.png"
+        },
+        {
+          "name": "Soul Guard",
+          "description": "You have been through immense hardship, and you're stronger for it.\n\n- After being healed from or having recovered from the Dying State, you benefit from the following effect:\n  - Grants the Endurance Status Effect for `4/6/8` seconds.\n  - Endurance is cancelled prematurely when performing a Conspicuous Action.\n- While suffering from the Cursed Status Effect, you benefit from the following effects:\n  - Grants the ability to fully recover yourself from the Dying State.\n- Soul Guard has a cool-down of `30` seconds.",
+          "image": "images/survivorPerks/Cheryl/soulGuard.png"
+        }
+      ]
     }
   ],
 
