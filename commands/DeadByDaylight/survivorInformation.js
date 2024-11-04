@@ -9,26 +9,39 @@ module.exports = {
     aliases: ['survivor', 'surv'],
     async execute(message, args) {
         try {
-            const survivor = args.join(' ').toLowerCase();
-            const survivorData = survivorInformation.survivors.find(s => s.name.toLowerCase() === survivor);
+            const survivorInput = args.join(' ').toLowerCase();
 
-            if (!survivorData) {
-                return message.channel.send(`No information found for survivor: ${survivor}`);
+            // Filter survivors safely, ensuring each item and its name property exists
+            const matchingSurvivors = survivorInformation.survivors.filter(s =>
+                    s && s.name && (
+                        s.name.toLowerCase() === survivorInput ||
+                        s.name.toLowerCase().startsWith(survivorInput) ||
+                        s.name.toLowerCase().endsWith(survivorInput)
+                    )
+            );
+
+            if (matchingSurvivors.length === 0) {
+                return message.channel.send(`No information found for survivor: ${survivorInput}`);
+            } else if (matchingSurvivors.length > 1) {
+                const survivorNames = matchingSurvivors.map(s => s.name).join(', ');
+                return message.channel.send(`Multiple survivors found: ${survivorNames}. Please specify the full name.`);
             }
 
+            // Use the only match left
+            const survivorData = matchingSurvivors[0];
             const { name, gender, role, origin, image, perks } = survivorData;
 
-            // Pad naar de survivor-afbeelding
+            // Path to the survivor image
             const imagePath = path.join(__dirname, image);
 
             if (!fs.existsSync(imagePath)) {
-                return message.channel.send(`Image not found for survivor: ${survivor}`);
+                return message.channel.send(`Image not found for survivor: ${name}`);
             }
 
-            // Laad de survivor-afbeelding als bijlage
+            // Load the survivor image as an attachment
             const survivorAttachment = new AttachmentBuilder(imagePath);
 
-            // Maak een embed met de survivor thumbnail en de gecombineerde perks afbeelding
+            // Create an embed with the survivor thumbnail and the combined perks image
             const embed = new EmbedBuilder()
                 .setTitle(name)
                 .setThumbnail('attachment://' + path.basename(imagePath))
@@ -36,12 +49,12 @@ module.exports = {
                 .setImage('attachment://perks.png')
                 .setColor(0xf0c0e3);
 
-            // Voeg de perk-beschrijvingen toe aan de embed
+            // Add perk descriptions to the embed
             perks.forEach(perk => {
                 embed.addFields({ name: perk.name, value: perk.description });
             });
 
-            // Stuur de embed met zowel de survivor- als gecombineerde perks-afbeeldingen
+            // Send the embed with both the survivor and combined perks images
             message.channel.send({ embeds: [embed], files: [survivorAttachment] });
 
         } catch (error) {
@@ -50,6 +63,7 @@ module.exports = {
         }
     }
 };
+
 
 
 

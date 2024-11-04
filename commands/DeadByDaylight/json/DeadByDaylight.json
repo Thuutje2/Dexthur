@@ -383,6 +383,54 @@
           "image": "images/survivorPerks/Jane/headOn.png"
         }
       ]
+    },
+    {
+      "name": "Ash Williams",
+      "gender": "Man",
+      "role": "Lone Wolf",
+      "origin": "American",
+      "image": "images/survivors/AshWilliams.png",
+      "perks": [
+        {
+          "name": "Buckle Up",
+          "description": "Unlocks potential in your Aura-reading ability. When healing a Survivor in the Dying State, Buckle Up activates:\n\n- The Aura of the Killer is revealed to the both of you.\n- Completing a Healing Action on the dying Survivor suppresses their Scratch Marks and grants them a +50% Haste Status Effect for `3/4/5` seconds.\n\nBuckle Up does not cause the Exhausted Status Effect.",
+          "image": "images/survivorPerks/Ash/buckleUp.png"
+        },
+        {
+          "name": "Flip-Flop",
+          "description": "You have an uncanny ability to escape the inevitable. Recovering in the Dying State also charges the Wiggle Meter at 50% of the Recovery rate, up to a maximum of `40/45/50`% of Wiggle Progression.",
+          "image": "images/survivorPerks/Ash/flipFlop.png"
+        },
+        {
+          "name": "Mettle of Man",
+          "description": "Evil has a way of always finding you. After triggering your third Protection Hit, Mettle of Man activates:\n\n- While injured, Mettle of Man shields you from going down the next time you take damage.\n- Healing back to full health reveals your Aura to the Killer whenever you are farther than `12/14/16` meters from them.\n- Mettle of Man deactivates the next time you are put into the Dying State.\n\nIncreases your chance of becoming the initial Obsession by +100%. The Killer can only be obsessed with one Survivor at a time.",
+          "image": "images/survivorPerks/Ash/mettleOfMan.png"
+        }
+      ]
+    },
+    {
+      "name": "Nancy Wheeler",
+      "gender": "Woman",
+      "role": "Aspiring Journalist",
+      "origin": "American",
+      "image": "images/survivors/NancyWheeler.png",
+      "perks": [
+        {
+          "name": "Better Together",
+          "description": "You seek justice and uncover the truth no matter what obstacle stands in your way.\n\n- While repairing a Generator, its Aura is highlighted in yellow to all other Survivors within 32 meters.\n- Whenever the Killer downs a Survivor while you are repairing a Generator, the Auras of all other Survivors are revealed to you for `8/9/10` seconds.",
+          "image": "images/survivorPerks/Nancy/betterTogether.png"
+        },
+        {
+          "name": "Fixated",
+          "description": "When you have a goal in mind, there is no turning back; better to ask forgiveness than permission.\n\n- Increases your Walking speed by `10/15/20`%.\n- Unlocks the ability to see your own Scratch Marks.",
+          "image": "images/survivorPerks/Nancy/fixated.png"
+        },
+        {
+          "name": "Inner Strength",
+          "description": "You look inwards and trust your instincts when you feel lost and alone.\n\n- Each time you cleanse a Totem, Inner Strength activates.\n- You are automatically healed 1 Health State while hiding inside a Locker for `10/9/8` seconds when injured or suffering from the Deep Wound Status Effect.\n- Inner Strength does not activate if you currently suffer from the Broken Status Effect.",
+          "image": "images/survivorPerks/Nancy/innerStrength.png"
+        }
+      ]
     }
   ],
 
