@@ -9,7 +9,9 @@ module.exports = {
     execute(message) {
         try {
             const survivors = survivorInformation.survivors.map(survivor => survivor.name);
-            paginate(message, survivors, 10, '🔦 Dead By Daylight Survivors 🔦', 0x98fb98);
+            const totalSurvivors = survivors.length;
+            const footer = `Total survivors: ${totalSurvivors}`;
+            paginate(message, survivors, 10, '🔦 Dead By Daylight Survivors 🔦', 0x98fb98, footer);
         } catch (error) {
             console.error('An error occurred while getting the list of survivors: ', error);
             message.channel.send('An error occurred while getting the list of survivors.');

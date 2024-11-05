@@ -12,9 +12,10 @@ module.exports = {
         description: 'Use the buttons below to navigate through the help menu.',
         commands: [
             { name: '`Page 1`', value: '👑 Disney Guess Game Commands'},
-            { name: '`Page 2`', value: '⚒️ Admin Commands' },
-            { name: '`Page 3`', value: '😙 Fun Commands' },
-            { name: '`Page 4`', value: '🔧 Helping the bot' }
+            { name: '`Page 2`', value: '🔪 Dead By Daylight Commands' },
+            { name: '`Page 3`', value: '⚒️ Admin Commands' },
+            { name: '`Page 4`', value: '😙 Fun Commands' },
+            { name: '`Page 5`', value: '🔧 Helping the bot' }
         ]
       },
       {
@@ -24,6 +25,15 @@ module.exports = {
           { name: 'Information about the game', value: 'Get information about the Disney character guessing game. `!DisneyGuessGame or !dgg`'},
           { name: 'Set your favorite character', value: 'Set your favorite character. `!dfc <charactername>`' },
           { name: 'Set your favorite series/film', value: 'Set your favorite series/film. `!dfsm <series/film>`' }
+        ]
+      },
+      {
+        title: '🔪 Dead By Daylight Commands',
+        description: 'Commands for Dead By Daylight players.',
+        commands: [
+          { name: 'Perk Information', value: 'Get information about a perk. `!PerkInformation <perkname>` or `!perk`' },
+          { name: 'Survivor Information', value: 'Get information about a survivor. `!SurvivorInformation <survivorname>` or `!survivors` or `!surv`' },
+          { name: 'Survivors', value: 'List of all survivors. `!Survivors` or `!SurvivorList` or `!SurvivorsList`' }
         ]
       },
       {

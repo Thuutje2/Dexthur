@@ -8,7 +8,7 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('
  * @param {string} title - The title of the embed.
  * @param {number} color - The color of the embed.
  */
-async function paginate(message, items, itemsPerPage, title, color) {
+async function paginate(message, items, itemsPerPage, title, color, footer) {
     let currentPage = 0;
     const totalPages = Math.ceil(items.length / itemsPerPage);
 
@@ -18,7 +18,8 @@ async function paginate(message, items, itemsPerPage, title, color) {
         return new EmbedBuilder()
             .setTitle(title)
             .setDescription(`**Page ${page + 1} of ${totalPages}**\n\n${pageItems}`)
-            .setColor(color);
+            .setColor(color)
+            .setFooter({ text: footer });
     };
 
     const embedMessage = await message.channel.send({ embeds: [getPageEmbed(currentPage)] });
