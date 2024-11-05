@@ -671,12 +671,223 @@
           "image": "images/survivorPerks/Mikaela/clairvoyance.png"
         }
       ]
+    },
+    {
+      "name": "Jonah Vasquez",
+      "gender": "Man",
+      "role": "Mathematical Mastermind",
+      "origin": "American of Hispanic descent",
+      "image": "images/survivors/JonahVasquez.png",
+      "perks": [
+        {
+          "name": "Boon: Exponential",
+          "description": "When it seems like your number is up, you consider ways to recalculate the odds.\n\n- Press and hold the Active Ability button on a Dull or Hex Totem to bless it and create a Boon Totem.\n- Soft chimes ring out in a radius of `24 metres`.\n\nAll Survivors benefit from the following effects when inside the Boon Totem's radius:\n- `90/95/100%` bonus to the Recovery speed.\n- Unlocks the Self-Recovery ability, allowing you to fully recover from the Dying State.\n\nOnly one Totem can be blessed by your Boon Perks at a time and all of their effects are active on the same Boon Totem.",
+          "image": "images/survivorPerks/Jonah/boonExponential.png"
+        },
+        {
+          "name": "Corrective Action",
+          "description": "You quickly analyse problems and correct others' work when they make a mistake.\n\n- You start the Trial with `1/2/3` Token(s).\n- Whenever you succeed a Great Skill Check, Corrective Action gains +1 Token, up to a maximum of 5 Tokens:\n  - Converts any Failed Skill Check of another Survivor into a Good Skill Check instead and consumes -1 Token.\n  - The Aura of that Survivor is revealed to you for 6 seconds.\n\nCorrective Action does not apply to any special Skill Checks.",
+          "image": "images/survivorPerks/Jonah/correctiveAction.png"
+        },
+        {
+          "name": "Overcome",
+          "description": "You have calculated how much energy you can risk to expend.\n\n- Becoming injured by any means triggers Overcome:\n  - Extends the duration of the On-hit Speed Boost by +2 seconds.\n  - Overcome causes the Exhausted Status Effect for `60/50/40` seconds.\n\nOvercome cannot be used when Exhausted.",
+          "image": "images/survivorPerks/Jonah/overcome.png"
+        }
+      ]
+    },
+    {
+      "name": "Yoichi Asakawa",
+      "gender": "Man",
+      "role": "Brilliant Marine Biologist",
+      "origin": "Japanese",
+      "image": "images/survivors/YoichiAsakawa.png",
+      "perks": [
+        {
+          "name": "Boon: Dark Theory",
+          "description": "Your obsessive study of the paranormal has given you unprecedented knowledge of other Realms and planes of existence.\n\n- Press and hold the Active Ability button on a Dull or Hex Totem to bless it and create a Boon Totem.\n- Soft chimes ring out in a radius of `24 metres`.\n\nAll Survivors benefit from the following effects when inside the Boon Totem's radius:\n- Grants a `+2% Haste` Status Effect.\n- This effect lingers for `2/3/4` seconds after leaving the Boon Totem's range.\n\nOnly one Totem can be blessed by your Boon Perks at a time and all of their effects are active on the same Boon Totem.",
+          "image": "images/survivorPerks/Yoichi/boonDarkTheory.png"
+        },
+        {
+          "name": "Empathic Connection",
+          "description": "Your presence psychically projects itself to those in danger.\n\n- Whenever another Survivor is injured, they can see your Aura within `32/64/96` metres of your location.\n- Increases your Altruistic Healing speed by `+30%`.",
+          "image": "images/survivorPerks/Yoichi/empathicConnection.png"
+        },
+        {
+          "name": "Parental Guidance",
+          "description": "You have inherited the ability to hear the dead — and now the dead warn you of danger.\n\n- After stunning the Killer by any means, Parental Guidance suppresses your Scratch Marks, Pools of Blood, and Grunts of Pain for the next `5/6/7` seconds.",
+          "image": "images/survivorPerks/Yoichi/parentalGuidance.png"
+        }
+      ]
+    },
+    {
+      "name": "Haddie Kaur",
+      "gender": "Woman",
+      "role": "Brave and Determined Podcaster",
+      "origin": "Canadian of Indian descent",
+      "image": "images/survivors/HaddieKaur.png",
+      "perks": [
+        {
+          "name": "Inner Focus",
+          "description": "You have honed your ability to see through the haze of the Ravage.\n\n- Grants the ability to see the Scratch Marks of other Survivors.\n- Whenever another Survivor loses a Health State due to the Killer, the Aura of the Killer is revealed to you for `6/8/10` seconds.",
+          "image": "images/survivorPerks/Haddie/innerFocus.png"
+        },
+        {
+          "name": "Overzealous",
+          "description": "Fighting back against the Ravage motivates and inspires you.\n\n- After cleansing or blessing a Totem, Overzealous activates:\n  - Dull Totem: Increases your Repair speed by `8/9/10%`.\n  - Hex Totem: Increases your Repair speed by `16/18/20%`.\n- Overzealous deactivates after losing a Health State by any means.",
+          "image": "images/survivorPerks/Haddie/overzealous.png"
+        },
+        {
+          "name": "Residual Manifest",
+          "description": "A lifetime of chasing the darkness has taught you that the best disinfectant is light.\n\n- After a successful Killer Blind, the Killer suffers from the Blindness Status Effect for `20/25/30` seconds.\n- Residual Manifest grants the ability to rummage through an opened Chest once per Trial and will guarantee a basic Flashlight.",
+          "image": "images/survivorPerks/Haddie/residualManifest.png"
+        }
+      ]
+    },
+    {
+      "name": "Ada Wong",
+      "gender": "Woman",
+      "role": "Mysterious Secret Agent",
+      "origin": "Unknown (Redacted)",
+      "image": "images/survivors/AdaWong.png",
+      "perks": [
+        {
+          "name": "Low Profile",
+          "description": "You work best alone.\nWhen it is just you and your pursuer, you know how to disappear.\n\n- Whenever you are the only Survivor not currently incapacitated by either being downed, carried, or hooked, Low Profile activates:\n  - Suppresses your Grunts of Pain and the creation of Pools of Blood and Scratch Marks for `70/80/90` seconds.\n- Low Profile deactivates after use and only accounts for Survivors still participating in the Trial.",
+          "image": "images/survivorPerks/Ada/lowProfile.png"
+        },
+        {
+          "name": "Reactive Healing",
+          "description": "The more the situation becomes compromised, the more determined you become to complete the operation.\n\n- Whenever another Survivor within 32 metres of your location loses a Health State by any means while you are in the Injured State, you benefit from the following effect:\n  - Grants `40/45/50%` of your missing Healing Progression towards your Health Bar.",
+          "image": "images/survivorPerks/Ada/reactiveHealing.png"
+        },
+        {
+          "name": "Wiretap",
+          "description": "You know that the best way to stay one step ahead is to keep tabs on the competition.\n\n- After repairing Generators for a total of 40%, Wiretap activates:\n  - Press the Active Ability button while near a partially progressed Generator to install a Trap, which stays active for `100/110/120` seconds.\n  - Whenever the Killer comes within 14 metres of the Trapped Generator, their Aura is revealed to all Survivors.\n- Wiretap deactivates after the Generator is damaged or once the timer runs out.",
+          "image": "images/survivorPerks/Ada/wiretap.png"
+        }
+      ]
+    },
+    {
+      "name": "Rebecca Chambers",
+      "gender": "Woman",
+      "role": "Gifted Medic and Squad Member",
+      "origin": "American",
+      "image": "images/survivors/RebeccaChambers.png",
+      "perks": [
+        {
+          "name": "Better than New",
+          "description": "You are an expert in combat medicine.\nPatients leave your care reinvigorated.\n\n- Completing a Healing action on another Survivor grants them the following benefits until they receive damage again:\n  - Increases their Action speeds for Blessing, Cleansing, Healing, and Unlocking by `12/14/16%`.",
+          "image": "images/survivorPerks/Rebecca/betterThanNew.png"
+        },
+        {
+          "name": "Hyperfocus",
+          "description": "You throw yourself entirely into your tasks and find ways to be more efficient than anyone else.\n\n- Succeeding a Great Skill Check while repairing or healing grants +1 Token, up to a maximum of 6 Tokens:\n  - Increases the Skill Check Trigger odds and Pointer Rotation speed by `+4%` per Token each, up to a maximum of `+24%`.\n  - Increases the Skill Check Bonus progression by `10/20/30%` of its base value per Token, up to a maximum of `60/120/180%`.\n- Hyperfocus loses all Tokens after succeeding just a Good Skill Check, failing one, or if the action is interrupted by any means.",
+          "image": "images/survivorPerks/Rebecca/hyperfocus.png"
+        },
+        {
+          "name": "Reassurance",
+          "description": "Your presence helps allies focus, assuaging the panic associated with extreme conditions.\n\n- Press the Active Ability button while within 6 metres of a hooked Survivor to pause their Sacrifice Process for the next `20/25/30` seconds.\n  - This also pauses any Skill Checks if the Survivor is in the Struggle Phase.\n- Reassurance can only be used once per Survivor per Hook Instance.",
+          "image": "images/survivorPerks/Rebecca/reassurance.png"
+        }
+      ]
+    },
+    {
+      "name": "Vittorio Toscano",
+      "gender": "Man",
+      "role": "Endless Wanderer",
+      "origin": "Italian",
+      "image": "images/survivors/VittorioToscano.png",
+      "perks": [
+        {
+          "name": "Fogwise",
+          "description": "In your countless years in The Fog, you have seen it all, and when you are focused, you can remember most of it too.\n\n- Succeeding a Great Skill Check while repairing a Generator reveals the Aura of the Killer to you for `4/5/6` seconds.",
+          "image": "images/survivorPerks/Vittorio/fogwise.png"
+        },
+        {
+          "name": "Potential Energy",
+          "description": "Your arcane abilities have adapted to The Entity's Realm after centuries of wandering, granting you unprecedented control over its many devices.\n\n- After uninterruptedly repairing Generators for a total of `12/10/8` seconds, press the Active Ability button to activate Potential Energy:\n  - Continuing to repair the Generator will charge Potential Energy instead of progressing the Generator.\n  - Converts `1.5%` of Repair progression into `1 Token`, up to a maximum of `20 Tokens`.\n  - Missing Skill Checks results in losing some Tokens.\n  - When Potential Energy has at least `1 Token`, press the Active Ability button while repairing a Generator to instantly progress it by `+1%` per accumulated Token, deactivating Potential Energy.\n- Potential Energy loses all Tokens and deactivates upon losing a Health State.",
+          "image": "images/survivorPerks/Vittorio/potentialEnergy.png"
+        },
+        {
+          "name": "Quick Gambit",
+          "description": "When you have the Killer's attention, you know how to keep it; others can be confident they will not be interrupted any time soon.\n\n- While being chased by the Killer, the following effects apply:\n  - The Auras of other Survivors are revealed to you.\n  - Increases the Repair speed of other Survivors by `3/4/5%`.\n- Quick Gambit has a cool-down of `60 seconds` upon losing a Health State.",
+          "image": "images/survivorPerks/Vittorio/quickGambit.png"
+        }
+      ]
+    },
+    {
+      "name": "Thalita Lyra",
+      "gender": "Woman",
+      "role": "-",
+      "origin": "Brazilian",
+      "image": "images/survivors/ThalitaLyra.png",
+      "perks": [
+        {
+          "name": "Cut Loose",
+          "description": "You get in enough trouble, you know how to get out of it.\n\n- After performing a Rush Vault action in a Chase, Cut Loose activates for the next `4/5/6` seconds:\n  - Suppresses both the Loud Noise Notification and the sound effects triggered by rushing to vault.\n  - Successfully performing another Rush Vault action while Cut Loose is active resets the timer.\n- Cut Loose has a cool-down of `45 seconds`.",
+          "image": "images/survivorPerks/Thalita/cutLoose.png"
+        },
+        {
+          "name": "Friendly Competition",
+          "description": "You revel in the community spirit of a competition, and inspire others to follow suit.\n\n- Whenever you complete a Generator with at least one other Survivor, Friendly Competition activates:\n  - Increases your Repair speed, and that of the other Survivor(s) who completed the repairs with you, by `+5%` for the next `45/60/75` seconds.",
+          "image": "images/survivorPerks/Thalita/friendlyCompetition.png"
+        },
+        {
+          "name": "Teamwork: Power of Two",
+          "description": "It is hard to keep up with you, but it does not stop people from trying.\n\n- Whenever you finish healing another Survivor, Teamwork: Power of Two activates, and both you and the healed Survivor benefit from the following effect:\n  - Grants a `+5% Haste` Status Effect for as long as you stay within `8/12/16` metres of one another.\n  - This effect lingers for `4 seconds` once out of range and resumes upon re-entering it before that timer elapses.\n- Survivors can only be affected by one instance of Teamwork: Power of Two at a time.",
+          "image": "images/survivorPerks/Thalita/teamworkPowerOfTwo.png"
+        }
+      ]
+    },
+    {
+      "name": "Renato Lyra",
+      "gender": "Man",
+      "role": "-",
+      "origin": "Brazilian",
+      "image": "images/survivors/RenatoLyra.png",
+      "perks": [
+        {
+          "name": "Background Player",
+          "description": "You are not usually the centre of attention and in some cases, this can be a good thing.\n\n- Whenever another Survivor is picked up, Background Player activates for `10 seconds`.\n  - Starting to run while it is active causes the following effect:\n    - Grants a `+50% Haste` Status Effect for `5 seconds`.\n  - Background Player causes the Exhausted Status Effect for `30/25/20 seconds`.\n- Background Player cannot be used when Exhausted.",
+          "image": "images/survivorPerks/Renato/backgroundPlayer.png"
+        },
+        {
+          "name": "Blood Rush",
+          "description": "Your mind and body are honed for great feats, allowing you to push through with extra effort when necessary.\n\n- After unhooking yourself or being unhooked, Blood Rush activates for `40/50/60 seconds`:\n  - Press the Active Ability button to instantly recover from the Exhausted Status Effect.\n- Blood Rush is deactivated after use or performing a Conspicuous Action.\n- Blood Rush is disabled for the remainder of the Trial once the Exit Gates are powered.",
+          "image": "images/survivorPerks/Renato/bloodRush.png"
+        },
+        {
+          "name": "Teamwork: Collective Stealth",
+          "description": "When someone helps you out, you respond in kind.\n\n- Whenever another Survivor finishes healing you, Teamwork: Collective Stealth activates, and both you and the Survivor who healed you benefit from the following effect:\n  - Suppresses your Scratch Marks for as long as you stay within `8/12/16 metres` of one another.\n  - This effect lingers for `4 seconds` once out of range and resumes upon re-entering it before that timer elapses.\n- Survivors can only be affected by one instance of Teamwork: Collective Stealth at a time.",
+          "image": "images/survivorPerks/Renato/teamworkCollectiveStealth.png"
+        }
+      ]
+    },
+    {
+      "name": "Gabriel Soma",
+      "gender": "Man",
+      "role": "Resourceful Engineer",
+      "origin": "Proxima Centauri C",
+      "image": "images/survivors/GabrielSoma.png",
+      "perks": [
+        {
+          "name": "Made for This",
+          "description": "You were born to survive, and raised to adapt.\n\n- Whenever you are in the Injured State, Made for This activates and you benefit from the following effects:\n  - Grants the Endurance Status Effect for `6/8/10 seconds`, after completing a Healing action on another Survivor.\n  - Endurance is cancelled prematurely when performing a Conspicuous Action.\n  - Grants a `1/2/3% Haste` Status Effect while running and also suffering from the Deep Wound Status Effect.",
+          "image": "images/survivorPerks/Gabriel/madeForThis.png"
+        },
+        {
+          "name": "Scavenger",
+          "description": "Where others see junk, you see valuable improvised tools.\n\n- While holding a depleted Toolbox, Scavenger activates:\n  - Succeeding at Great Repairing Skill Checks grants `1 Token`, up to a maximum of `5 Tokens`.\n  - Reaching the maximum number of Tokens automatically consumes them and fully recharges the Toolbox.\n  - Recharging a Toolbox will reduce your Repair speed by `-50%` for the next `40/35/30 seconds`.\n  - Scavenger grants the ability to rummage through an opened Chest once per Trial and will guarantee a basic Toolbox.",
+          "image": "images/survivorPerks/Gabriel/scavenger.png"
+        },
+        {
+          "name": "Troubleshooter",
+          "description": "No amount of distraction will shake you from your primary task.\n\n- When you are chased by the Killer, Troubleshooter activates:\n  - The Aura of the Generator with the most progress is revealed to you.\n  - The Aura of the Killer is revealed to you for `4/5/6 seconds` after dropping a Pallet.\n  - These effects linger for `6/8/10 seconds` after ending the Chase, after which Troubleshooter deactivates.",
+          "image": "images/survivorPerks/Gabriel/troubleshooter.png"
+        }
+      ]
     }
-
-
-
-
-
   ],
 
 
