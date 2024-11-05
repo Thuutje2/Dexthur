@@ -30,7 +30,7 @@ module.exports = {
 
         // Set the description for the question
         embed.setDescription(`What is the name of this perk?\n\n**Description:**\n${randomPerk.description}`);
-        await message.channel.send({ embeds: [embed], files: [perkAttachment] });
+        await message.channel.send({ embeds: [embed] });
 
         // Filter to check if the response is from the original sender
         const filter = response => response.author.id === message.author.id;
@@ -38,7 +38,7 @@ module.exports = {
 
         collector.on('collect', response => {
             if (response.content.toLowerCase() === randomPerk.name.toLowerCase()) {
-                message.channel.send('Correct!');
+                message.channel.send('Correct!' + perkAttachment);
                 collector.stop(); // Stop the collector when answered correctly
             } else {
                 message.channel.send(`Incorrect! Try again.`);
