@@ -591,7 +591,7 @@
         {
           "name": "Self-Preservation",
           "description": "Life is unforgiving.\n\n- The more confirmation you get of that, the more prepared you become.\n- Whenever another Survivor is hit with a Basic Attack or Special Attack within 16 metres of you, Self-Preservation activates:\n  - Scratch Marks, Grunts of Pain when injured, and Bleeding are suppressed for the next `6/8/10` seconds.",
-          "image": "images/survivorPerks/Yun-JinLee/selfPreservation.png"
+          "image": "images/survivorPerks/Yun-JinLee/self-Preservation.png"
         },
         {
           "name": "Smash Hit",
@@ -927,7 +927,7 @@
         {
           "name": "Light-Footed",
           "description": "Crossing paths with deadly Killers has taught you the value of discretion.\n\n- Whenever you are healthy, Light-Footed activates:\n  - Suppresses the sound of your footsteps while running.\n  - Light-Footed has a cool-down of `28/24/20` seconds after performing a Rush Vault action.",
-          "image": "images/survivorPerks/Ellen/lightFooted.png"
+          "image": "images/survivorPerks/Ellen/light-Footed.png"
         },
         {
           "name": "Lucky Star",
@@ -994,17 +994,17 @@
         {
           "name": "Bardic Inspiration",
           "description": "It's time to give your audience a show. Will you bring the house down or will you choke?\n\n- Press the Active Ability button while standing and motionless to enter the Performance interaction that lasts up to 15 seconds and empowers other Survivors within 16 metres of your location.\n\n- The empowering effect depends on the result of you rolling a d20 and lasts for 90 seconds after completing the Performance:\n  - 1: You scream, but without notifying the Killer.\n  - 2 - 10: Skill Checks grant +1% Progression.\n  - 11 - 19: Skill Checks grant +2% Progression.\n  - 20: Skill Checks grant +3% Progression.\n\n- Bardic Inspiration has a cool-down of `110/100/90` seconds after completing the Performance or cancelling it.",
-          "image": "images/survivorPerks/TheTroupe/bardicInspiration.png"
+          "image": "images/survivorPerks/Troupe/bardicInspiration.png"
         },
         {
           "name": "Mirrored Illusion",
           "description": "A familiar spell made unfamiliar in this corrupted landscape.\n\n- After repairing Generators for a total of 20%, Mirrored Illusion activates:\n  - Press the Active Ability button when next to either a Chest, Exit Gate, Generator, or a Totem to spawn a Static Illusion that lasts for `40/50/60` seconds.\n\n- Mirrored Illusion deactivates after triggering successfully.",
-          "image": "images/survivorPerks/TheTroupe/mirroredIllusion.png"
+          "image": "images/survivorPerks/Troupe/mirroredIllusion.png"
         },
         {
           "name": "Still Sight",
           "description": "A clear mind and calm temperament will always find the means of their escape.\n\n- After standing still for `6/5/4` seconds, Still Sight activates:\n  - The Auras of the Killer as well as any Chests and Generators within 24 metres of your location are revealed to you until you start moving again.",
-          "image": "images/survivorPerks/TheTroupe/stillSight.png"
+          "image": "images/survivorPerks/Troupe/stillSight.png"
         }
       ]
     },

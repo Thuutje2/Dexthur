@@ -33,7 +33,8 @@ module.exports = {
         commands: [
           { name: 'Perk Information', value: 'Get information about a perk. `!PerkInformation <perkname>` or `!perk`' },
           { name: 'Survivor Information', value: 'Get information about a survivor. `!SurvivorInformation <survivorname>` or `!survivors` or `!surv`' },
-          { name: 'Survivors', value: 'List of all survivors. `!Survivors` or `!SurvivorList` or `!SurvivorsList`' }
+          { name: 'Survivors', value: 'List of all survivors. `!Survivors` or `!SurvivorList` or `!SurvivorsList`' },
+          { name: 'Perk Quiz', value: 'Answer questions about perks and survivors. `!PerkQuiz`' }
         ]
       },
       {
