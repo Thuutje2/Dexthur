@@ -4,7 +4,7 @@ const survivorInformation = require('./json/DeadByDaylight.json');
 module.exports = {
     name: 'totalSurvivors',
     description: 'Total number of survivors',
-    aliases: ['totalSurvivor', 'totalSurvivors'],
+    aliases: ['totalSurvs'],
     execute(message) {
         try {
             const totalSurvivors = survivorInformation.survivors.length;
@@ -18,4 +18,4 @@ module.exports = {
             message.channel.send('An error occurred while getting the total number of survivors.');
         }
     }
-}
+};

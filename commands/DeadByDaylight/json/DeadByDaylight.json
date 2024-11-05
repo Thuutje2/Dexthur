@@ -527,7 +527,156 @@
           "image": "images/survivorPerks/Cheryl/soulGuard.png"
         }
       ]
+    },
+    {
+      "name": "Felix Richter",
+      "gender": "Man",
+      "role": "Visionary Architect",
+      "origin": "German",
+      "image": "images/survivors/FelixRichter.png",
+      "perks": [
+        {
+          "name": "Built to Last",
+          "description": "You know how to get the most out of your tools.\n\n- Hiding inside a Locker for `14/13/12` seconds while carrying a depleted Item has the following effect:\n  - First use: Recharges the Item to `99%`.\n  - Second use: Recharges the Item to `66%`.\n  - Third use: Recharges the Item to `33%`.\n- Built to Last is disabled for the remainder of the Trial after the third use.",
+          "image": "images/survivorPerks/Felix/builtToLast.png"
+        },
+        {
+          "name": "Desperate Measures",
+          "description": "You refuse to fail, even during your darkest hour.\n\n- Increases your Action speeds for Healing and Unhooking by `10/12/14%` for each injured, hooked, or dying Survivor, up to a maximum of `40/48/56%`.",
+          "image": "images/survivorPerks/Felix/desperateMeasures.png"
+        },
+        {
+          "name": "Visionary",
+          "description": "You are remarkably focused on your means of escape.\n\n- The Auras of Generators are revealed to you within `32` metres.\n- Each time a Generator is completed, Visionary is deactivated for `20/18/16` seconds.",
+          "image": "images/survivorPerks/Felix/visionary.png"
+        }
+      ]
+    },
+    {
+      "name": "Élodie Rakoto",
+      "gender": "Woman",
+      "role": "Occult Investigator",
+      "origin": "French, Madagassian",
+      "image": "images/survivors/ElodieRakoto.png",
+      "perks": [
+        {
+          "name": "Appraisal",
+          "description": "You have a careful eye that notices what many overlook.\n\n- Appraisal has 3 Tokens at the start of the Trial:\n  - Consume -1 Token to perform the Rummage action on an already unlocked Chest in order to retrieve a second Item from it.\n- Increases Rummaging speed by `40/60/80%`.",
+          "image": "images/survivorPerks/Elodie/appraisal.png"
+        },
+        {
+          "name": "Deception",
+          "description": "Your adventurous lifestyle requires moments of crafty misdirection.\n\n- Interacting with a Locker while holding the Sprint button has the following effects:\n  - Prevents you from entering the Locker, allowing you to run past it.\n  - Causes the doors of the Locker to swiftly open and close, feigning a Survivor entering it.\n  - Triggers a Loud Noise Notification at the location of the Locker.\n  - Suppresses the creation of Scratch Marks and Pools of Blood for `3` seconds.\n- Deception has a cool-down of `30/25/20` seconds.",
+          "image": "images/survivorPerks/Elodie/deception.png"
+        },
+        {
+          "name": "Power Struggle",
+          "description": "You have never given up and you are not about to start now.\n\n- Reveals the Auras of available Pallets whenever you are in the Dying State.\n- While being carried by The Killer, reaching `25/20/15%` Wiggling progression activates Power Struggle:\n  - You can drop a nearby, standing Pallet to stun the Killer and escape their grasp.\n- Power Struggle deactivates after triggering successfully.",
+          "image": "images/survivorPerks/Elodie/powerStruggle.png"
+        }
+      ]
+    },
+    {
+      "name": "Yun-Jin Lee",
+      "gender": "Woman",
+      "role": "Self-Interested Music Producer",
+      "origin": "South Korean",
+      "image": "images/survivors/Yun-JinLee.png",
+      "perks": [
+        {
+          "name": "Fast Track",
+          "description": "Sometimes the sacrifice of others is necessary to get ahead.\n\n- Whenever a Survivor other than yourself is hooked, Fast Track is granted `1/2/3` Token(s), up to a maximum of `9/18/27` Tokens.\n- Succeeding a Great Repair Skill Check consumes all accumulated Tokens.\n- Increases the bonus Progression awarded for succeeding that Skill Check by a stackable `+1%` per Token.",
+          "image": "images/survivorPerks/Yun-JinLee/fastTrack.png"
+        },
+        {
+          "name": "Self-Preservation",
+          "description": "Life is unforgiving.\n\n- The more confirmation you get of that, the more prepared you become.\n- Whenever another Survivor is hit with a Basic Attack or Special Attack within 16 metres of you, Self-Preservation activates:\n  - Scratch Marks, Grunts of Pain when injured, and Bleeding are suppressed for the next `6/8/10` seconds.",
+          "image": "images/survivorPerks/Yun-JinLee/selfPreservation.png"
+        },
+        {
+          "name": "Smash Hit",
+          "description": "When your rival makes a mistake, you seize the opportunity.\n\n- Stunning the Killer with a Pallet triggers Smash Hit:\n  - Grants a `+50%` Haste Status Effect for `4` seconds.\n  - Smash Hit causes the Exhausted Status Effect for `30/25/20` seconds.\n  - Smash Hit cannot be used when Exhausted.",
+          "image": "images/survivorPerks/Yun-JinLee/smashHit.png"
+        }
+      ]
+    },
+    {
+      "name": "Jill Valentine",
+      "gender": "Woman",
+      "role": "Founding Member of S.T.A.R.S.",
+      "origin": "American",
+      "image": "images/survivors/JillValentine.png",
+      "perks": [
+        {
+          "name": "Blast Mine",
+          "description": "When direct combat is not an option, you still find ways to strike back.\n\n- After repairing Generators for a total of 40%, Blast Mine activates:\n  - Press the Active Ability button while near a partially progressed Generator to install a Trap, which stays active for `100/110/120` seconds.\n  - When the Killer damages the Trapped Generator, its Trap explodes half-way through:\n    - Stuns the Killer for `4` seconds.\n    - Blinds all Players within `12.5` metres of the Trapped Generator.\n  - Blast Mine deactivates after triggering successfully or once the timer runs out.\n  - The Auras of Trapped Generators are revealed to all Survivors in yellow.",
+          "image": "images/survivorPerks/Jill/blastMine.png"
+        },
+        {
+          "name": "Counterforce",
+          "description": "You know how to withstand an enemy stronger than you, and it starts with hunting down and knocking out their support.\n\n- You cleanse Totems 20% faster.\n- Gain another, stackable `20%` Cleansing Speed bonus per cleansed Totem.\n- After cleansing a Totem, the Aura of the Totem farthest from you is revealed to you for `2/3/4` seconds.",
+          "image": "images/survivorPerks/Jill/counterforce.png"
+        },
+        {
+          "name": "Resurgence",
+          "description": "You have come back from near impossible odds... and you will do it again.\n\n- Being unhooked or unhooking yourself grants you `50/60/70%` Healing progress.",
+          "image": "images/survivorPerks/Jill/resurgence.png"
+        }
+      ]
+    },
+    {
+      "name": "Leon Scott Kennedy",
+      "gender": "Man",
+      "role": "Rookie Police Officer",
+      "origin": "American",
+      "image": "images/survivors/LeonScottKennedy.png",
+      "perks": [
+        {
+          "name": "Bite the Bullet",
+          "description": "Pain hurts you as much as anyone, but you would prefer others do not know that.\n\n- When healing yourself or another Survivor, you benefit from the following effects:\n  - Suppresses all noises related to Healing and Grunts of Pain.\n  - Failed Healing Skill Checks do not trigger a Loud Noise Notification.\n  - Reduces the Penalty to `3/2/1%` of the total Progression.",
+          "image": "images/survivorPerks/Leon/biteTheBullet.png"
+        },
+        {
+          "name": "Flashbang",
+          "description": "You have adapted to a world in chaos and making what you can from the debris.\n\n- After repairing Generators for a total of `50/45/40%`, Flashbang activates:\n  - Press the Active Ability button while hiding inside a Locker to craft a Flash Grenade.\n  - Flashbang deactivates after use.",
+          "image": "images/survivorPerks/Leon/flashbang.png"
+        },
+        {
+          "name": "Rookie Spirit",
+          "description": "You keep a careful eye on objectives when they are slipping away.\n\n- While repairing Generators, succeed `5/4/3` Good or Great Skill Checks to activate Rookie Spirit for the remainder of the Trial:\n  - The Auras of any regressing Generators are revealed to you until they stop regressing by any means.",
+          "image": "images/survivorPerks/Leon/rookieSpirit.png"
+        }
+      ]
+    },
+    {
+      "name": "Mikaela Reid",
+      "gender": "Woman",
+      "role": "Young Mystic",
+      "origin": "American",
+      "image": "images/survivors/MikaelaReid.png",
+      "perks": [
+        {
+          "name": "Boon: Circle of Healing",
+          "description": "A Boon that offers comfort amidst the terror.\n\n- Press and hold the Active Ability button on a Dull or Hex Totem to bless it and create a Boon Totem.\n- Soft chimes ring out in a radius of `24 metres`.\n\nAll Survivors benefit from the following effects when inside the Boon Totem's radius:\n- Increases the Altruistic Healing speeds by `50/75/100%` when not using a Med-Kit.\n- If a Survivor is injured, their Aura is revealed to all other Survivors.\n\nSurvivors can only be affected by one instance of Boon: Circle of Healing at a time. Only one Totem can be blessed by your Boon Perks at a time and all of their effects are active on the same Boon Totem.",
+          "image": "images/survivorPerks/Mikaela/boonCircleOfHealing.png"
+        },
+        {
+          "name": "Boon: Shadow Step",
+          "description": "A Boon that conceals the truth.\n\n- Press and hold the Active Ability button on a Dull or Hex Totem to bless it and create a Boon Totem.\n- Soft chimes ring out in a radius of `24 metres`.\n\nAll Survivors benefit from the following effects when inside the Boon Totem's radius:\n- Scratch Marks are suppressed.\n- Auras are hidden from The Killer.\n\nBoth effects linger for `2/3/4 seconds` after leaving the Boon Totem's range. Only one Totem can be blessed by your Boon Perks at a time and all of their effects are active on the same Boon Totem.",
+          "image": "images/survivorPerks/Mikaela/boonShadowStep.png"
+        },
+        {
+          "name": "Clairvoyance",
+          "description": "There is an intrinsic energy in you that sees beyond your vision.\n\n- After cleansing or blessing a Totem, Clairvoyance activates:\n- While empty-handed, press and hold the Use Item button to unlock your full Aura-reading potential for up to `8/9/10 seconds`, allowing you to see the Auras of the following environmental objects within `64 metres`:\n  - Chests\n  - Exit Gate Switches\n  - Generators\n  - Hatch\n  - Hooks.",
+          "image": "images/survivorPerks/Mikaela/clairvoyance.png"
+        }
+      ]
     }
+
+
+
+
+
   ],
 
 
