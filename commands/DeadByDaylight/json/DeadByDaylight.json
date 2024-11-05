@@ -887,7 +887,182 @@
           "image": "images/survivorPerks/Gabriel/troubleshooter.png"
         }
       ]
+    },
+    {
+      "name": "Nicolas Cage",
+      "gender": "Man",
+      "role": "Superstar",
+      "origin": "American",
+      "image": "images/survivors/NicolasCage.png",
+      "perks": [
+        {
+          "name": "Dramaturgy",
+          "description": "When people bring you on to their project, they do so because of the unexpected magic you bring to your performance.\n\n- Whenever you are Healthy, Dramaturgy activates:\n  - While running, press the Active Ability button to run with knees high for 0.5 seconds to gain a +25% Haste Status Effect for 2 seconds, followed by one of the following effects:\n    - Suffer from the Exposed Status Effect for 12 seconds.\n    - Extend the duration of the Haste Status Effect for another 2 seconds.\n    - Scream, but without notifying the Killer.\n    - Receive a random Item of Rare Rarity, with a random selection of Add-ons attached to it, automatically dropping any previously held Item.\n  - The same effect cannot happen twice in a row.\n  - Dramaturgy causes the Exhausted Status Effect for `60/50/40` seconds.\n  - Dramaturgy cannot be used when Exhausted.",
+          "image": "images/survivorPerks/Nicolas/dramaturgy.png"
+        },
+        {
+          "name": "Plot Twist",
+          "description": "Big moments are vital, but you know that sometimes an understated read can be just as powerful.\n\n- Whenever you are in the Injured State, Plot Twist activates:\n  - While crouching and motionless, press the Active Ability button to silently enter the Dying State with the following benefits:\n    - Suppresses Grunts of Pain.\n    - Suppresses Pools of Blood.\n    - Grants the ability to fully recover from the Dying State.\n  - After full recovery using Plot Twist, you are healed instantly and gain a +50% Haste Status Effect for `2/3/4` seconds.\n  - Plot Twist deactivates after recovering yourself by any means and reactivates once more once the Exit Gates are powered.",
+          "image": "images/survivorPerks/Nicolas/plotTwist.png"
+        },
+        {
+          "name": "Scene Partner",
+          "description": "You lock in with your co-star, engaging with and reacting to each other on a higher level.\n\n- Whenever you are inside the Terror Radius, Scene Partner activates:\n  - Looking at the Killer causes you to scream, which reveals their Aura for `3/4/5` seconds.\n  - There is a chance of 50% that you will scream again, extending the Aura-reveal duration by another 2 seconds.\n  - Scene Partner has a cool-down of 60 seconds.",
+          "image": "images/survivorPerks/Nicolas/scenePartner.png"
+        }
+      ]
+    },
+    {
+      "name": "Ellen Ripley",
+      "gender": "Woman",
+      "role": "Nostromo Warrant Officer",
+      "origin": "American",
+      "image": "images/survivors/EllenRipley.png",
+      "perks": [
+        {
+          "name": "Chemical Trap",
+          "description": "In the Fog, an officer must adapt to the materials at hand.\n\n- After repairing Generators for a total of 20%, Chemical Trap activates:\n  - Press the Active Ability button while near a dropped Pallet to install a Trap, which stays active for `40/50/60` seconds.\n  - When the Killer breaks the Trapped Pallet, its Trap explodes, spraying the Killer with a chemical compound:\n    - Causes the Killer to suffer from a -50% Hindered Status Effect for 4 seconds.\n  - Chemical Trap deactivates after triggering successfully or once the timer runs out.\n  - The Auras of Trapped Pallets are revealed to all Survivors in yellow.",
+          "image": "images/survivorPerks/Ellen/chemicalTrap.png"
+        },
+        {
+          "name": "Light-Footed",
+          "description": "Crossing paths with deadly Killers has taught you the value of discretion.\n\n- Whenever you are healthy, Light-Footed activates:\n  - Suppresses the sound of your footsteps while running.\n  - Light-Footed has a cool-down of `28/24/20` seconds after performing a Rush Vault action.",
+          "image": "images/survivorPerks/Ellen/lightFooted.png"
+        },
+        {
+          "name": "Lucky Star",
+          "description": "You know how to stay calm in the face of incomprehensible danger.\n\n- While hiding inside a Locker, you benefit from the following effect:\n  - Suppresses your Grunts of Pain.\n  - After exiting the Locker, you benefit from the following effects for 30 seconds:\n    - Suppresses your Grunts of Pain and the creation of Pools of Blood.\n    - The Auras of the other Survivors are revealed to you.\n    - The Aura of the closest Generator is revealed to you in yellow.\n  - Lucky Star has a cool-down of `40/35/30` seconds.",
+          "image": "images/survivorPerks/Ellen/luckyStar.png"
+        }
+      ]
+    },
+    {
+      "name": "Alan Wake",
+      "gender": "Man",
+      "role": "Bestselling Author",
+      "origin": "American",
+      "image": "images/survivors/AlanWake.png",
+      "perks": [
+        {
+          "name": "Boon: Illumination",
+          "description": "Your keen insight is something best shared with others.\n\n- Press and hold the Active Ability button on a Dull or Hex Totem to bless it and create a Boon Totem.\n  - Soft chimes ring out in a radius of 24 metres.\n  - All Survivors benefit from the following effects when inside the Boon Totem's radius:\n    - The Auras of all Chests and Generators are revealed to you in blue.\n    - Increases your Action speeds for Blessing and Cleansing by `6/8/10`% while you have a lit Boon Totem.\n- Survivors can only be affected by one instance of Boon: Illumination at a time.\n- Only one Totem can be blessed by your Boon Perks at a time, and all of their effects are active on the same Boon Totem.",
+          "image": "images/survivorPerks/Alan/boonIllumination.png"
+        },
+        {
+          "name": "Champion of Light",
+          "description": "The glow of the Flashlight looks a little different, feels a little warmer.\n\n- Shining a Flashlight applies the following effect:\n  - Grants a +50% Haste Status Effect.\n  - Blinding the Killer by any means applies the following effect:\n    - Causes them to suffer from a -20% Hindered Status Effect for 6 seconds.\n  - This effect does not stack.\n- Champion of Light has a cool-down of `80/70/60` seconds after blinding the Killer.",
+          "image": "images/survivorPerks/Alan/championOfLight.png"
+        },
+        {
+          "name": "Deadline",
+          "description": "Desperation creeps in, and you push yourself to work harder.\n\n- Whenever you are in the Injured State, Deadline activates:\n  - Increases the Odds of triggering Skill Checks by `6/8/10`% while repairing or healing.\n  - Causes Skill Checks to appear in random places.\n  - Reduces the penalty for missed Skill Checks by -50%.",
+          "image": "images/survivorPerks/Alan/deadline.png"
+        }
+      ]
+    },
+    {
+      "name": "Sable Ward",
+      "gender": "Woman",
+      "role": "-",
+      "origin": "American",
+      "image": "images/survivors/SableWard.png",
+      "perks": [
+        {
+          "name": "Invocation: Weaving Spiders",
+          "description": "The place where fear festers and terror treads is also where those with the gift can reach across the veil.\n\n- When in the Basement near the circle, press the Active Ability button to begin the Invocation, which takes 60 seconds to complete.\n  - During an Invocation, your Aura is revealed to all other Survivors and they can join in, accelerating the process by +100% if they too have an Invocation Perk equipped, or by +50% if they have not.\n\n- Once the Invocation is completed, the following effects apply:\n  - Permanently reduces the Repair Charges requirement of all Generators in the Trial by `8/9/10` Charges.\n  - You automatically enter the Injured State from any previous Health State and suffer from the Broken Status Effect for the remainder of the Trial.\n- Completing an Invocation disables all Invocation Perks for the remainder of the Trial for all Survivors.",
+          "image": "images/survivorPerks/Sable/invocationWeavingSpiders.png"
+        },
+        {
+          "name": "Strength in Shadows",
+          "description": "A chance for renewed power down where danger calls home.\n\n- When you are in the Basement, Strength in Shadows activates:\n  - Unlocks the Strength in Shadows ability, allowing you to self-heal without needing a Med-Kit at 70% of the normal Healing speed.\n  - Upon finishing a heal in the Basement, the Aura of the Killer is revealed to you for `6/8/10` seconds.",
+          "image": "images/survivorPerks/Sable/strengthInShadows.png"
+        },
+        {
+          "name": "Wicked",
+          "description": "They can try to hurt you. But you're not going down so easily.\n\n- The Aura of the Killer is revealed to you for `16/18/20` seconds after unhooking yourself or being unhooked.\n  - Grants the ability to perform a successful Self-Unhook at any point during the first Hook Stage if you are hooked in the Basement.\n  - This effect cannot be triggered during the second Hook Stage or if you are hooked as the Last Survivor Standing.",
+          "image": "images/survivorPerks/Sable/wicked.png"
+        }
+      ]
+    },
+    {
+      "name": ["The Troupe", "Aestri Yazar", "Baermar Uraz"],
+      "gender": "Woman (Aestri) & Man (Baermar)",
+      "role": "-",
+      "origin": "Oerth (D&D World)",
+      "image": "images/survivors/TheTroupe.png",
+      "perks": [
+        {
+          "name": "Bardic Inspiration",
+          "description": "It's time to give your audience a show. Will you bring the house down or will you choke?\n\n- Press the Active Ability button while standing and motionless to enter the Performance interaction that lasts up to 15 seconds and empowers other Survivors within 16 metres of your location.\n\n- The empowering effect depends on the result of you rolling a d20 and lasts for 90 seconds after completing the Performance:\n  - 1: You scream, but without notifying the Killer.\n  - 2 - 10: Skill Checks grant +1% Progression.\n  - 11 - 19: Skill Checks grant +2% Progression.\n  - 20: Skill Checks grant +3% Progression.\n\n- Bardic Inspiration has a cool-down of `110/100/90` seconds after completing the Performance or cancelling it.",
+          "image": "images/survivorPerks/TheTroupe/bardicInspiration.png"
+        },
+        {
+          "name": "Mirrored Illusion",
+          "description": "A familiar spell made unfamiliar in this corrupted landscape.\n\n- After repairing Generators for a total of 20%, Mirrored Illusion activates:\n  - Press the Active Ability button when next to either a Chest, Exit Gate, Generator, or a Totem to spawn a Static Illusion that lasts for `40/50/60` seconds.\n\n- Mirrored Illusion deactivates after triggering successfully.",
+          "image": "images/survivorPerks/TheTroupe/mirroredIllusion.png"
+        },
+        {
+          "name": "Still Sight",
+          "description": "A clear mind and calm temperament will always find the means of their escape.\n\n- After standing still for `6/5/4` seconds, Still Sight activates:\n  - The Auras of the Killer as well as any Chests and Generators within 24 metres of your location are revealed to you until you start moving again.",
+          "image": "images/survivorPerks/TheTroupe/stillSight.png"
+        }
+      ]
+    },
+    {
+      "name": "Lara Croft",
+      "gender": "Woman",
+      "role": "-",
+      "origin": "English",
+      "image": "images/survivors/LaraCroft.png",
+      "perks": [
+        {
+          "name": "Finesse",
+          "description": "The threat of danger can motivate any creature to strengthen its resolve.\n\n- Whenever you are healthy, Finesse activates:\n- Increases your Vaulting speed for a Fast Vault by +20%.\n- Finesse has a cool-down of `40/35/30` seconds after performing a Fast Vault.",
+          "image": "images/survivorPerks/LaraCroft/finesse.png"
+        },
+        {
+          "name": "Hardened",
+          "description": "Live long enough, and survival will run in your blood.\n\n- After unlocking a Chest and either blessing or cleansing a Totem, Hardened activates:\n- Suppresses the urge to scream from any cause and instead reveals the Aura of the Killer to you for `3/4/5` seconds.",
+          "image": "images/survivorPerks/LaraCroft/hardened.png"
+        },
+        {
+          "name": "Specialist",
+          "description": "Adventure. Exploration. Excavation.\n\n- Whenever you unlock or rummage through a Chest, Specialist gains +1 Token, up to a maximum of 6 Tokens:\n- Succeeding a Great Repair Skill Check while repairing a Generator consumes all Tokens.\n- Permanently reduces the Repair Charges requirement of that Generator by `2/3/4` Charges per Token, up to a maximum of `12/18/24` Charges.",
+          "image": "images/survivorPerks/LaraCroft/specialist.png"
+        }
+      ]
+    },
+    {
+      "name": "Trevor Belmont",
+      "gender": "Man",
+      "role": "-",
+      "origin": "Wallachian (Romania)",
+      "image": "images/survivors/TrevorBelmont.png",
+      "perks": [
+        {
+          "name": "Exultation",
+          "description": "Fortune favours the bold, even in the darkest corners of existence.\n\n- Stunning the Killer with a Pallet upgrades the Rarity of your held Item to the next tier.\n- Recharges the Item by +25%.\n- Exultation has a cool-down of `40/35/30` seconds.",
+          "image": "images/survivorPerks/TrevorBelmont/exultation.png"
+        },
+        {
+          "name": "Eyes of Belmont",
+          "description": "A history of vampire-hunting imbues the bloodline with certain abilities.\n\n- Whenever a Generator is completed, the Aura of the Killer is revealed to you for `1/2/3` seconds.\n- Extends the duration of all instances of the Killer's Aura being revealed to you by +2 seconds.\n- Eyes of Belmont benefits from its own effect.",
+          "image": "images/survivorPerks/TrevorBelmont/eyesOfBelmont.png"
+        },
+        {
+          "name": "Moment of Glory",
+          "description": "A hero should always have the chance to make a comeback.\n\n- After performing the Unlocking or Rummaging action on Chests a total of 2 times, Moment of Glory activates:\n- When you become injured, you instantly suffer from the Broken Status Effect.\n- You are automatically healed 1 Health State after `80/70/60` seconds.\n- This effect is cancelled prematurely if you enter the Dying State.\n- Moment of Glory does not activate if you already suffer from the Broken Status Effect.\n- Moment of Glory deactivates after healing you.",
+          "image": "images/survivorPerks/TrevorBelmont/momentOfGlory.png"
+        }
+      ]
     }
+
+
+
+
+
+
+
   ],
 
 
