@@ -6,6 +6,7 @@ const survivorInformation = require('./json/DeadByDaylight.json');
 module.exports = {
     name: 'perkquiz',
     description: 'Perk Quiz',
+    aliases: ['pq'],
     async execute(message) {
         const survivors = survivorInformation.survivors;
 
