@@ -40,14 +40,16 @@ module.exports = {
             collector.on('collect', response => {
                 if (response.content.toLowerCase() === randomPerk.name.toLowerCase()) {
                     message.channel.send('Correct!');
+                    collector.stop(); // Stop the collector when answered correctly
                 } else {
-                    message.channel.send(`Incorrect! The correct answer was: ${randomPerk.name}`);
+                    message.channel.send(`Incorrect! Try again.`);
                 }
-                collector.stop();
             });
 
-            collector.on('end', () => {
-                message.channel.send('Time\'s up!');
+            collector.on('end', (collected, reason) => {
+                if (reason === 'time') {
+                    message.channel.send("Time's up!");
+                }
             });
 
         } else { // Survivor question
@@ -58,7 +60,7 @@ module.exports = {
             const collector = message.channel.createMessageCollector({ filter, time: 180000 }); // 3 minutes in milliseconds
 
             collector.on('collect', response => {
-                // Controleer op voornaam of achternaam
+                // Controleer op voornaam of achternaam, ongeacht hoofdletters
                 const userResponse = response.content.toLowerCase();
                 const fullName = randomSurvivor.name.toLowerCase();
                 const nameParts = fullName.split(' ');
@@ -66,18 +68,22 @@ module.exports = {
                 // Check of de gebruiker de voornaam of achternaam correct heeft
                 if (nameParts.includes(userResponse)) {
                     message.channel.send('Correct!');
+                    collector.stop(); // Stop the collector when answered correctly
                 } else {
-                    message.channel.send(`Incorrect! The correct answer was: ${randomSurvivor.name}`);
+                    message.channel.send(`Incorrect! Try again.`);
                 }
-                collector.stop();
             });
 
-            collector.on('end', () => {
-                message.channel.send('Time\'s up!');
+            collector.on('end', (collected, reason) => {
+                if (reason === 'time') {
+                    message.channel.send("Time's up!");
+                }
             });
         }
     }
 };
+
+
 
 
 
