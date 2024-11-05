@@ -38,7 +38,7 @@ module.exports = {
 
         collector.on('collect', response => {
             if (response.content.toLowerCase() === randomPerk.name.toLowerCase()) {
-                message.channel.send('Correct!' + perkAttachment);
+                message.channel.send('Correct!');
                 collector.stop(); // Stop the collector when answered correctly
             } else {
                 message.channel.send(`Incorrect! Try again.`);
