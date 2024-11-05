@@ -15,40 +15,42 @@ module.exports = {
         const randomPerk = randomSurvivor.perks[Math.floor(Math.random() * randomSurvivor.perks.length)];
 
         const embed = new EmbedBuilder()
-            .setTitle('Perk Quiz')
+            .setTitle('Description Quiz')
             .setColor(0x98fb98);
 
-        // Pad naar de perk-afbeelding
+        // Path to the perk image
         const imagePath = path.join(__dirname, randomPerk.image);
 
         if (!fs.existsSync(imagePath)) {
-            return message.channel.send(`Afbeelding niet gevonden voor perk: ${randomPerk.name}`);
+            return message.channel.send(`Image not found for perk: ${randomPerk.name}`);
         }
 
-        // Laad de perk-afbeelding als bijlage
+        // Load the perk image as an attachment
         const perkAttachment = new AttachmentBuilder(imagePath);
 
-        // Stel de beschrijving in voor de vraag
-        embed.setDescription(`Wat is de naam van deze perk?`);
+        // Set the description for the question
+        embed.setDescription(`What is the name of this perk?\n\n**Description:**\n${randomPerk.description}`);
         await message.channel.send({ embeds: [embed], files: [perkAttachment] });
 
-        // Filter om te controleren of de reactie van de oorspronkelijke afzender is
+        // Filter to check if the response is from the original sender
         const filter = response => response.author.id === message.author.id;
-        const collector = message.channel.createMessageCollector({ filter, time: 180000 }); // 3 minuten
+        const collector = message.channel.createMessageCollector({ filter, time: 180000 }); // 3 minutes
 
         collector.on('collect', response => {
             if (response.content.toLowerCase() === randomPerk.name.toLowerCase()) {
                 message.channel.send('Correct!');
-                collector.stop(); // Stop de collector bij correcte antwoord
+                collector.stop(); // Stop the collector when answered correctly
             } else {
-                message.channel.send(`Onjuist! Probeer het opnieuw.`);
+                message.channel.send(`Incorrect! Try again.`);
             }
         });
 
         collector.on('end', (collected, reason) => {
             if (reason === 'time') {
-                message.channel.send("De tijd is om!");
+                message.channel.send("Time's up! The correct perk was: " + randomPerk.name);
             }
         });
     }
 };
+
+
