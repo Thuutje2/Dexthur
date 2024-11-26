@@ -1018,17 +1018,17 @@
         {
           "name": "Finesse",
           "description": "The threat of danger can motivate any creature to strengthen its resolve.\n\n- Whenever you are healthy, Finesse activates:\n- Increases your Vaulting speed for a Fast Vault by +20%.\n- Finesse has a cool-down of `40/35/30` seconds after performing a Fast Vault.",
-          "image": "images/survivorPerks/LaraCroft/finesse.png"
+          "image": "images/survivorPerks/Lara/finesse.png"
         },
         {
           "name": "Hardened",
           "description": "Live long enough, and survival will run in your blood.\n\n- After unlocking a Chest and either blessing or cleansing a Totem, Hardened activates:\n- Suppresses the urge to scream from any cause and instead reveals the Aura of the Killer to you for `3/4/5` seconds.",
-          "image": "images/survivorPerks/LaraCroft/hardened.png"
+          "image": "images/survivorPerks/Lara/hardened.png"
         },
         {
           "name": "Specialist",
           "description": "Adventure. Exploration. Excavation.\n\n- Whenever you unlock or rummage through a Chest, Specialist gains +1 Token, up to a maximum of 6 Tokens:\n- Succeeding a Great Repair Skill Check while repairing a Generator consumes all Tokens.\n- Permanently reduces the Repair Charges requirement of that Generator by `2/3/4` Charges per Token, up to a maximum of `12/18/24` Charges.",
-          "image": "images/survivorPerks/LaraCroft/specialist.png"
+          "image": "images/survivorPerks/Lara/specialist.png"
         }
       ]
     },
@@ -1042,17 +1042,17 @@
         {
           "name": "Exultation",
           "description": "Fortune favours the bold, even in the darkest corners of existence.\n\n- Stunning the Killer with a Pallet upgrades the Rarity of your held Item to the next tier.\n- Recharges the Item by +25%.\n- Exultation has a cool-down of `40/35/30` seconds.",
-          "image": "images/survivorPerks/TrevorBelmont/exultation.png"
+          "image": "images/survivorPerks/Trevor/Exultation.png"
         },
         {
           "name": "Eyes of Belmont",
           "description": "A history of vampire-hunting imbues the bloodline with certain abilities.\n\n- Whenever a Generator is completed, the Aura of the Killer is revealed to you for `1/2/3` seconds.\n- Extends the duration of all instances of the Killer's Aura being revealed to you by +2 seconds.\n- Eyes of Belmont benefits from its own effect.",
-          "image": "images/survivorPerks/TrevorBelmont/eyesOfBelmont.png"
+          "image": "images/survivorPerks/Trevor/EyesOfBelmont.png"
         },
         {
           "name": "Moment of Glory",
           "description": "A hero should always have the chance to make a comeback.\n\n- After performing the Unlocking or Rummaging action on Chests a total of 2 times, Moment of Glory activates:\n- When you become injured, you instantly suffer from the Broken Status Effect.\n- You are automatically healed 1 Health State after `80/70/60` seconds.\n- This effect is cancelled prematurely if you enter the Dying State.\n- Moment of Glory does not activate if you already suffer from the Broken Status Effect.\n- Moment of Glory deactivates after healing you.",
-          "image": "images/survivorPerks/TrevorBelmont/momentOfGlory.png"
+          "image": "images/survivorPerks/Trevor/MomentOfGlory.png"
         }
       ]
     }
