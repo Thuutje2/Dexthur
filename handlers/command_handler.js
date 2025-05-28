@@ -7,7 +7,9 @@ module.exports = (client) => {
   const categories = fs.readdirSync('./commands/');
 
   for (const category of categories) {
-    const commandFiles = fs.readdirSync(`./commands/${category}`).filter(file => file.endsWith('.js'));
+    const commandFiles = fs
+      .readdirSync(`./commands/${category}`)
+      .filter((file) => file.endsWith('.js'));
 
     for (const file of commandFiles) {
       const command = require(`../commands/${category}/${file}`);
@@ -22,8 +24,6 @@ module.exports = (client) => {
       console.log(`Command ${command.name} loaded.`);
     }
   }
-  
+
   return client;
 };
-
-  

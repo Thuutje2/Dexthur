@@ -5,9 +5,12 @@ module.exports = {
   description: 'Get information about a user.',
   aliases: ['ui'],
   execute(message, args) {
-    const {guild, channel} = message
-    const user = message.mentions.users.first() || message.guild.members.cache.get(args[0])?.user || message.author;
-    const member = guild.members.cache.get(user.id)
+    const { guild, channel } = message;
+    const user =
+      message.mentions.users.first() ||
+      message.guild.members.cache.get(args[0])?.user ||
+      message.author;
+    const member = guild.members.cache.get(user.id);
 
     const embed = new EmbedBuilder()
       .setColor(0x0099ff)
@@ -17,8 +20,14 @@ module.exports = {
         { name: 'Username', value: user.username },
         { name: 'Discriminator', value: user.discriminator },
         { name: 'ID', value: user.id },
-        { name: 'Joined Discord', value: new Date(user.createdTimestamp).toLocaleDateString()},
-        { name: 'Joined Server', value: new Date(member.joinedTimestamp).toLocaleDateString()}
+        {
+          name: 'Joined Discord',
+          value: new Date(user.createdTimestamp).toLocaleDateString(),
+        },
+        {
+          name: 'Joined Server',
+          value: new Date(member.joinedTimestamp).toLocaleDateString(),
+        }
       );
 
     // Voeg het veld voor status toe als de gebruiker aanwezig is
@@ -33,7 +42,3 @@ module.exports = {
     message.channel.send({ embeds: [embed] });
   },
 };
-
-
-
-

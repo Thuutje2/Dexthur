@@ -1,2 +1,3 @@
 # GachaCards
+
 Discord bot

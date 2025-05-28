@@ -25,7 +25,7 @@ commandHandler(client);
 const interactionHandler = require('./handlers/interaction_handler');
 interactionHandler(client);
 
-// 
+//
 client.on('messageCreate', async (message) => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
@@ -38,8 +38,14 @@ client.on('messageCreate', async (message) => {
     try {
       await command.execute(message, args, client);
     } catch (error) {
-      console.error(`Error executing command "${commandName}": ${error.message}` + '\n' + error.stack);
-      message.reply('Er is een fout opgetreden bij het uitvoeren van het commando.');
+      console.error(
+        `Error executing command "${commandName}": ${error.message}` +
+          '\n' +
+          error.stack
+      );
+      message.reply(
+        'Er is een fout opgetreden bij het uitvoeren van het commando.'
+      );
     }
   }
 });
@@ -48,17 +54,4 @@ client.once('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
-
 client.login(token);
-
-
-
-
-
-
-
-
-
-
-
-
