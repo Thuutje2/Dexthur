@@ -2,6 +2,7 @@ const { EmbedBuilder, AttachmentBuilder } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 const survivorInformation = require('./json/DeadByDaylight.json');
+const { handleForfeit } = require('../../utils/handleForfeit.js');
 
 module.exports = {
     name: 'perkquiz',
@@ -39,6 +40,7 @@ module.exports = {
             const collector = message.channel.createMessageCollector({ filter, time: 180000 }); // 3 minutes in milliseconds
 
             collector.on('collect', response => {
+                if (handleForfeit(response, collector, randomPerk.name)) return;
                 if (response.content.toLowerCase() === randomPerk.name.toLowerCase()) {
                     message.channel.send('Correct!');
                     collector.stop(); // Stop the collector when answered correctly
@@ -61,6 +63,7 @@ module.exports = {
             const collector = message.channel.createMessageCollector({ filter, time: 180000 }); // 3 minutes in milliseconds
 
             collector.on('collect', response => {
+                 if (handleForfeit(response, collector, randomPerk.name)) return;
                 // Controleer op voornaam of achternaam, ongeacht hoofdletters
                 const userResponse = response.content.toLowerCase();
                 const fullName = randomSurvivor.name.toLowerCase();
