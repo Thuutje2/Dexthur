@@ -50,7 +50,7 @@ module.exports = {
         if (handleForfeit(response, collector, randomPerk.name)) return;
         if (response.content.toLowerCase() === randomPerk.name.toLowerCase()) {
           message.channel.send('Correct!');
-          collector.stop(); // Stop the collector when answered correctly
+          collector.stop(); 
         } else {
           message.channel.send(`Incorrect! Try again.`);
         }
@@ -62,7 +62,7 @@ module.exports = {
         }
       });
     } else {
-      // Survivor question
+
       embed.setDescription(`Who has this perk?`);
       message.channel.send({ embeds: [embed], files: [perkAttachment] });
 
@@ -70,23 +70,19 @@ module.exports = {
       const collector = message.channel.createMessageCollector({
         filter,
         time: 180000,
-      }); // 3 minutes in milliseconds
+      });
 
-      // Replace the collector.on('collect') block in the else (survivor question) section with this:
       collector.on('collect', (response) => {
         if (handleForfeit(response, collector, randomPerk.name)) return;
 
         const userResponse = response.content.toLowerCase();
 
-        // Handle array of names or single name
         const validNames = Array.isArray(randomSurvivor.name)
           ? randomSurvivor.name.map((n) => n.toLowerCase())
           : [randomSurvivor.name.toLowerCase()];
 
-        // Split each name into parts for partial matching
         const allNameParts = validNames.flatMap((name) => name.split(' '));
 
-        // Check if user response matches any name part
         if (allNameParts.includes(userResponse)) {
           message.channel.send('Correct!');
           collector.stop();
