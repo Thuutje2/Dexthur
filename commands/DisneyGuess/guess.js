@@ -1,164 +1,190 @@
-const { EmbedBuilder } = require('@discordjs/builders');
+const { EmbedBuilder } = require('discord.js');
 const { query } = require('../../database');
-const { getCooldownTime } = require('../../cooldown');
+const { getCooldownTime } = require('../../cooldown'); 
 
 module.exports = {
-  name: 'guess',
-  description: 'Guess the Disney character.',
-  async execute(message, args) {
-    try {
-      if (args.length === 0) {
-        return message.reply(
-          'Use: !guess <character name> to guess a Disney character.'
-        );
-      }
+    name: 'guess',
+    description: 'Guess the Disney character.',
+    async execute(message, args) {
+        try {
+            if (args.length === 0) {
+                return message.reply(
+                    'Use: `!guess <character name>` to guess a Disney character.'
+                );
+            }
 
-      const guessedCharacter = args.join(' ').toLowerCase();
-      if (!(await isCharacterValid(guessedCharacter))) {
-        return message.reply(
-          `The character ${guessedCharacter} is not valid. Please try again.`
-        );
-      }
-      const currentTime = new Date();
+            const guessedCharacter = args.join(' ').toLowerCase();
+            const currentTime = new Date();
+            const userId = message.author.id;
+            const username = message.author.username;
 
-      const userExistResult = await query(
-        'SELECT * FROM users WHERE user_id = $1',
-        [message.author.id]
-      );
-      if (userExistResult.rowCount === 0) {
-        await query('INSERT INTO users (user_id, username) VALUES ($1, $2)', [
-          message.author.id,
-          message.author.username,
-        ]);
-      }
+            // --- 1. Validate the guessed character early ---
+            if (!(await isCharacterValid(guessedCharacter))) {
+                return message.reply(
+                    `The character "${guessedCharacter}" is not a valid Disney character name in my database. Please try again with a real character.`
+                );
+            }
 
-      const userResult = await query(
-        'SELECT * FROM User_Points WHERE user_id = $1',
-        [message.author.id]
-      );
-      let userGuessData = userResult.rowCount > 0 ? userResult.rows[0] : null;
+            // --- 2. Ensure user exists in 'users' table ---
+            const userExistResult = await query(
+                'SELECT * FROM users WHERE user_id = $1',
+                [userId]
+            );
+            if (userExistResult.rowCount === 0) {
+                await query('INSERT INTO users (user_id, username) VALUES ($1, $2)', [
+                    userId,
+                    username,
+                ]);
+            }
 
-      if (!userGuessData) {
-        await query(
-          'INSERT INTO User_Points (user_id, username, points, last_guess_date, last_correct_guess_date, streak, daily_character_id, failed_attempts, hints_given, last_failed_guess_date) VALUES ($1, $2, 0, null, null, 0, null, 0, 0, null)',
-          [message.author.id, message.author.username]
-        );
-        userGuessData = {
-          failed_attempts: 0,
-          streak: 0,
-          daily_character_id: null,
-          hints_given: 0,
-          last_failed_guess_date: null,
-        };
-      }
+            // --- 3. Fetch or Initialize User_Points data ---
+            let userPointsDataResult = await query(
+                'SELECT * FROM User_Points WHERE user_id = $1',
+                [userId]
+            );
 
-      // Check cooldown from last correct or failed guess
-      const cooldownData = userGuessData.last_correct_guess_date
-        ? getCooldownTime(userGuessData.last_correct_guess_date)
-        : getCooldownTime(userGuessData.last_failed_guess_date);
+            if (userPointsDataResult.rowCount === 0) {
+                await query(
+                    'INSERT INTO User_Points (user_id, username, points, last_guess_date, last_correct_guess_date, streak, daily_character_id, failed_attempts, hints_given, last_failed_guess_date) VALUES ($1, $2, 0, null, null, 0, null, 0, 0, null)',
+                    [userId, username]
+                );
+                // Re-fetch to get the newly inserted default values for userGuessData
+                userPointsDataResult = await query('SELECT * FROM User_Points WHERE user_id = $1', [userId]);
+            }
+            let userGuessData = userPointsDataResult.rows[0];
 
-      if (cooldownData.timeRemaining > 0) {
-        return message.reply(
-          `You must wait ${cooldownData.formattedDate} to guess again. (${cooldownData.remainingMinutes} minutes remaining)`
-        );
-      }
+            // --- 4. Cooldown Logic ---
+            let cooldownApplied = false;
+            let cooldownMessage = '';
 
-      // Fetch the daily character (only fetch new one if there is none or it's the first guess)
-      let dailyCharacter;
-      if (!userGuessData.daily_character_id) {
-        const dailyCharacterResult = await query(
-          'SELECT * FROM disney_characters ORDER BY RANDOM() LIMIT 1'
-        );
-        dailyCharacter = dailyCharacterResult.rows[0];
+            // Cooldown after a correct guess (waiting for next day's character)
+            if (userGuessData.last_correct_guess_date) {
+                const correctGuessCooldown = getCooldownTime(userGuessData.last_correct_guess_date);
+                if (correctGuessCooldown.timeRemaining > 0) {
+                    cooldownApplied = true;
+                    cooldownMessage = `You've already correctly guessed the daily character! Please wait ${correctGuessCooldown.remainingMinutes} minute(s) for a new one. (Approx. ${correctGuessCooldown.remainingMinutes} minutes remaining)`;
+                }
+            }
+            // Cooldown after hitting 6 failed attempts on a character
+            else if (userGuessData.daily_character_id && userGuessData.failed_attempts >= 6) {
+                const failedGuessCooldown = getCooldownTime(userGuessData.last_failed_guess_date);
+                if (failedGuessCooldown.timeRemaining > 0) {
+                    cooldownApplied = true;
+                    cooldownMessage = `You've exhausted your hints for the previous character. Please wait ${failedGuessCooldown.remainingMinutes} minute(s) to guess a new one. (Approx. ${failedGuessCooldown.remainingMinutes} minutes remaining)`;
+                }
+            }
 
-        await query(
-          'UPDATE User_Points SET daily_character_id = $1, last_guess_date = $2, failed_attempts = 0, hints_given = 0 WHERE user_id = $3',
-          [dailyCharacter.id, currentTime, message.author.id]
-        );
+            if (cooldownApplied) {
+                return message.reply(cooldownMessage);
+            }
 
-        userGuessData.daily_character_id = dailyCharacter.id;
-        userGuessData.failed_attempts = 0;
-        userGuessData.hints_given = 0;
-      } else {
-        const characterResult = await query(
-          'SELECT * FROM disney_characters WHERE id = $1',
-          [userGuessData.daily_character_id]
-        );
-        dailyCharacter = characterResult.rows[0];
-      }
+            // --- 5. Fetch or Assign Daily Character ---
+            let dailyCharacter;
+            // If no daily character assigned OR
+            // if they've had 6 failed attempts on the *previous* character (meaning they need a new one)
+            if (!userGuessData.daily_character_id || userGuessData.failed_attempts >= 6) {
+                const dailyCharacterResult = await query(
+                    'SELECT * FROM disney_characters ORDER BY RANDOM() LIMIT 1'
+                );
+                dailyCharacter = dailyCharacterResult.rows[0];
 
-      const dailyCharacterHints = dailyCharacter.hints;
+                // Reset user's state for the new character
+                await query(
+                    'UPDATE User_Points SET daily_character_id = $1, last_guess_date = $2, failed_attempts = 0, hints_given = 0, streak = 0, last_failed_guess_date = null, last_correct_guess_date = null WHERE user_id = $3',
+                    [dailyCharacter.id, currentTime, userId]
+                );
+                // Re-fetch userGuessData to reflect the updated state immediately
+                userGuessData = (await query('SELECT * FROM User_Points WHERE user_id = $1', [userId])).rows[0];
+            } else {
+                // Continue guessing the currently assigned daily character
+                const characterResult = await query(
+                    'SELECT * FROM disney_characters WHERE id = $1',
+                    [userGuessData.daily_character_id]
+                );
+                dailyCharacter = characterResult.rows[0];
+            }
 
-      // Guess logic
-      if (guessedCharacter === dailyCharacter.name.toLowerCase()) {
-        const streak = userGuessData.streak + 1;
-        const pointsEarned =
-          [50, 40, 30, 20, 10, 5][userGuessData.failed_attempts] || 0;
-        const newPoints = (userGuessData.points || 0) + pointsEarned;
+            const dailyCharacterHints = dailyCharacter.hints || []; // Ensure hints is an array, even if empty
 
-        await query(
-          'UPDATE User_Points SET last_guess_date = $1, last_correct_guess_date = $2, streak = $3, points = $4, failed_attempts = 0, daily_character_id = null WHERE user_id = $5',
-          [currentTime, currentTime, streak, newPoints, message.author.id]
-        );
+            // --- 6. Guess Logic ---
+            if (guessedCharacter === dailyCharacter.name.toLowerCase()) {
+                // --- Correct Guess ---
+                const streak = userGuessData.streak + 1;
+                // Points are awarded based on how many attempts it took for THIS character
+                const pointsEarned = [50, 40, 30, 20, 10, 5][userGuessData.failed_attempts] || 0;
+                const newPoints = (userGuessData.points || 0) + pointsEarned;
 
-        const embed = new EmbedBuilder()
-          .setTitle('Correct Guess!')
-          .setDescription(
-            `The character was **${dailyCharacter.name}**.\n From **${dailyCharacter.series_film}** \nYou earned **${pointsEarned}** points!\nCorrect guesses streak: **${streak}**`
-          )
-          .setImage(dailyCharacter.image)
-          .setColor(0x78f06a);
+                await query(
+                    'UPDATE User_Points SET last_guess_date = $1, last_correct_guess_date = $2, streak = $3, points = $4, failed_attempts = 0, daily_character_id = null, hints_given = 0 WHERE user_id = $5',
+                    [currentTime, currentTime, streak, newPoints, userId]
+                );
 
-        message.channel.send({ embeds: [embed] });
-      } else {
-        const failedAttempts = userGuessData.failed_attempts + 1;
-        const hintsGiven = Math.min(failedAttempts, dailyCharacterHints.length);
+                const embed = new EmbedBuilder()
+                    .setTitle('🎉 Correct Guess! 🎉')
+                    .setDescription(
+                        `You guessed **${dailyCharacter.name}** correctly, from **${dailyCharacter.series_film}**!\n` +
+                        `You earned **${pointsEarned}** points!\n` +
+                        `Your current correct guesses streak: **${streak}**`
+                    )
+                    .setImage(dailyCharacter.image)
+                    .setColor(0x78f06a); // Green color for success
 
-        // Update failed_attempts, hints_given, and set last_failed_guess_date if 6 failed attempts
-        await query(
-          'UPDATE User_Points SET failed_attempts = $1, hints_given = $2 WHERE user_id = $3',
-          [failedAttempts, hintsGiven, message.author.id]
-        );
+                message.channel.send({ embeds: [embed] });
 
-        if (failedAttempts < 6) {
-          const embed = new EmbedBuilder()
-            .setTitle('Guess the Disney Character')
-            .setDescription('Guess the character!')
-            .setColor(0xc56af0)
-            .addFields({
-              name: 'Hints',
-              value: dailyCharacterHints.slice(0, hintsGiven).join('\n'),
-            });
+            } else {
+                // --- Incorrect Guess ---
+                const failedAttempts = userGuessData.failed_attempts + 1;
 
-          message.channel.send({ embeds: [embed] });
-        } else if (failedAttempts === 6) {
-          await query(
-            'UPDATE User_Points SET daily_character_id = null, failed_attempts = 0, last_failed_guess_date = $1 WHERE user_id = $2',
-            [currentTime, message.author.id]
-          );
+                if (failedAttempts < 6) { // User still has hints left
+                    const hintsGiven = Math.min(failedAttempts, dailyCharacterHints.length);
 
-          const correctCharacterName = dailyCharacter.name;
-          const correctCharacterFilm = dailyCharacter.series_film;
+                    await query(
+                        'UPDATE User_Points SET failed_attempts = $1, hints_given = $2, last_guess_date = $3 WHERE user_id = $4',
+                        [failedAttempts, hintsGiven, currentTime, userId]
+                    );
 
-          message.reply(
-            `You've run out of hints. The character was **${correctCharacterName}**, From **${correctCharacterFilm}**. You can try again right now.`
-          );
+                    const embed = new EmbedBuilder()
+                        .setTitle('❌ Incorrect Guess! Try Again!')
+                        .setDescription(
+                            `That's not it! You've made **${failedAttempts}** incorrect guess(es) for today's character.`
+                        )
+                        .setColor(0xf06a6a) // Red color for incorrect
+                        .addFields({
+                            name: 'Hints',
+                            value: hintsGiven > 0 ? dailyCharacterHints.slice(0, hintsGiven).join('\n') : 'No hints available yet! Try guessing again to reveal one.',
+                        });
+
+                    message.channel.send({ embeds: [embed] });
+
+                } else { // User runs out of hints (6 or more failed attempts)
+                    await query(
+                        'UPDATE User_Points SET daily_character_id = null, failed_attempts = 0, hints_given = 0, streak = 0, last_failed_guess_date = $1 WHERE user_id = $2',
+                        [currentTime, userId]
+                    );
+
+                    const correctCharacterName = dailyCharacter.name;
+                    const correctCharacterFilm = dailyCharacter.series_film;
+
+                    message.reply(
+                        `You've run out of hints. The character was **${correctCharacterName}** from **${correctCharacterFilm}**.\n` +
+                        `You can try guessing a **new** character after a short cooldown.`
+                    );
+                }
+            }
+        } catch (error) {
+            console.error('Error guessing the character:', error);
+            message.channel.send(
+                'An unexpected error occurred while processing your guess. Please try again later.'
+            );
         }
-      }
-    } catch (error) {
-      console.error('Error guessing the character:', error);
-      message.channel.send(
-        'An error occurred while guessing the character. Please try again later.'
-      );
-    }
-  },
+    },
 };
 
-// Helper function to check if the guessed character is valid
+// Helper function to check if the guessed character is valid in the database
 async function isCharacterValid(guessedCharacter) {
-  const characterResult = await query(
-    'SELECT * FROM disney_characters WHERE LOWER(name) = $1',
-    [guessedCharacter]
-  );
-  return characterResult.rowCount > 0;
+    const characterResult = await query(
+        'SELECT * FROM disney_characters WHERE LOWER(name) = $1',
+        [guessedCharacter]
+    );
+    return characterResult.rowCount > 0;
 }
