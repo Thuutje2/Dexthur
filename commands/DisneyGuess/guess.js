@@ -62,7 +62,7 @@ module.exports = {
                 const correctGuessCooldown = getCooldownTime(userGuessData.last_correct_guess_date);
                 if (correctGuessCooldown.timeRemaining > 0) {
                     cooldownApplied = true;
-                    cooldownMessage = `You've already correctly guessed the daily character! Please wait ${correctGuessCooldown.remainingMinutes} minute(s) for a new one. (Approx. ${correctGuessCooldown.remainingMinutes} minutes remaining)`;
+                    cooldownMessage = `You've already correctly guessed the daily character! Please wait ${correctGuessCooldown.remainingMinutes} minute(s) for a new one.`;
                 }
             }
             // Cooldown after hitting 6 failed attempts on a character
@@ -70,7 +70,7 @@ module.exports = {
                 const failedGuessCooldown = getCooldownTime(userGuessData.last_failed_guess_date);
                 if (failedGuessCooldown.timeRemaining > 0) {
                     cooldownApplied = true;
-                    cooldownMessage = `You've exhausted your hints for the previous character. Please wait ${failedGuessCooldown.remainingMinutes} minute(s) to guess a new one. (Approx. ${failedGuessCooldown.remainingMinutes} minutes remaining)`;
+                    cooldownMessage = `You've exhausted your hints for the previous character. Please wait ${failedGuessCooldown.remainingMinutes} minute(s) to guess a new one.`;
                 }
             }
 

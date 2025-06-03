@@ -31,5 +31,10 @@ module.exports = {
     message.channel.send(
       'Your idea has been submitted! Thank you for your contribution.'
     );
+
+    setTimeout(() => {
+      message.delete();
+    }, 5000); // Delete the command message after 5 seconds
+
   },
 };
