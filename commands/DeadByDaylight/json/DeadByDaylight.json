@@ -1055,6 +1055,30 @@
           "image": "images/survivorPerks/Trevor/MomentOfGlory.png"
         }
       ]
+    },
+    {
+      "name": "Taurie Cain",
+      "gender": "Woman",
+      "role": "-",
+      "origin": "Scottish",
+      "image": "images/survivors/TaurieCain.png",
+      "perks": [
+        {
+          "name": "Clean Break",
+          "description": "At the end of the day, everyone has to look out for themselves.\n\n- After completing a Healing action on another Survivor, Clean Break activates.\n- Press the Active Ability button while being healed by another Survivor to trigger the following effects:\n  - You suffer from the Broken Status Effect.\n  - You are automatically healed 1 Health State after 80/70/60 seconds.\n  - This effect is cancelled prematurely if you enter the Dying State.\n  - Clean Break does not activate if you already suffer from the Broken Status Effect.\n  - Clean Break deactivates after healing you.\n\n\"I'll be fine! Don't stick your neck out for me.\" — Taurie Cain",
+          "image": "images/survivorPerks/Taurie/cleanBreak.png"
+        },
+        {
+          "name": "Invocation: Treacherous Crows",
+          "description": "One with arcane knowledge has no reason to fear those watchful birds.\n\n- When in the Basement near the circle, press the Active Ability button to begin the Invocation, which takes 60 seconds to complete.\n- During an Invocation, your Aura is revealed to all other Survivors. They can join in to accelerate the process:\n  - +100% if they also have an Invocation Perk equipped.\n  - +50% if they do not.\n- Once the Invocation is completed, the following effects apply:\n  - Whenever the Killer scares a Crow while a Survivor is inside their Terror Radius, their Aura is revealed to all Survivors for 1/1.5/2 seconds.\n  - You automatically enter the Injured State from any previous Health State and suffer from the Broken Status Effect for the remainder of the Trial.\n  - Completing an Invocation disables all Invocation Perks for the remainder of the Trial for all Survivors.\n\n\"Remember your training. They taught you all about the crows.\" — Taurie Cain",
+          "image": "images/survivorPerks/Taurie/invocationTreacherousCrows.png"
+        },
+        {
+          "name": "Shoulder the Burden",
+          "description": "Born to be a disciple. Ready to submit to a greater cause. This is your calling.\n\n- Once per Trial, and while you are not on Death Hook, press the Active Ability button while standing in front of a Hooked Survivor to unhook them and trigger the following effects:\n  - Trade 1 Hook State with the other Survivor to their benefit.\n  - Causes you to scream.\n  - Causes you to suffer from the Exposed Status Effect for 60/50/40 seconds.\n\n\"It's not your time yet. Now go on!\" — Taurie Cain",
+          "image": "images/survivorPerks/Taurie/shoulderTheBurden.png"
+        }
+      ]
     }
   ],
 

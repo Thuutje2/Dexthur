@@ -73,7 +73,7 @@ module.exports = {
       });
 
       collector.on('collect', (response) => {
-        if (handleForfeit(response, collector, randomPerk.name)) return;
+        if (handleForfeit(response, collector, randomSurvivor.name)) return;
 
         const userResponse = response.content.toLowerCase();
 
