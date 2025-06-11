@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const { Client, GatewayIntentBits } = require('discord.js');
+const { Client, GatewayIntentBits, Collection } = require('discord.js');
 const fs = require('fs');
 const { EmbedBuilder } = require('@discordjs/builders');
 const client = new Client({
@@ -24,6 +24,10 @@ commandHandler(client);
 // Laad interactie-handlers
 const interactionHandler = require('./handlers/interaction_handler');
 interactionHandler(client);
+
+// Laad slash commands
+const deployCommands = require('./handlers/deploy-commands');
+deployCommands(client);
 
 //
 client.on('messageCreate', async (message) => {
@@ -52,6 +56,36 @@ client.on('messageCreate', async (message) => {
 
 client.once('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
+});
+
+client.on('interactionCreate', async interaction => {
+  if (!interaction.isChatInputCommand()) return;
+
+  const command = client.commands.get(interaction.commandName);
+
+  if (!command || !command.executeSlash) {
+    console.error(`No slash command matching ${interaction.commandName} was found.`);
+    return;
+  }
+
+  try {
+    await command.executeSlash(interaction);
+  } catch (error) {
+    console.error(`Error executing slash command "${interaction.commandName}":`, error);
+    const errorMessage = 'There was an error executing this command!';
+    
+    if (interaction.replied || interaction.deferred) {
+      await interaction.followUp({ 
+        content: errorMessage, 
+        ephemeral: true 
+      });
+    } else {
+      await interaction.reply({ 
+        content: errorMessage, 
+        ephemeral: true 
+      });
+    }
+  }
 });
 
 client.login(token);

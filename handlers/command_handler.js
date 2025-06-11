@@ -21,7 +21,11 @@ module.exports = (client) => {
         }
       }
 
-      console.log(`Command ${command.name} loaded.`);
+      if (command.data && command.executeSlash) {
+        console.log(`Command ${command.name} loaded (Traditional + Slash).`);
+      } else {
+        console.log(`Command ${command.name} loaded (Traditional only).`);
+      }
     }
   }
 
