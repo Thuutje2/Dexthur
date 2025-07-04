@@ -1085,12 +1085,17 @@
   "killers": [
     {
       "name": "The Trapper",
-      "image": "https://example.com/images/killers/trapper.png",
+      "realname": "Evan MacMillan",
+      "gender": "Man",
+      "realm": "The MacMillan Estate",
+      "power": "Bear Trap",
+      "origin": "American",
+      "image": "images/killers/TheTrapper.png",
       "perks": [
         {
-          "name": "Unnerving Presence",
-          "description": "Increases the chance of skill check triggers for survivors.",
-          "image": "https://example.com/images/perks/unnerving_presence.png"
+          "name": "Agitation",
+          "description": "Increases speed while carrying a survivor.",
+          "image": "https://example.com/images/perks/agitation.png"
         },
         {
           "name": "Brutal Strength",
@@ -1098,9 +1103,9 @@
           "image": "https://example.com/images/perks/brutal_strength.png"
         },
         {
-          "name": "Agitation",
-          "description": "Increases speed while carrying a survivor.",
-          "image": "https://example.com/images/perks/agitation.png"
+          "name": "Unnerving Presence",
+          "description": "Increases the chance of skill check triggers for survivors.",
+          "image": "https://example.com/images/perks/unnerving_presence.png"
         }
       ]
     },

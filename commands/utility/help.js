@@ -49,12 +49,12 @@ module.exports = {
           {
             name: 'Survivor Information',
             value:
-              'Get information about a survivor. `!SurvivorInformation <survivorname>` or `!survivors` or `!surv`',
+              'Get information about a survivor. `!SurvivorInformation <survivorname>` or `!surv`',
           },
           {
             name: 'Survivors',
             value:
-              'List of all survivors. `!Survivors` or `!SurvivorList` or `!SurvivorsList`',
+              'List of all survivors. `!Survivors`',
           },
           {
             name: 'Perk Quiz',
@@ -165,3 +165,4 @@ module.exports = {
     });
   },
 };
+
