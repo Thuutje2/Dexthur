@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const survivorInformation = require('./json/DeadByDaylight.json');
 const { handleForfeit } = require('../../utils/handleForfeit.js');
+const { addXp } = require('../../utils/xpManager');
 
 module.exports = {
   name: 'perkquiz',
@@ -46,10 +47,11 @@ module.exports = {
         time: 180000,
       }); // 3 minutes in milliseconds
 
-      collector.on('collect', (response) => {
+      collector.on('collect', async (response) => {
         if (handleForfeit(response, collector, randomPerk.name)) return;
         if (response.content.toLowerCase() === randomPerk.name.toLowerCase()) {
           message.channel.send('Correct!');
+          await addXp(message, message.author.id);
           collector.stop(); 
         } else {
           message.channel.send(`Incorrect! Try again.`);
@@ -72,7 +74,7 @@ module.exports = {
         time: 180000,
       });
 
-      collector.on('collect', (response) => {
+      collector.on('collect', async (response) => {
         if (handleForfeit(response, collector, randomSurvivor.name)) return;
 
         const userResponse = response.content.toLowerCase();
@@ -85,6 +87,7 @@ module.exports = {
 
         if (allNameParts.includes(userResponse)) {
           message.channel.send('Correct!');
+          await addXp(message, message.author.id);
           collector.stop();
         } else {
           message.channel.send('Incorrect! Try again.');

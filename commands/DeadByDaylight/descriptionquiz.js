@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const survivorInformation = require('./json/DeadByDaylight.json');
 const { handleForfeit } = require('../../utils/handleForfeit.js');
+const { addXp } = require('../../utils/xpManager');
 
 module.exports = {
   name: 'descriptionquiz',
@@ -53,6 +54,7 @@ module.exports = {
       if (response.content.toLowerCase() === randomPerk.name.toLowerCase()) {
         message.channel.send('Correct!');
         collector.stop(); // Stop the collector when answered correctly
+        addXp(message, message.author.id);
       } else {
         message.channel.send(`Incorrect! Try again.`);
       }

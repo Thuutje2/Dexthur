@@ -31,6 +31,10 @@ interactionHandler(client);
 const deployCommands = require('./handlers/deploy-commands');
 deployCommands(client);
 
+// Laad event handlers
+const eventHandler = require('./handlers/event_handler');
+eventHandler(client);
+
 //
 client.on('messageCreate', async (message) => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
