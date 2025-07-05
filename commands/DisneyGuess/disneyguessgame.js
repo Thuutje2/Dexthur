@@ -25,7 +25,7 @@ module.exports = {
         {
           name: '⏲️ Waiting Time',
           value:
-            'After each correct attempt, you must wait 15 minutes before you can guess again.\n',
+            'After each correct attempt, you must wait 15 minutes before you can guess again. With `!dcr` you can see your remaining cooldown time.\n',
         },
         {
           name: '\n\n 🏆 Points and Streaks',

@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('@discordjs/builders');
-const { query } = require('../../database');
+const { UserPoints } = require('../../models/index');
 
 module.exports = {
   name: 'guessLeaderboard',
@@ -7,20 +7,20 @@ module.exports = {
   aliases: ['guesslb', 'glb'],
   async execute(message, args) {
     try {
-      // Haal de top 10 van de leaderboard op uit de database
-      const leaderboardResult = await query(
-        'SELECT * FROM user_points ORDER BY points DESC, streak DESC LIMIT 10'
-      );
-      const leaderboard = leaderboardResult.rows;
+      // Get the top 10 from the leaderboard from the database
+      const leaderboard = await UserPoints.find({})
+        .sort({ points: -1, streak: -1 })
+        .limit(10)
+        .select('username points streak');
 
-      // Bouw een embed met de leaderboard
+      // Build an embed with the leaderboard
       const embed = new EmbedBuilder()
         .setTitle('Disney Character Guessing Game Leaderboard')
         .setDescription('Top 10')
         .setColor(0x0099ff)
         .setTimestamp();
 
-      // Voeg de top 10 van de leaderboard toe aan de embed
+      // Add the top 10 of the leaderboard to the embed
       leaderboard.forEach((user, index) => {
         embed.addFields({
           name: `${index + 1}. ${user.username}`,
@@ -28,7 +28,7 @@ module.exports = {
         });
       });
 
-      // Stuur de embed naar de gebruiker
+      // Send the embed to the user
       message.channel.send({ embeds: [embed] });
     } catch (error) {
       console.error('Error occurred in guessLeaderboard command', error);

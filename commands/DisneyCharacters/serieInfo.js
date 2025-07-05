@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('@discordjs/builders');
-const { query } = require('../../database');
+const { DisneyCharacter } = require('../../models/index');
 
 module.exports = {
   name: 'serieInfo',
@@ -8,22 +8,22 @@ module.exports = {
   async execute(message, args) {
     try {
       const serie = args.join(' ').toLowerCase();
-      const res = await query(
-        'SELECT * FROM disney_characters WHERE LOWER(series_film) = $1',
-        [serie]
-      );
+      
+      const characters = await DisneyCharacter.find({ 
+        series_film: { $regex: new RegExp(`^${serie}$`, 'i') } 
+      });
 
-      if (res.rows.length === 0) {
+      if (characters.length === 0) {
         return message.reply(
           `No characters found for series or movie: ${serie}`
         );
       }
 
-      const serieCharacters = res.rows.map((row) => row.name);
+      const serieCharacters = characters.map((character) => character.name);
 
       const embed = new EmbedBuilder()
         .setTitle(`${serie.toUpperCase()}`)
-        .setColor(0x00ae86) // Optionally, set a color for the embed
+        .setColor(0x00ae86)
         .setDescription(
           `**Total characters:** ${serieCharacters.length} \n\n` +
             serieCharacters.join('\n')

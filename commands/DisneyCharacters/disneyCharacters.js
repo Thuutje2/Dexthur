@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('@discordjs/builders');
-const { query } = require('../../database');
+const { DisneyCharacter } = require('../../models/index');
 
 module.exports = {
   name: 'disneycharacters',
@@ -8,19 +8,19 @@ module.exports = {
   async execute(message, args) {
     try {
       // Query to get all characters and their corresponding series or films
-      const result = await query(
-        'SELECT series_film, name FROM disney_characters ORDER BY series_film ASC, name ASC'
-      );
+      const characters = await DisneyCharacter.find({})
+        .sort({ series_film: 1, name: 1 })
+        .select('series_film name');
 
-      const totalCharacters = result.rows.length;
+      const totalCharacters = characters.length;
 
       // Create an object to group characters by their series/film
       const seriesFilms = {};
-      result.rows.forEach((row) => {
-        if (!seriesFilms[row.series_film]) {
-          seriesFilms[row.series_film] = [];
+      characters.forEach((character) => {
+        if (!seriesFilms[character.series_film]) {
+          seriesFilms[character.series_film] = [];
         }
-        seriesFilms[row.series_film].push(row.name);
+        seriesFilms[character.series_film].push(character.name);
       });
 
       // Convert the object to an array of embeds (pages)

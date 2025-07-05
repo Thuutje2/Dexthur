@@ -1,4 +1,4 @@
-const { query } = require('../../database');
+const { UserPoints, UserFavorites } = require('../../models/index');
 
 module.exports = {
   name: 'disneyFavoriteCharacter',
@@ -13,11 +13,7 @@ module.exports = {
       );
     }
 
-    const profileResult = await query(
-      'SELECT * FROM User_Points WHERE user_id = $1',
-      [message.author.id]
-    );
-    const profile = profileResult.rows[0];
+    const profile = await UserPoints.findOne({ user_id: message.author.id });
 
     if (!profile) {
       return message.reply(
@@ -30,14 +26,10 @@ module.exports = {
 
     try {
       // Update only the favorite character in the database
-      await query(
-        `
-                INSERT INTO user_favorites (user_id, favorite_character_name)
-                VALUES ($1, $2)
-                ON CONFLICT (user_id) DO UPDATE
-                SET favorite_character_name = EXCLUDED.favorite_character_name
-            `,
-        [message.author.id, characterName]
+      await UserFavorites.findOneAndUpdate(
+        { user_id: message.author.id },
+        { favorite_character_name: characterName },
+        { upsert: true }
       );
 
       message.reply('Your favorite character has been updated!');

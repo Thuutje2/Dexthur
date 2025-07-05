@@ -1,6 +1,6 @@
 const { getCooldownTime } = require('../../cooldown');
 const { EmbedBuilder } = require('@discordjs/builders');
-const { query } = require('../../database');
+const { UserPoints, UserNotifications } = require('../../models/index');
 
 module.exports = {
   name: 'disneyCooldownReminder',
@@ -11,12 +11,8 @@ module.exports = {
     try {
       let targetUser = message.mentions.users.first() || message.author;
 
-      // Get the user's profile data from the User_Points table
-      const profileResult = await query(
-        'SELECT * FROM User_Points WHERE user_id = $1',
-        [targetUser.id]
-      );
-      const profile = profileResult.rows[0];
+      // Get the user's profile data from the user_points collection
+      const profile = await UserPoints.findOne({ user_id: targetUser.id });
 
       // If the profile does not exist, give a message and stop the execution of the command
       if (!profile) {
@@ -26,19 +22,15 @@ module.exports = {
       }
 
       // Get notification setting for the user
-      const notificationResult = await query(
-        'SELECT * FROM user_notifications WHERE user_id = $1',
-        [targetUser.id]
-      );
-      const notification = notificationResult.rows[0];
+      const notification = await UserNotifications.findOne({ user_id: targetUser.id });
 
       // Check if the command is to toggle notifications
       if (args[0] && args[0].toLowerCase() === 'guess') {
         if (notification) {
           // If notifications are already on, turn them off
-          await query(
-            'UPDATE user_notifications SET notifications_disney_guess = NOT notifications_disney_guess WHERE user_id = $1',
-            [targetUser.id]
+          await UserNotifications.findOneAndUpdate(
+            { user_id: targetUser.id },
+            { notifications_disney_guess: !notification.notifications_disney_guess }
           );
           const status = notification.notifications_disney_guess
             ? '🔕 Notifications turned off.'
@@ -46,10 +38,10 @@ module.exports = {
           return message.reply(status);
         } else {
           // If the user doesn't have a notification setting, create one with notifications off
-          await query(
-            'INSERT INTO user_notifications (user_id, notifications_disney_guess) VALUES ($1, $2)',
-            [targetUser.id, false]
-          );
+          await UserNotifications.create({
+            user_id: targetUser.id,
+            notifications_disney_guess: false
+          });
           return message.reply(
             '🔕 Notifications turned off. Use `!dcr guess` again to turn them on.'
           );
@@ -60,14 +52,14 @@ module.exports = {
       const lastCorrectGuessDate = new Date(profile.last_correct_guess_date);
       const lastFailedGuessDate = new Date(profile.last_failed_guess_date);
 
-      // Bepaal welke cooldown we moeten gebruiken
+      // Determine which cooldown we should use
       const now = new Date();
       const lastRelevantGuessDate =
         lastFailedGuessDate > lastCorrectGuessDate
           ? lastFailedGuessDate
           : lastCorrectGuessDate;
 
-      // Haal de cooldown informatie op
+      // Get the cooldown information
       const cooldown = getCooldownTime(lastRelevantGuessDate);
 
       // Determine the notification icon based on the user's preference

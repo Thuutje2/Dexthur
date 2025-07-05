@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('@discordjs/builders');
-const { query } = require('../../database');
+const { DisneyCharacter } = require('../../models/index');
 
 module.exports = {
   name: 'characterInfo',
@@ -9,18 +9,15 @@ module.exports = {
     try {
       const character = args.join(' ').toLowerCase();
 
-      const result = await query(
-        'SELECT * FROM disney_characters WHERE LOWER(name) = $1',
-        [character]
-      );
+      const characterInformation = await DisneyCharacter.findOne({ 
+        name: { $regex: new RegExp(`^${character}$`, 'i') } 
+      });
 
-      if (!result || result.rows.length === 0) {
+      if (!characterInformation) {
         return message.channel.send(
           `No information found for character: ${character}`
         );
       }
-
-      const characterInformation = result.rows[0];
 
       if (!characterInformation.name || !characterInformation.image) {
         return message.channel.send(

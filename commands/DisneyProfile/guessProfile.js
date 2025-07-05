@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('@discordjs/builders');
-const { query } = require('../../database');
+const { UserPoints, UserFavorites } = require('../../models/index');
 const { getCooldownTime } = require('../../cooldown');
 
 module.exports = {
@@ -11,42 +11,35 @@ module.exports = {
     try {
       let targetUser = message.mentions.users.first() || message.author;
 
-      // Haal de profielgegevens van de gebruiker op uit de User_Points tabel
-      const profileResult = await query(
-        'SELECT * FROM User_Points WHERE user_id = $1',
-        [targetUser.id]
-      );
-      const profile = profileResult.rows[0];
+      // Get the user's profile data from the user_points collection
+      const profile = await UserPoints.findOne({ user_id: targetUser.id });
 
-      // Als het profiel niet bestaat, geef een melding en stop de uitvoering van het commando
+      // If the profile doesn't exist, give a message and stop the execution of the command
       if (!profile) {
         return message.reply(
           'This user has not played the Disney Character Guessing Game yet.'
         );
       }
 
-      // Haal de favoriete gegevens van de gebruiker op
-      const favoritesResult = await query(
-        'SELECT * FROM user_favorites WHERE user_id = $1',
-        [targetUser.id]
-      );
-      const favorites = favoritesResult.rows[0] || {};
+      // Get the user's favorite data
+      const favorites =
+        (await UserFavorites.findOne({ user_id: targetUser.id })) || {};
 
       // Convert last guess dates to Date objects
       const lastCorrectGuessDate = new Date(profile.last_correct_guess_date);
       const lastFailedGuessDate = new Date(profile.last_failed_guess_date);
 
-      // Bepaal welke cooldown we moeten gebruiken
+      // Determine which cooldown we should use
       const now = new Date();
       const lastRelevantGuessDate =
         lastFailedGuessDate > lastCorrectGuessDate
           ? lastFailedGuessDate
           : lastCorrectGuessDate;
 
-      // Haal de cooldown informatie op
+      // Get the cooldown information
       const cooldown = getCooldownTime(lastRelevantGuessDate);
 
-      // Bouw een embed met de profielgegevens
+      // Build an embed with the profile data
       const embed = new EmbedBuilder()
         .setTitle(targetUser.username + `'s Profile`)
         .setColor(0x0099ff)
@@ -75,7 +68,7 @@ module.exports = {
           }
         );
 
-      // Stuur de embed naar de gebruiker
+      // Send the embed to the user
       message.channel.send({ embeds: [embed] });
     } catch (error) {
       console.error('Error occurred in guessProfile command', error);

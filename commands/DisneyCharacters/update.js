@@ -1,28 +1,28 @@
 const { EmbedBuilder } = require('@discordjs/builders');
-const { query } = require('../../database');
+const { DisneyCharacter } = require('../../models/index');
 
 module.exports = {
   name: 'update',
   description: 'New Characters to guess',
   async execute(message, args) {
     try {
-      const result = await query(
-        'SELECT name, series_film FROM disney_characters WHERE is_new = TRUE ORDER BY series_film ASC, name ASC'
-      );
+      const newCharacters = await DisneyCharacter.find({ is_new: true })
+        .sort({ series_film: 1, name: 1 })
+        .select('name series_film');
 
-      const totalNewCharacters = result.rows.length;
+      const totalNewCharacters = newCharacters.length;
 
-      const newCharacters = {};
-      result.rows.forEach((row) => {
-        if (!newCharacters[row.series_film]) {
-          newCharacters[row.series_film] = [];
+      const newCharactersByFilm = {};
+      newCharacters.forEach((character) => {
+        if (!newCharactersByFilm[character.series_film]) {
+          newCharactersByFilm[character.series_film] = [];
         }
-        newCharacters[row.series_film].push(row.name);
+        newCharactersByFilm[character.series_film].push(character.name);
       });
 
       const embeds = [];
       const pageSize = 5;
-      const seriesArray = Object.entries(newCharacters);
+      const seriesArray = Object.entries(newCharactersByFilm);
 
       if (seriesArray.length === 0) {
         return message.reply(
