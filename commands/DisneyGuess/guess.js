@@ -92,6 +92,8 @@ module.exports = {
                 dailyCharacter = randomCharacters[0];
 
                 // Reset user's state for the new character
+                // Only reset streak if it's due to failed attempts, not if it's a new user
+                const shouldResetStreak = userGuessData.failed_attempts >= 6;
                 userGuessData = await UserPoints.findOneAndUpdate(
                     { user_id: userId },
                     {
@@ -99,7 +101,7 @@ module.exports = {
                         last_guess_date: currentTime,
                         failed_attempts: 0,
                         hints_given: 0,
-                        streak: 0,
+                        ...(shouldResetStreak && { streak: 0 }),
                         last_failed_guess_date: null,
                         last_correct_guess_date: null
                     },
@@ -121,7 +123,7 @@ module.exports = {
                     
                     dailyCharacter = randomCharacters[0];
                     
-                    // Reset user's state for the new character
+                    // Reset user's state for the new character but keep streak
                     userGuessData = await UserPoints.findOneAndUpdate(
                         { user_id: userId },
                         {
@@ -129,7 +131,6 @@ module.exports = {
                             last_guess_date: currentTime,
                             failed_attempts: 0,
                             hints_given: 0,
-                            streak: 0,
                             last_failed_guess_date: null,
                             last_correct_guess_date: null
                         },
@@ -214,13 +215,14 @@ module.exports = {
                     message.channel.send({ embeds: [embed] });
 
                 } else {
+                    // Reset streak when user fails completely
                     await UserPoints.findOneAndUpdate(
                         { user_id: userId },
                         {
                             daily_character_id: null,
                             failed_attempts: 0,
                             hints_given: 0,
-                            streak: 0,
+                            streak: 0, // Reset streak on complete failure
                             last_failed_guess_date: currentTime
                         }
                     );
@@ -230,7 +232,7 @@ module.exports = {
                     
                     message.reply(
                         `You've run out of hints. The character was **${correctCharacterName}** from **${correctCharacterFilm}**.\n` +
-                        `You can try guessing a **new** character after a short cooldown.`
+                        `Your streak has been reset. You can try guessing a **new** character after a short cooldown.`
                     );
                 }
             }
