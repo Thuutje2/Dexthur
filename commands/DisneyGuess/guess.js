@@ -203,9 +203,6 @@ module.exports = {
 
                     const embed = new EmbedBuilder()
                         .setTitle('❌ Incorrect Guess! Try Again!')
-                        .setDescription(
-                            `That's not it! You've made **${failedAttempts}** incorrect guess(es) for today's character.`
-                        )
                         .setColor(0xf06a6a)
                         .addFields({
                             name: 'Hints',
