@@ -4,12 +4,12 @@ const allAchievements = require('../../data/achievements');
 
 module.exports = {
     name: 'achievements',
-    description: 'Bekijk je behaalde achievements',
+    description: 'View your achievements',
     usage: '!achievements',
     category: 'Game',
     data: new SlashCommandBuilder()
         .setName('achievements')
-        .setDescription('Bekijk je behaalde achievements'),
+        .setDescription('View your achievements'),
 
   async execute(interactionOrMessage) {
     // Check if it's an interaction (slash command) or message (prefix command)
@@ -23,7 +23,7 @@ module.exports = {
     }
 
     const embed = new EmbedBuilder()
-      .setTitle(`🏆 Achievements van ${user.username}`)
+      .setTitle(`🏆 Achievements of ${user.username}`)
       .setColor(0x00AEFF);
 
     for (const ach of allAchievements) {
@@ -32,7 +32,7 @@ module.exports = {
       embed.addFields({
         name: unlocked ? `✅ ${ach.name}` : `🔒 ${ach.name}`,
         value: unlocked
-          ? `✅ Behaald op <t:${Math.floor(new Date(unlocked.unlockedAt).getTime() / 1000)}:d>`
+          ? `✅ Unlocked on <t:${Math.floor(new Date(unlocked.unlockedAt).getTime() / 1000)}:d>`
           : `🕹️ ${ach.description}`,
         inline: false,
       });
