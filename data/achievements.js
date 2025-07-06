@@ -1,13 +1,13 @@
 module.exports = [
   // DBD Level Achievements (matching your setup-roles)
-  { id: 'dbdLevel1', name: 'Trial Rookie', description: 'Bereik level 1 en word een Trial Rookie!' },
-  { id: 'dbdLevel2', name: 'Perk Pupil', description: 'Bereik level 2 en word een Perk Pupil!' },
-  { id: 'dbdLevel3', name: 'Skill Check Survivor', description: 'Bereik level 3 en word een Skill Check Survivor!' },
-  { id: 'dbdLevel4', name: 'Chase Champion', description: 'Bereik level 4 en word een Chase Champion!' },
-  { id: 'dbdLevel5', name: 'Hook Dodger', description: 'Bereik level 5 en word een Hook Dodger!' },
-  { id: 'dbdLevel6', name: 'Totem Tracker', description: 'Bereik level 6 en word een Totem Tracker!' },
-  { id: 'dbdLevel7', name: 'Escape Artist', description: 'Bereik level 7 en word een Escape Artist!' },
-  { id: 'dbdLevel8', name: 'Fog Wanderer', description: 'Bereik level 8 en word een Fog Wanderer!' },
-  { id: 'dbdLevel9', name: 'Perk Professor', description: 'Bereik level 9 en word een Perk Professor!' },
-  { id: 'dbdLevel10', name: "Entity's Favorite", description: 'Bereik level 10 en word het Entity\'s Favorite!' },
+  { id: 'dbdLevel1', name: 'Trial Rookie', description: 'Reach level 1 and become a Trial Rookie!' },
+  { id: 'dbdLevel2', name: 'Perk Pupil', description: 'Reach level 2 and become a Perk Pupil!' },
+  { id: 'dbdLevel3', name: 'Skill Check Survivor', description: 'Reach level 3 and become a Skill Check Survivor!' },
+  { id: 'dbdLevel4', name: 'Chase Champion', description: 'Reach level 4 and become a Chase Champion!' },
+  { id: 'dbdLevel5', name: 'Hook Dodger', description: 'Reach level 5 and become a Hook Dodger!' },
+  { id: 'dbdLevel6', name: 'Totem Tracker', description: 'Reach level 6 and become a Totem Tracker!' },
+  { id: 'dbdLevel7', name: 'Escape Artist', description: 'Reach level 7 and become an Escape Artist!' },
+  { id: 'dbdLevel8', name: 'Fog Wanderer', description: 'Reach level 8 and become a Fog Wanderer!' },
+  { id: 'dbdLevel9', name: 'Perk Professor', description: 'Reach level 9 and become a Perk Professor!' },
+  { id: 'dbdLevel10', name: "Entity's Favorite", description: 'Reach level 10 and become the Entity\'s Favorite!' },
 ];
