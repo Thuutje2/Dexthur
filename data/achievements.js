@@ -10,4 +10,12 @@ module.exports = [
   { id: 'dbdLevel8', name: 'Fog Wanderer', description: 'Reach level 8 and become a Fog Wanderer!' },
   { id: 'dbdLevel9', name: 'Perk Professor', description: 'Reach level 9 and become a Perk Professor!' },
   { id: 'dbdLevel10', name: "Entity's Favorite", description: 'Reach level 10 and become the Entity\'s Favorite!' },
+
+  // Disney Achievements
+  { id: 'disneyLevel1', name: 'Disney Dreamer', description: 'Reach 500 points in the Disney guess game and become a Disney Dreamer!' },
+  { id: 'disneyLevel2', name: 'Magic Maker', description: 'Reach 1000 points in the Disney guess game and become a Magic Maker!' },
+  { id: 'disneyLevel3', name: 'Fantasy Fanatic', description: 'Reach 1500 points in the Disney guess game and become a Fantasy Fanatic!' },
+  { id: 'disneyLevel4', name: 'Adventure Seeker', description: 'Reach 2000 points in the Disney guess game and become an Adventure Seeker!' },
+  { id: 'disneyLevel5', name: 'Wonder Wanderer', description: 'Reach 2500 points in the Disney guess game and become a Wonder Wanderer!' },
+
 ];

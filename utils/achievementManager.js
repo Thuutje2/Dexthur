@@ -36,6 +36,7 @@ async function checkDBDLevelAchievements(userId, newLevel) {
     { level: 10, id: 'dbdLevel10' },
   ];
 
+
   const unlockedAchievements = [];
 
   for (const achievement of achievementsToCheck) {
@@ -50,4 +51,28 @@ async function checkDBDLevelAchievements(userId, newLevel) {
   return unlockedAchievements;
 }
 
-module.exports = { unlockAchievement, checkDBDLevelAchievements };
+// disney achievements
+async function checkDisneyAchievements(userId, points) {
+  const achievementsToCheck = [
+    { points: 500, id: 'disneyLevel1' },
+    { points: 1000, id: 'disneyLevel2' },
+    { points: 1500, id: 'disneyLevel3' },
+    { points: 2000, id: 'disneyLevel4' },
+    { points: 2500, id: 'disneyLevel5' },
+  ];
+
+  const unlockedAchievements = [];
+
+  for (const achievement of achievementsToCheck) {
+    if (points >= achievement.points) {
+      const unlocked = await unlockAchievement(userId, achievement.id);
+      if (unlocked) {
+        unlockedAchievements.push(achievement.id);
+      }
+    }
+  }
+
+  return unlockedAchievements;
+}
+
+module.exports = { unlockAchievement, checkDBDLevelAchievements, checkDisneyAchievements };
