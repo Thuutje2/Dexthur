@@ -1,6 +1,8 @@
 const { EmbedBuilder } = require('discord.js');
 const { DisneyCharacter, User, UserPoints, DisneyUser } = require('../../models/index');
 const { getCooldownTime } = require('../../cooldown');
+const { checkDisneyAchievements } = require('../../utils/achievementManager'); // Use your existing manager
+const allAchievements = require('../../data/achievements'); // Import achievements data
 
 module.exports = {
     name: 'guess',
@@ -171,12 +173,55 @@ module.exports = {
                     .setDescription(
                         `You guessed **${dailyCharacter.name}** correctly, from **${dailyCharacter.series_film}**!\n` +
                         `You earned **${pointsEarned}** points!\n` +
-                        `Your current correct guesses streak: **${streak}**`
+                        `Your current correct guesses streak: **${streak}**\n` +
+                        `Your total points: **${newPoints}**`
                     )
                     .setImage(dailyCharacter.image)
                     .setColor(0x78f06a);
 
-                message.channel.send({ embeds: [embed] });
+                await message.channel.send({ embeds: [embed] });
+
+                // --- Check for Disney achievements ---
+                try {
+                    console.log(`=== ACHIEVEMENT DEBUG ===`);
+                    console.log(`User ID: ${userId}`);
+                    console.log(`New Points: ${newPoints}`);
+                    console.log(`Calling checkDisneyAchievements...`);
+                    
+                    const newAchievementIds = await checkDisneyAchievements(userId, newPoints);
+                    console.log(`Returned achievements:`, newAchievementIds);
+                    
+                    if (newAchievementIds.length > 0) {
+                        console.log(`Processing ${newAchievementIds.length} new achievements...`);
+                        for (const achievementId of newAchievementIds) {
+                            // Find the full achievement data
+                            const achievement = allAchievements.find(a => a.id === achievementId);
+                            console.log(`Achievement data for ${achievementId}:`, achievement);
+                            
+                            if (achievement) {
+                                const achievementEmbed = new EmbedBuilder()
+                                    .setTitle('🏆 Achievement Unlocked! 🏆')
+                                    .setDescription(`**${achievement.name}**\n*${achievement.description}*`)
+                                    .setColor(0xFFD700)
+                                    .addFields({
+                                        name: 'Rarity',
+                                        value: `${achievement.emoji} ${achievement.rarity} points`,
+                                        inline: true
+                                    })
+                                    .setFooter({ text: 'Congratulations! Keep playing to unlock more achievements!' });
+
+                                await message.channel.send({ embeds: [achievementEmbed] });
+                                console.log(`Sent achievement embed for ${achievementId}`);
+                            } else {
+                                console.log(`No achievement data found for ${achievementId}`);
+                            }
+                        }
+                    } else {
+                        console.log(`No new achievements to process`);
+                    }
+                } catch (achievementError) {
+                    console.error('Error checking achievements:', achievementError);
+                }
 
             } else {
                 // --- Incorrect Guess ---
@@ -203,6 +248,9 @@ module.exports = {
 
                     const embed = new EmbedBuilder()
                         .setTitle('❌ Incorrect Guess! Try Again!')
+                        .setDescription(
+                            `That's not it! You've made **${failedAttempts}** incorrect guess(es) for today's character.`
+                        )
                         .setColor(0xf06a6a)
                         .addFields({
                             name: 'Hints',

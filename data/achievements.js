@@ -11,10 +11,13 @@ module.exports = [
   { id: 'dbdLevel9', name: 'Perk Professor', description: 'Reach level 9 and become a Perk Professor!', rarity: 900, emoji: '💎' },
   { id: 'dbdLevel10', name: "Entity's Favorite", description: 'Reach level 10 and become the Entity\'s Favorite!', rarity: 1000, emoji: '👑' },
 
-  // Disney Achievements
+  // Disney Achievements - Updated with more levels
   { id: 'disneyLevel1', name: 'Disney Dreamer', description: 'Reach 500 points in the Disney guess game and become a Disney Dreamer!', rarity: 100, emoji: '🏅' },
   { id: 'disneyLevel2', name: 'Magic Maker', description: 'Reach 1000 points in the Disney guess game and become a Magic Maker!', rarity: 200, emoji: '🌟' },
   { id: 'disneyLevel3', name: 'Fantasy Fanatic', description: 'Reach 1500 points in the Disney guess game and become a Fantasy Fanatic!', rarity: 400, emoji: '🌟' },
   { id: 'disneyLevel4', name: 'Adventure Seeker', description: 'Reach 2000 points in the Disney guess game and become an Adventure Seeker!', rarity: 600, emoji: '💎' },
-  { id: 'disneyLevel5', name: 'Wonder Wanderer', description: 'Reach 2500 points in the Disney guess game and become a Wonder Wanderer!', rarity: 1000, emoji: '👑' },
+  { id: 'disneyLevel5', name: 'Wonder Wanderer', description: 'Reach 2500 points in the Disney guess game and become a Wonder Wanderer!', rarity: 800, emoji: '💎' },
+  { id: 'disneyLevel6', name: 'Pixie Dust Master', description: 'Reach 5000 points in the Disney guess game and become a Pixie Dust Master!', rarity: 1200, emoji: '💎' },
+  { id: 'disneyLevel7', name: 'Disney Legend', description: 'Reach 10000 points in the Disney guess game and become a Disney Legend!', rarity: 1500, emoji: '👑' },
+  { id: 'disneyLevel8', name: 'Kingdom Ruler', description: 'Reach 15000 points in the Disney guess game and become a Kingdom Ruler!', rarity: 2000, emoji: '👑' },
 ];
