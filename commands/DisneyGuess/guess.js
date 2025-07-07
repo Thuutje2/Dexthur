@@ -184,16 +184,10 @@ module.exports = {
 
                 // --- Check for Disney achievements ---
                 try {
-                    console.log(`=== ACHIEVEMENT DEBUG ===`);
-                    console.log(`User ID: ${userId}`);
-                    console.log(`New Points: ${newPoints}`);
-                    console.log(`Calling checkDisneyAchievements...`);
-                    
                     const newAchievementIds = await checkDisneyAchievements(userId, newPoints);
-                    console.log(`Returned achievements:`, newAchievementIds);
+
                     
                     if (newAchievementIds.length > 0) {
-                        console.log(`Processing ${newAchievementIds.length} new achievements...`);
                         
                         // Get guild settings for achievement channel
                         const guildSettings = await GuildSettings.findOne({ guildId: message.guild.id });
@@ -207,7 +201,6 @@ module.exports = {
                         for (const achievementId of newAchievementIds) {
                             // Find the full achievement data
                             const achievement = allAchievements.find(a => a.id === achievementId);
-                            console.log(`Achievement data for ${achievementId}:`, achievement);
                             
                             if (achievement) {
                                 const achievementEmbed = new EmbedBuilder()
@@ -223,7 +216,6 @@ module.exports = {
                                     .setTimestamp();
 
                                 await targetChannel.send({ embeds: [achievementEmbed] });
-                                console.log(`Sent achievement embed for ${achievementId} to ${targetChannel.name}`);
                             } else {
                                 console.log(`No achievement data found for ${achievementId}`);
                             }
