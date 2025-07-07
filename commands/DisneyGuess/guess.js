@@ -1,8 +1,9 @@
 const { EmbedBuilder } = require('discord.js');
 const { DisneyCharacter, User, UserPoints, DisneyUser } = require('../../models/index');
 const { getCooldownTime } = require('../../cooldown');
-const { checkDisneyAchievements } = require('../../utils/achievementManager'); // Use your existing manager
-const allAchievements = require('../../data/achievements'); // Import achievements data
+const { checkDisneyAchievements } = require('../../utils/achievementManager');
+const allAchievements = require('../../data/achievements');
+const GuildSettings = require('../../models/setup/GuildSettings'); // Add this import
 
 module.exports = {
     name: 'guess',
@@ -193,6 +194,16 @@ module.exports = {
                     
                     if (newAchievementIds.length > 0) {
                         console.log(`Processing ${newAchievementIds.length} new achievements...`);
+                        
+                        // Get guild settings for achievement channel
+                        const guildSettings = await GuildSettings.findOne({ guildId: message.guild.id });
+                        const achievementChannelId = guildSettings?.achievementChannelId;
+
+                        // Determine where to send achievement notifications
+                        const achievementChannel = achievementChannelId ? 
+                            message.guild.channels.cache.get(achievementChannelId) : null;
+                        const targetChannel = achievementChannel || message.channel;
+
                         for (const achievementId of newAchievementIds) {
                             // Find the full achievement data
                             const achievement = allAchievements.find(a => a.id === achievementId);
@@ -201,17 +212,18 @@ module.exports = {
                             if (achievement) {
                                 const achievementEmbed = new EmbedBuilder()
                                     .setTitle('🏆 Achievement Unlocked! 🏆')
-                                    .setDescription(`**${achievement.name}**\n*${achievement.description}*`)
+                                    .setDescription(`<@${userId}> has unlocked: **${achievement.name}**!\n*${achievement.description}*`)
                                     .setColor(0xFFD700)
                                     .addFields({
                                         name: 'Rarity',
-                                        value: `${achievement.emoji} ${achievement.rarity} points`,
+                                        value: `${achievement.emoji} `,
                                         inline: true
                                     })
-                                    .setFooter({ text: 'Congratulations! Keep playing to unlock more achievements!' });
+                                    .setFooter({ text: 'Congratulations! Keep playing to unlock more achievements!' })
+                                    .setTimestamp();
 
-                                await message.channel.send({ embeds: [achievementEmbed] });
-                                console.log(`Sent achievement embed for ${achievementId}`);
+                                await targetChannel.send({ embeds: [achievementEmbed] });
+                                console.log(`Sent achievement embed for ${achievementId} to ${targetChannel.name}`);
                             } else {
                                 console.log(`No achievement data found for ${achievementId}`);
                             }

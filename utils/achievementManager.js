@@ -53,8 +53,6 @@ async function checkDBDLevelAchievements(userId, newLevel) {
 
 // Disney achievements - Fixed version
 async function checkDisneyAchievements(userId, pointsOverride = null) {
-  console.log(`checkDisneyAchievements called with userId: ${userId}, pointsOverride: ${pointsOverride}`);
-  
   try {
     // Get points from UserPoints collection if not provided
     let points = pointsOverride;
@@ -63,12 +61,9 @@ async function checkDisneyAchievements(userId, pointsOverride = null) {
       points = userPointsData ? userPointsData.points : 0;
     }
     
-    console.log(`Using points: ${points}`);
-    
     // Ensure the user exists in the achievements collection
     let user = await User.findOne({ userId });
     if (!user) {
-      console.log(`Creating new user in achievements collection for userId: ${userId}`);
       user = await User.create({ userId, achievements: [] });
     }
     
@@ -86,12 +81,9 @@ async function checkDisneyAchievements(userId, pointsOverride = null) {
     const unlockedAchievements = [];
 
     for (const achievement of achievementsToCheck) {
-      console.log(`Checking achievement ${achievement.id}: user has ${points} points, needs ${achievement.points}`);
       
       if (points >= achievement.points) {
-        console.log(`User qualifies for ${achievement.id}, attempting to unlock...`);
         const unlocked = await unlockAchievement(userId, achievement.id);
-        console.log(`Achievement ${achievement.id} unlock result: ${unlocked}`);
         
         if (unlocked) {
           unlockedAchievements.push(achievement.id);
@@ -99,7 +91,6 @@ async function checkDisneyAchievements(userId, pointsOverride = null) {
       }
     }
 
-    console.log(`Returning unlocked achievements:`, unlockedAchievements);
     return unlockedAchievements;
   } catch (error) {
     console.error('Error in checkDisneyAchievements:', error);

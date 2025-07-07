@@ -32,6 +32,17 @@ module.exports = {
             let currentSortMode = 'unlocked'; // 'unlocked', 'rarity_asc', 'rarity_desc', 'original'
             let currentPage = 0;
 
+            // Helper function to get rarity order from emoji
+            const getRarityOrder = (emoji) => {
+                switch (emoji) {
+                    case '🏅': return 1; // Common
+                    case '🌟': return 2; // Rare
+                    case '💎': return 3; // Epic
+                    case '👑': return 4; // Legendary
+                    default: return 0;
+                }
+            };
+
             // Sort achievements function
             const getSortedAchievements = (sortMode) => {
                 let sorted = [...allAchievements];
@@ -46,18 +57,18 @@ module.exports = {
                             if (aUnlocked && !bUnlocked) return -1;
                             if (!aUnlocked && bUnlocked) return 1;
                             
-                            return (b.rarity || 0) - (a.rarity || 0);
+                            return getRarityOrder(b.emoji) - getRarityOrder(a.emoji);
                         });
                         break;
                     
                     case 'rarity_asc':
                         // Common to Legendary (lowest to highest rarity)
-                        sorted.sort((a, b) => (a.rarity || 0) - (b.rarity || 0));
+                        sorted.sort((a, b) => getRarityOrder(a.emoji) - getRarityOrder(b.emoji));
                         break;
                     
                     case 'rarity_desc':
                         // Legendary to Common (highest to lowest rarity)
-                        sorted.sort((a, b) => (b.rarity || 0) - (a.rarity || 0));
+                        sorted.sort((a, b) => getRarityOrder(b.emoji) - getRarityOrder(a.emoji));
                         break;
                 }
                 
@@ -281,7 +292,7 @@ module.exports = {
         }
     },
 
-    // Helper methods (unchanged)
+    // Helper methods
     createProgressBar(percentage) {
         const totalBars = 20;
         const filledBars = Math.round((percentage / 100) * totalBars);
