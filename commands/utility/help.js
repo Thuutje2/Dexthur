@@ -42,6 +42,11 @@ module.exports = {
         description: 'Commands for Dead By Daylight players.',
         commands: [
           {
+            name: 'Information about the game',
+            value:
+              'Get information about the Dead by Daylight Quizzes game. `!dbdqg`',
+          },
+          {
             name: 'Perk Information',
             value:
               'Get information about a perk. `!PerkInformation <perkname>` or `!perk`',
