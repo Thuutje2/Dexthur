@@ -1,6 +1,6 @@
 const { Client } = require('discord.js');
 const { EmbedBuilder } = require('@discordjs/builders');
-const { ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
 module.exports = {
   name: 'help',
@@ -113,60 +113,155 @@ module.exports = {
     ];
 
     let currentPage = 0;
-
-    const embed = new EmbedBuilder()
-      .setColor(0x0099ff)
-      .setTitle(pages[currentPage].title)
-      .setDescription(pages[currentPage].description);
-
-    for (const command of pages[currentPage].commands) {
-      embed.addFields({ name: command.name, value: command.value });
+    
+    // Handle both interaction and message contexts
+    const isInteraction = interaction.isCommand?.() || interaction.commandName || interaction.customId !== undefined;
+    const user = isInteraction ? interaction.user : interaction.author;
+    const userId = user?.id;
+    
+    if (!userId) {
+      const errorMessage = 'Unable to identify user.';
+      if (isInteraction) {
+        return interaction.reply({ content: errorMessage, ephemeral: true });
+      } else {
+        return interaction.reply(errorMessage);
+      }
     }
 
-    const row = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId('previous_page')
-        .setLabel('Previous')
-        .setStyle(1),
-      new ButtonBuilder().setCustomId('next_page').setLabel('Next').setStyle(1)
-    );
+    // Create embed function
+    const createEmbed = (page) => {
+      const embed = new EmbedBuilder()
+        .setColor(0x0099ff)
+        .setTitle(pages[page].title)
+        .setDescription(pages[page].description)
+        .setFooter({
+          text: `Page ${page + 1} of ${pages.length}`,
+          iconURL: user.displayAvatarURL()
+        })
+        .setTimestamp();
 
-    const messageComponent = await interaction.reply({
-      embeds: [embed],
-      components: [row],
-      ephemeral: true,
-    });
+      for (const command of pages[page].commands) {
+        embed.addFields({ name: command.name, value: command.value });
+      }
 
-    const filter = (interaction) => interaction.user.id === interaction.user.id;
+      return embed;
+    };
+
+    // Create buttons function
+    const createButtons = (page) => {
+      // Navigation row
+      const navigationRow = new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
+          .setCustomId('help_previous')
+          .setLabel('◀ Previous')
+          .setStyle(ButtonStyle.Secondary)
+          .setDisabled(page === 0),
+        new ButtonBuilder()
+          .setCustomId('help_home')
+          .setLabel('🏠 Home')
+          .setStyle(ButtonStyle.Primary)
+          .setDisabled(page === 0),
+        new ButtonBuilder()
+          .setCustomId('help_next')
+          .setLabel('Next ▶')
+          .setStyle(ButtonStyle.Secondary)
+          .setDisabled(page === pages.length - 1)
+      );
+
+      // Quick navigation row
+      const quickNavRow = new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
+          .setCustomId('help_disney')
+          .setLabel('👑 Disney')
+          .setStyle(page === 1 ? ButtonStyle.Success : ButtonStyle.Secondary),
+        new ButtonBuilder()
+          .setCustomId('help_dbd')
+          .setLabel('🔪 DBD')
+          .setStyle(page === 2 ? ButtonStyle.Success : ButtonStyle.Secondary),
+        new ButtonBuilder()
+          .setCustomId('help_admin')
+          .setLabel('⚒️ Admin')
+          .setStyle(page === 3 ? ButtonStyle.Success : ButtonStyle.Secondary),
+        new ButtonBuilder()
+          .setCustomId('help_fun')
+          .setLabel('😙 Fun')
+          .setStyle(page === 4 ? ButtonStyle.Success : ButtonStyle.Secondary),
+        new ButtonBuilder()
+          .setCustomId('help_bot')
+          .setLabel('🔧 Bot Help')
+          .setStyle(page === 5 ? ButtonStyle.Success : ButtonStyle.Secondary)
+      );
+
+      return [navigationRow, quickNavRow];
+    };
+
+    // Initial response
+    const initialEmbed = createEmbed(currentPage);
+    const initialButtons = createButtons(currentPage);
+
+    let messageComponent;
+    if (isInteraction) {
+      messageComponent = await interaction.reply({
+        embeds: [initialEmbed],
+        components: initialButtons,
+        ephemeral: true,
+      });
+    } else {
+      messageComponent = await interaction.reply({
+        embeds: [initialEmbed],
+        components: initialButtons,
+      });
+    }
+
+    // Button collector with fixed filter
+    const filter = (i) => {
+      return i.user && i.user.id === userId;
+    };
+    
     const collector = messageComponent.createMessageComponentCollector({
       filter,
-      time: 60000,
+      time: 300000, // 5 minutes
     });
 
-    collector.on('collect', async (interaction) => {
-      if (interaction.customId === 'previous_page') {
-        currentPage = (currentPage - 1 + pages.length) % pages.length;
-      } else if (interaction.customId === 'next_page') {
-        currentPage = (currentPage + 1) % pages.length;
+    collector.on('collect', async (buttonInteraction) => {
+      // Handle navigation buttons
+      if (buttonInteraction.customId === 'help_previous') {
+        currentPage = Math.max(0, currentPage - 1);
+      } else if (buttonInteraction.customId === 'help_next') {
+        currentPage = Math.min(pages.length - 1, currentPage + 1);
+      } else if (buttonInteraction.customId === 'help_home') {
+        currentPage = 0;
+      }
+      // Handle quick navigation buttons
+      else if (buttonInteraction.customId === 'help_disney') {
+        currentPage = 1;
+      } else if (buttonInteraction.customId === 'help_dbd') {
+        currentPage = 2;
+      } else if (buttonInteraction.customId === 'help_admin') {
+        currentPage = 3;
+      } else if (buttonInteraction.customId === 'help_fun') {
+        currentPage = 4;
+      } else if (buttonInteraction.customId === 'help_bot') {
+        currentPage = 5;
       }
 
-      const newEmbed = new EmbedBuilder()
-        .setColor(0x0099ff)
-        .setTitle(pages[currentPage].title)
-        .setDescription(pages[currentPage].description);
+      const newEmbed = createEmbed(currentPage);
+      const newButtons = createButtons(currentPage);
 
-      for (const command of pages[currentPage].commands) {
-        newEmbed.addFields({ name: command.name, value: command.value });
-      }
-
-      await interaction.update({ embeds: [newEmbed] });
+      await buttonInteraction.update({
+        embeds: [newEmbed],
+        components: newButtons,
+      });
     });
 
     collector.on('end', () => {
-      row.components.forEach((component) => {
-        component.setDisabled(true);
+      // Disable all buttons when collector ends
+      const disabledButtons = createButtons(currentPage);
+      disabledButtons.forEach((row) => {
+        row.components.forEach((button) => button.setDisabled(true));
       });
-      messageComponent.edit({ components: [row] });
+
+      messageComponent.edit({ components: disabledButtons }).catch(() => {});
     });
   },
 };
