@@ -6,6 +6,12 @@ const { handleForfeit } = require('../../utils/handleForfeit.js');
 const { addXp } = require('../../utils/xpManager');
 const dbdQuizManager = require('../../utils/dbdQuizManager');
 
+function cleanDescription(description, perkName) {
+  // Remove the perk name (case insensitive) from the description
+  const regex = new RegExp(perkName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+  return description.replace(regex, '[PERK NAME]').trim();
+}
+
 module.exports = {
   name: 'descriptionquiz',
   description: 'Description Quiz',
@@ -54,9 +60,12 @@ module.exports = {
     // Load the perk image as an attachment
     const perkAttachment = new AttachmentBuilder(imagePath);
 
+    // Clean the description before displaying
+    const cleanedDescription = cleanDescription(randomPerk.description, randomPerk.name);
+    
     // Set the description for the question
     embed.setDescription(
-      `What is the name of this perk?\n\n**Description:**\n${randomPerk.description}`
+      `What is the name of this perk?\n\n**Description:**\n${cleanedDescription}`
     );
     await message.channel.send({ embeds: [embed] });
 
