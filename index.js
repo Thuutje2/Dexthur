@@ -35,9 +35,17 @@ deployCommands(client);
 const eventHandler = require('./handlers/event_handler');
 eventHandler(client);
 
+const { handleFlip7Forfeit } = require('./utils/handleFlip7Forfeit');
+
 //
 client.on('messageCreate', async (message) => {
-  if (!message.content.startsWith(prefix) || message.author.bot) return;
+  if (message.author.bot) return;
+
+  // Handle Flip7 forfeit first
+  const forfeitHandled = await handleFlip7Forfeit(message);
+  if (forfeitHandled) return;
+
+  if (!message.content.startsWith(prefix)) return;
 
   const args = message.content.slice(prefix.length).split(/ +/);
   const commandName = args.shift().toLowerCase();
@@ -64,7 +72,7 @@ client.once('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
-client.on('interactionCreate', async interaction => {
+client.on('interactionCreate', async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
   const command = client.commands.get(interaction.commandName);
@@ -79,16 +87,16 @@ client.on('interactionCreate', async interaction => {
   } catch (error) {
     console.error(`Error executing slash command "${interaction.commandName}":`, error);
     const errorMessage = 'There was an error executing this command!';
-    
+
     if (interaction.replied || interaction.deferred) {
-      await interaction.followUp({ 
-        content: errorMessage, 
-        ephemeral: true 
+      await interaction.followUp({
+        content: errorMessage,
+        ephemeral: true,
       });
     } else {
-      await interaction.reply({ 
-        content: errorMessage, 
-        ephemeral: true 
+      await interaction.reply({
+        content: errorMessage,
+        ephemeral: true,
       });
     }
   }
