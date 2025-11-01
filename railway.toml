@@ -4,5 +4,5 @@ nixPkgs = [
   "cairo",
   "pango",
   "libjpeg",
-  "giflib"
+  "giflib",
 ]
