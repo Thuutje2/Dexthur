@@ -35,6 +35,11 @@ deployCommands(client);
 const eventHandler = require('./handlers/event_handler');
 eventHandler(client);
 
+const messageCreate = require('./events/messageCreate');
+client.on('messageCreate', async (message) => {
+    await messageCreate.execute(message, client);
+});
+
 //
 client.on('messageCreate', async (message) => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;

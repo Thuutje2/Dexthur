@@ -15,7 +15,8 @@ module.exports = {
           { name: '`Page 2`', value: '🔪 Dead By Daylight Commands' },
           { name: '`Page 3`', value: '⚒️ Admin Commands' },
           { name: '`Page 4`', value: '😙 Fun Commands' },
-          { name: '`Page 5`', value: '🔧 Helping the bot' },
+          { name: '`Page 5`', value: '🎖️ Levels/Achievements Commands' },
+          { name: '`Page 6`', value: '🔧 Helping the bot' },
         ],
       },
       {
@@ -100,6 +101,25 @@ module.exports = {
         ],
       },
       {
+        title: '🎖️ Levels/Achievements Commands',
+        description: 'Commands related to levels and achievements.',
+        commands: [
+          { name: 'Achievements', value: "View your achievements `!Achievements`" },
+          {
+            name: 'Get all achievements',
+            value: 'Get a list of all achievements. `!getallachievements`',
+          },
+          {
+            name: 'Leaderboard',
+            value: 'Display the server\'s XP leaderboard. `!Leaderboard`',
+          },
+          {
+            name: 'Level',
+            value: 'Get information about your level. `!Level`',
+          },
+        ],
+      },
+      {
         title: '🔧 Helping the bot',
         description: 'Commands to help the bot and its developers.',
         commands: [
@@ -168,8 +188,8 @@ module.exports = {
           .setDisabled(page === pages.length - 1)
       );
 
-      // Quick navigation row
-      const quickNavRow = new ActionRowBuilder().addComponents(
+      // Quick navigation row 1 (max 5 buttons)
+      const quickNavRow1 = new ActionRowBuilder().addComponents(
         new ButtonBuilder()
           .setCustomId('help_disney')
           .setLabel('👑 Disney')
@@ -187,12 +207,20 @@ module.exports = {
           .setLabel('😙 Fun')
           .setStyle(page === 4 ? ButtonStyle.Success : ButtonStyle.Secondary),
         new ButtonBuilder()
-          .setCustomId('help_bot')
-          .setLabel('🔧 Bot Help')
+          .setCustomId('help_achievements')
+          .setLabel('🏆 Levels & Achievements')
           .setStyle(page === 5 ? ButtonStyle.Success : ButtonStyle.Secondary)
       );
 
-      return [navigationRow, quickNavRow];
+      // Quick navigation row 2 (remaining buttons)
+      const quickNavRow2 = new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
+          .setCustomId('help_bot')
+          .setLabel('🔧 Bot Help')
+          .setStyle(page === 6 ? ButtonStyle.Success : ButtonStyle.Secondary)
+      );
+
+      return [navigationRow, quickNavRow1, quickNavRow2];
     };
 
     // Initial response
@@ -241,8 +269,10 @@ module.exports = {
         currentPage = 3;
       } else if (buttonInteraction.customId === 'help_fun') {
         currentPage = 4;
-      } else if (buttonInteraction.customId === 'help_bot') {
+      } else if (buttonInteraction.customId === 'help_achievements') {
         currentPage = 5;
+      } else if (buttonInteraction.customId === 'help_bot') {
+        currentPage = 6;
       }
 
       const newEmbed = createEmbed(currentPage);
