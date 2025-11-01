@@ -1,0 +1,8 @@
+[build]
+nixPkgs = [
+  "pkg-config",
+  "cairo",
+  "pango",
+  "libjpeg",
+  "giflib"
+]
