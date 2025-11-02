@@ -1,16 +1,13 @@
 function drawProgressBar(ctx, x, y, width, height, progress, cornerRadius = 15) {
-    // Draw background
     drawRoundedRect(ctx, x, y, width, height, cornerRadius, 'hsla(242, 41%, 35%, 0.30)');
-    
-    // Draw progress
+
     if (progress > 0) {
         const progressWidth = width * progress;
         drawRoundedRect(ctx, x, y, progressWidth, height, cornerRadius, '#37357eff');
     }
 
-    // Add percentage text
     const percentage = Math.round(progress * 100);
-    ctx.fillStyle = '#ffffff'; 
+    ctx.fillStyle = '#ffffff';
     ctx.font = 'bold 20px Arial';
     ctx.textAlign = 'center';
     ctx.fillText(`${percentage}%`, x + width / 2, y + 22);

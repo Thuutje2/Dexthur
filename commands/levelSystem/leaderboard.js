@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, AttachmentBuilder } = require('discord.js');
 const UserXP = require('../../models/levels/UserXp');
-const { createCanvas, loadImage } = require('canvas');
+const { Canvas, loadImage } = require('skia-canvas');
 const path = require('path');
 
 module.exports = {
@@ -53,95 +53,109 @@ module.exports = {
                 return await interaction.channel.send(response);
             }
 
-            // Canvas setup
-            const width = 700;
-            const height = 700;
-            const canvas = createCanvas(width, height);
+            // Canvas setup (larger and higher resolution)
+            const width = 900;
+            const height = 1000;
+            const canvas = new Canvas(width, height);
             const ctx = canvas.getContext('2d');
 
-            // Background gradient
-            const gradient = ctx.createLinearGradient(0, 0, 0, height);
-            gradient.addColorStop(0, '#ffffffff'); 
-            gradient.addColorStop(1, '#a7a7a5ff');
-            ctx.fillStyle = gradient;
+            // Smooth edges
+            ctx.antialias = 'subpixel';
+
+            // Background gradient (light pastel theme)
+            const bgGradient = ctx.createLinearGradient(0, 0, 0, height);
+            bgGradient.addColorStop(0, '#f7fbff');
+            bgGradient.addColorStop(1, '#d9e7f0');
+            ctx.fillStyle = bgGradient;
             ctx.fillRect(0, 0, width, height);
 
-            // Header bar
-            ctx.fillRect(0, 0, width, 60);
+            // Title section (header bar)
+            ctx.fillStyle = '#357CA5';
+            ctx.beginPath();
+            ctx.roundRect(0, 0, width, 100, 0);
+            ctx.fill();
 
-            // Draw header text inline with bear image
-            ctx.font = 'bold 42px';
-            ctx.fillStyle = '#000000ff';
-            ctx.textBaseline = 'middle'; 
-            ctx.fillText("Dexthur's Leaderboard", 100, 50);
+            // Header text
+            ctx.font = 'bold 48px Arial';
+            ctx.fillStyle = '#FFFFFF';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText("🏆 Dexthur's Leaderboard 🏆", width / 2, 55);
+
+            // Section shadow effect
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.15)';
+            ctx.shadowBlur = 10;
 
             for (let i = 0; i < users.length; i++) {
                 const user = users[i];
                 const member = await guild.members.fetch(user.userId).catch(() => null);
                 const username = member ? member.user.username : 'Unknown User';
-                const avatarUrl = member ? member.user.displayAvatarURL({ extension: 'png', size: 64, forceStatic: true }) : null;
+                const avatarUrl = member ? member.user.displayAvatarURL({ extension: 'png', size: 128 }) : null;
                 const position = skip + i + 1;
-                const medal = position === 1 ? '🥇' : position === 2 ? '🥈' : position === 3 ? '🥉' : `${position}.`;
-                const rowTop = 100 + i * 60;
-                const rowHeight = 50;
-                const rowCenterY = rowTop + rowHeight / 2;
 
-                // Card-style row
-                ctx.fillStyle = i % 2 === 0 ? '#fff8ee' : '#fcefdc';
+                const rowY = 140 + i * 80;
+                const rowHeight = 70;
+                const centerY = rowY + rowHeight / 2;
+
+                // Background
+                const rowColor = position <= 3 ? '#fef6d9' : i % 2 === 0 ? '#ffffffcc' : '#f5f5f5cc';
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.05)';
+                ctx.shadowBlur = 5;
+                ctx.fillStyle = rowColor;
                 ctx.beginPath();
-                ctx.roundRect(40, rowTop, width - 80, rowHeight, 12);
+                ctx.roundRect(60, rowY, width - 120, rowHeight, 15);
                 ctx.fill();
-                ctx.strokeStyle = '#1c1b1bff';
-                ctx.stroke();
+
+                // Medal icon
+                const medal = position === 1 ? '🥇' : position === 2 ? '🥈' : position === 3 ? '🥉' : `#${position}`;
+                ctx.font = 'bold 26px Arial';
+                ctx.fillStyle = '#333';
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(medal, 80, centerY);
 
                 // Avatar
+                const avatarSize = 50;
+                const avatarX = 130;
+                const avatarY = centerY - avatarSize / 2;
+
                 if (avatarUrl) {
                     try {
                         const avatar = await loadImage(avatarUrl);
-                        const avatarSize = 36;
-                        const avatarX = 55;
-                        const avatarY = rowCenterY - avatarSize / 2;
-
                         ctx.save();
                         ctx.beginPath();
-                        ctx.arc(avatarX + avatarSize / 2, avatarY + avatarSize / 2, avatarSize / 2, 0, Math.PI * 2, true);
-                        ctx.closePath();
+                        ctx.arc(avatarX + avatarSize / 2, avatarY + avatarSize / 2, avatarSize / 2, 0, Math.PI * 2);
                         ctx.clip();
                         ctx.drawImage(avatar, avatarX, avatarY, avatarSize, avatarSize);
                         ctx.restore();
-                    } catch (err) {
-                        console.warn(`Could not load avatar for ${username}`, err);
-                    }
+                    } catch {}
                 }
 
-                const textX = 105;
-                ctx.font = 'bold 22px';
-                ctx.fillStyle = '#23272A';
-                ctx.textBaseline = 'middle';  // This centers the text vertically
-                ctx.fillText(`${medal} ${username}`, textX, rowCenterY);
+                // Username (centered vertically)
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'middle';
+                ctx.font = 'bold 26px Arial';
+                ctx.fillStyle = '#1a1a1a';
+                ctx.fillText(username, avatarX + avatarSize + 20, centerY);
 
-                ctx.font = '20px';
-                ctx.fillStyle = '#23272A';
+                // Level & XP (aligned to the right, same line)
                 ctx.textAlign = 'right';
-                ctx.fillText(`Level: ${user.level}`, width - 60, rowCenterY);
-                ctx.textAlign = 'left';  // Reset for future text
-
-                            }
+                ctx.textBaseline = 'middle';
+                ctx.font = '22px Arial';
+                ctx.fillStyle = '#357CA5';
+                ctx.fillText(`Level: ${user.level} • XP: ${user.xp}`, width - 80, centerY);
+            }
 
             // Footer
-            ctx.beginPath();
-            ctx.moveTo(40, height - 60);
-            ctx.lineTo(width - 40, height - 60);
-            ctx.strokeStyle = '#23272A';
-            ctx.stroke();
+            ctx.shadowColor = 'transparent';
+            ctx.textAlign = 'center';
+            ctx.font = '22px Arial';
+            ctx.fillStyle = '#555';
+            ctx.fillText(`Page ${page} of ${totalPages}`, width / 2, height - 40);
 
-            ctx.font = '20px';
-            ctx.fillStyle = '#000000ff';
-            ctx.fillText(`Page ${page} of ${totalPages}`, 40, height - 30);
-
-
+            const buffer = await canvas.png;
             // Send the image
-            const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: 'leaderboard.png' });
+            const attachment = new AttachmentBuilder(buffer, { name: 'leaderboard.png' });
 
             if (isSlash) {
                 await interaction.editReply({ files: [attachment] });
