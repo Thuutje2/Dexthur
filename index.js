@@ -35,38 +35,9 @@ deployCommands(client);
 const eventHandler = require('./handlers/event_handler');
 eventHandler(client);
 
-const messageCreate = require('./events/messageCreate');
-client.on('messageCreate', async (message) => {
-    await messageCreate.execute(message, client);
-});
-
-//
-client.on('messageCreate', async (message) => {
-  if (!message.content.startsWith(prefix) || message.author.bot) return;
-
-  const args = message.content.slice(prefix.length).split(/ +/);
-  const commandName = args.shift().toLowerCase();
-
-  const command = client.commands.get(commandName);
-
-  if (command) {
-    try {
-      await command.execute(message, args, client);
-    } catch (error) {
-      console.error(
-        `Error executing command "${commandName}": ${error.message}` +
-          '\n' +
-          error.stack
-      );
-      message.reply(
-        'Er is een fout opgetreden bij het uitvoeren van het commando.'
-      );
-    }
-  }
-});
-
 client.once('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+  console.log(`Logged in as ${client.user.tag}`);
+  console.log('messageCreate listeners:', client.listenerCount('messageCreate'));
 });
 
 client.on('interactionCreate', async interaction => {
