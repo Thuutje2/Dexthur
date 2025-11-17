@@ -1,124 +1,106 @@
-// const { SlashCommandBuilder, AttachmentBuilder } = require('discord.js');
-// const { Canvas } = require('skia-canvas'); // ✅ import Canvas here
-// const { loadBackground, drawAvatar } = require('../../utils/canvasUtils');
-// const { drawProgressBar } = require('../../utils/progressBarCanvas');
-// const UserXP = require('../../models/levels/UserXp');
-// const { xpNeededForLevel } = require('../../utils/xpLevelSystemUtils');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const UserXP = require('../../models/levels/UserXp');
+const { xpNeededForLevel } = require('../../utils/xpLevelSystemUtils');
 
-// module.exports = {
-//     name: 'level',
-//     description: 'Check your level',
-//     usage: '!level [@user]',
-//     category: 'Leveling',
-//     data: new SlashCommandBuilder()
-//         .setName('level')
-//         .setDescription('Check jouw huidige level'),
+module.exports = {
+  name: 'level',
+  description: 'Check your level',
+  usage: '!level [@user]',
+  category: 'Leveling',
+  data: new SlashCommandBuilder()
+    .setName('level')
+    .setDescription('Check your level or another user\'s level')
+    .addUserOption(opt => opt.setName('user').setDescription('User to check').setRequired(false)),
 
-//     async execute(message, args) {
-//         const targetUser = message.mentions.users.first() || message.author;
-//         await this.checkLevel(message, targetUser);
-//     },
+  async execute(message, args) {
+    const targetUser = message.mentions.users.first() || message.author;
+    await this.showLevel(message, targetUser, false);
+  },
 
-//     async executeSlash(interaction) {
-//         const targetUser = interaction.options.getUser('user') || interaction.user;
-//         await this.checkLevelSlash(interaction, targetUser);
-//     },
+  async executeSlash(interaction) {
+    const targetUser = interaction.options.getUser('user') || interaction.user;
+    await this.showLevel(interaction, targetUser, true);
+  },
 
-//     async getUserRank(userId, guildId) {
-//         try {
-//             const users = await UserXP.find({ guildId }).sort({ level: -1, xp: -1 });
-//             const userRank = users.findIndex(u => u.userId === userId) + 1;
-//             return userRank || 'N/A';
-//         } catch (error) {
-//             console.error('Error fetching user rank:', error);
-//             return 'N/A';
-//         }
-//     },
+  // Helpers
+  async getUserData(userId, guildId) {
+    try {
+      let userData = await UserXP.findOne({ userId, guildId });
+      if (!userData) {
+        userData = new UserXP({ userId, guildId, xp: 0, level: 1 });
+        await userData.save();
+      }
+      return userData;
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      return { xp: 0, level: 1 };
+    }
+  },
 
-//     async createLevelCard(user, userData, rank) {
-//         try {
-//             // ✅ Create a new Skia canvas
-//             const width = 800;
-//             const height = 300;
-//             const canvas = new Canvas(width, height);
-//             const ctx = canvas.getContext('2d');
+  async getUserRank(userId, guildId) {
+    try {
+      const users = await UserXP.find({ guildId }).sort({ level: -1, xp: -1 });
+      const idx = users.findIndex(u => u.userId === userId);
+      return idx === -1 ? 'N/A' : idx + 1;
+    } catch (error) {
+      console.error('Error fetching rank:', error);
+      return 'N/A';
+    }
+  },
 
-//             // Draw background and overlay
-//             await loadBackground(ctx, canvas);
+  createProgressBar(progress, length = 20) {
+    const clamped = Math.max(0, Math.min(1, progress));
+    const filled = Math.round(clamped * length);
+    const empty = length - filled;
+    const bar = '🟩'.repeat(filled) + '⬜'.repeat(empty);
+    const percent = Math.round(clamped * 100);
+    return { bar, percent };
+  },
 
-//             // Draw avatar
-//             await drawAvatar(ctx, user);
+  async showLevel(context, user, isSlash = false) {
+    try {
+      if (isSlash && context.deferred !== true && context.replied !== true) {
+        await context.deferReply();
+      }
 
-//             // Add username
-//             ctx.font = 'bold 40px Arial';
-//             ctx.fillStyle = '#37357eff';
-//             ctx.fillText(user.username, 240, 100);
+      const guildId = isSlash ? context.guildId : context.guild.id;
 
-//             // XP + level info
-//             const xpForNextLevel = xpNeededForLevel(userData.level);
-//             ctx.font = '30px Arial';
-//             ctx.fillStyle = '#37357eff';
-//             ctx.fillText(`Level: ${userData.level}`, 240, 150);
-//             ctx.fillText(`XP: ${userData.xp}/${xpForNextLevel}`, 240, 190);
-//             ctx.fillText(`Rank: #${rank}`, 600, 150);
+      const userData = await this.getUserData(user.id, guildId);
+      const rank = await this.getUserRank(user.id, guildId);
 
-//             // Progress bar
-//             const progress = userData.xp / xpForNextLevel;
-//             drawProgressBar(ctx, 240, 220, 500, 30, progress);
+      const xpForNext = xpNeededForLevel(userData.level);
+      const progress = xpForNext > 0 ? userData.xp / xpForNext : 0;
+      const { bar, percent } = this.createProgressBar(progress, 20);
 
-//             // ✅ Convert to buffer (Skia async getter)
-//             const buffer = await canvas.png;
-//             return new AttachmentBuilder(buffer, { name: 'level-card.png' });
-//         } catch (error) {
-//             console.error('Error creating level card:', error);
-//             throw error;
-//         }
-//     },
+      const embed = new EmbedBuilder()
+        .setAuthor({ name: `${user.tag}`, iconURL: user.displayAvatarURL({ dynamic: true }) })
+        .setTitle('📊 Level card')
+        .setColor(0x2b88d8)
+        .addFields(
+          { name: 'Level', value: `**${userData.level}**`, inline: true },
+          { name: 'Rank', value: `#${rank}`, inline: true },
+          { name: '\u200B', value: '\u200B', inline: true },
+          { name: 'XP', value: `**${userData.xp} / ${xpForNext}**`, inline: false },
+          { name: 'Progress', value: `${bar}  ${percent}%`, inline: false }
+        )
+        .setFooter({ text: `User ID: ${user.id}` });
 
-//     async checkLevel(message, user) {
-//         try {
-//             const userData = await this.getUserData(user.id, message.guild.id);
-//             const rank = await this.getUserRank(user.id, message.guild.id);
-//             const levelCard = await this.createLevelCard(user, userData, rank);
-//             await message.reply({ files: [levelCard] });
-//         } catch (error) {
-//             console.error(error);
-//             await message.reply('Error generating level card!');
-//         }
-//     },
-
-//     async checkLevelSlash(interaction, user) {
-//         try {
-//             await interaction.deferReply();
-//             const userData = await this.getUserData(user.id, interaction.guild.id);
-//             const rank = await this.getUserRank(user.id, interaction.guild.id);
-//             const levelCard = await this.createLevelCard(user, userData, rank);
-//             await interaction.editReply({ files: [levelCard] });
-//         } catch (error) {
-//             console.error(error);
-//             try {
-//                 if (interaction.deferred) {
-//                     await interaction.editReply({ content: 'Error generating level card!' });
-//                 } else {
-//                     await interaction.reply({ content: 'Error generating level card!', ephemeral: true });
-//                 }
-//             } catch (replyError) {
-//                 console.error('Failed to send error message:', replyError);
-//             }
-//         }
-//     },
-
-//     async getUserData(userId, guildId) {
-//         try {
-//             let userData = await UserXP.findOne({ userId, guildId });
-//             if (!userData) {
-//                 userData = new UserXP({ userId, guildId, xp: 0, level: 1 });
-//                 await userData.save();
-//             }
-//             return userData;
-//         } catch (error) {
-//             console.error('Error fetching user data:', error);
-//             return { xp: 0, level: 1 };
-//         }
-//     }
-// };
+      if (isSlash) {
+        await context.editReply({ embeds: [embed] });
+      } else {
+        await context.reply({ embeds: [embed] });
+      }
+    } catch (error) {
+      console.error('Error in showLevel:', error);
+      const errMsg = 'Error generating level info!';
+      if (isSlash) {
+        try {
+          if (context.deferred || context.replied) await context.editReply({ content: errMsg });
+          else await context.reply({ content: errMsg, ephemeral: true });
+        } catch { /* ignore */ }
+      } else {
+        try { await context.reply(errMsg); } catch { /* ignore */ }
+      }
+    }
+  },
+};

@@ -15,7 +15,7 @@ module.exports = {
           { name: '`Page 2`', value: '🔪 Dead By Daylight Commands' },
           { name: '`Page 3`', value: '⚒️ Admin Commands' },
           { name: '`Page 4`', value: '😙 Fun Commands' },
-          { name: '`Page 5`', value: '🎖️ Achievements Commands' },
+          { name: '`Page 5`', value: '🎖️ Level & Achievements Commands' },
           { name: '`Page 6`', value: '🔧 Helping the bot' },
         ],
       },
@@ -109,14 +109,14 @@ module.exports = {
             name: 'Get all achievements',
             value: 'Get a list of all achievements. `!getallachievements`',
           },
-          // {
-          //   name: 'Leaderboard',
-          //   value: 'Display the server\'s XP leaderboard. `!Leaderboard`',
-          // },
-          // {
-          //   name: 'Level',
-          //   value: 'Get information about your level. `!Level`',
-          // },
+          {
+            name: 'Leaderboard',
+            value: 'Display the server\'s XP leaderboard. `!Leaderboard`',
+          },
+          {
+            name: 'Level',
+            value: 'Get information about your level. `!Level`',
+          },
         ],
       },
       {
