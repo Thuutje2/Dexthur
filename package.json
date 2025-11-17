@@ -21,7 +21,6 @@
     "openai": "^4.19.0",
     "pg": "^8.11.3",
     "sharp": "^0.33.5",
-    "skia-canvas": "^3.0.8",
     "steamapi": "^2.4.2"
   },
   "devDependencies": {
