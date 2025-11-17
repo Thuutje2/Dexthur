@@ -9,5 +9,5 @@ module.exports = {
   DisneyUser,
   UserPoints,
   UserFavorites,
-  UserNotifications
+  UserNotifications,
 };

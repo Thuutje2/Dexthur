@@ -19,24 +19,30 @@ module.exports = {
         );
       }
 
-      message.channel.bulkDelete(amount, true)
+      message.channel
+        .bulkDelete(amount, true)
         .then((messages) => {
-          message.channel.send(`Successfully cleared ${messages.size} messages.`)
-            .then(msg => {
+          message.channel
+            .send(`Successfully cleared ${messages.size} messages.`)
+            .then((msg) => {
               setTimeout(() => msg.delete().catch(() => {}), 5000);
             });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log('Clear command error:', error.message);
-          message.channel.send('Could not delete messages. They might be too old (14+ days).')
-            .then(msg => {
+          message.channel
+            .send(
+              'Could not delete messages. They might be too old (14+ days).'
+            )
+            .then((msg) => {
               setTimeout(() => msg.delete().catch(() => {}), 5000);
             });
         });
     } catch (error) {
       console.log('Permission check error:', error.message);
-      message.channel.send('An error occurred while checking permissions.')
-        .then(msg => {
+      message.channel
+        .send('An error occurred while checking permissions.')
+        .then((msg) => {
           setTimeout(() => msg.delete().catch(() => {}), 5000);
         });
     }

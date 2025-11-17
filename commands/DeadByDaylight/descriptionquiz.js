@@ -8,7 +8,10 @@ const dbdQuizManager = require('../../utils/dbdQuizManager');
 
 function cleanDescription(description, perkName) {
   // Remove the perk name (case insensitive) from the description
-  const regex = new RegExp(perkName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+  const regex = new RegExp(
+    perkName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
+    'gi'
+  );
   return description.replace(regex, '[PERK NAME]').trim();
 }
 
@@ -61,8 +64,11 @@ module.exports = {
     const perkAttachment = new AttachmentBuilder(imagePath);
 
     // Clean the description before displaying
-    const cleanedDescription = cleanDescription(randomPerk.description, randomPerk.name);
-    
+    const cleanedDescription = cleanDescription(
+      randomPerk.description,
+      randomPerk.name
+    );
+
     // Set the description for the question
     embed.setDescription(
       `What is the name of this perk?\n\n**Description:**\n${cleanedDescription}`

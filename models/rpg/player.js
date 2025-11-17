@@ -11,17 +11,17 @@ const playerSchema = new mongoose.Schema({
   skills: {
     glow: Number,
     charm: Number,
-    knowledge: Number
+    knowledge: Number,
   },
   items: [String],
   reputation: Number,
   activeQuest: {
     id: String,
-    choice: String
+    choice: String,
   },
   cooldowns: {
-    explore: { type: Date, default: null }
-  }
+    explore: { type: Date, default: null },
+  },
 });
 
-module.exports = mongoose.model("Player", playerSchema);
+module.exports = mongoose.model('Player', playerSchema);

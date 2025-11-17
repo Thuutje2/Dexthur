@@ -9,22 +9,33 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('set-achievement-channel')
     .setDescription('Set the channel for achievement notifications')
-    .addChannelOption(option =>
-      option.setName('channel')
-        .setDescription('The channel where achievement notifications will be sent')
-        .setRequired(true))
+    .addChannelOption((option) =>
+      option
+        .setName('channel')
+        .setDescription(
+          'The channel where achievement notifications will be sent'
+        )
+        .setRequired(true)
+    )
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
 
   async execute(interactionOrMessage) {
-    const isInteraction = interactionOrMessage.isCommand?.() || interactionOrMessage.commandName;
+    const isInteraction =
+      interactionOrMessage.isCommand?.() || interactionOrMessage.commandName;
     const guild = interactionOrMessage.guild;
-    const member = isInteraction ? interactionOrMessage.member : interactionOrMessage.member;
+    const member = isInteraction
+      ? interactionOrMessage.member
+      : interactionOrMessage.member;
 
     // Check permissions
     if (!member.permissions.has(PermissionFlagsBits.ManageChannels)) {
-      const errorMsg = '❌ You need the "Manage Channels" permission to use this command!';
+      const errorMsg =
+        '❌ You need the "Manage Channels" permission to use this command!';
       if (isInteraction) {
-        return await interactionOrMessage.reply({ content: errorMsg, ephemeral: true });
+        return await interactionOrMessage.reply({
+          content: errorMsg,
+          ephemeral: true,
+        });
       } else {
         return await interactionOrMessage.reply(errorMsg);
       }
@@ -37,17 +48,23 @@ module.exports = {
       // For prefix commands, get channel from mentions or ID
       const channelMention = interactionOrMessage.content.split(' ')[1];
       if (!channelMention) {
-        return await interactionOrMessage.reply('❌ Please provide a channel! Usage: `!set-achievement-channel #channel`');
+        return await interactionOrMessage.reply(
+          '❌ Please provide a channel! Usage: `!set-achievement-channel #channel`'
+        );
       }
-      
+
       const channelId = channelMention.replace(/[<#>]/g, '');
       channel = guild.channels.cache.get(channelId);
     }
 
-    if (!channel || channel.type !== 0) { // 0 = GUILD_TEXT
+    if (!channel || channel.type !== 0) {
+      // 0 = GUILD_TEXT
       const errorMsg = '❌ Please provide a valid text channel!';
       if (isInteraction) {
-        return await interactionOrMessage.reply({ content: errorMsg, ephemeral: true });
+        return await interactionOrMessage.reply({
+          content: errorMsg,
+          ephemeral: true,
+        });
       } else {
         return await interactionOrMessage.reply(errorMsg);
       }
@@ -62,15 +79,22 @@ module.exports = {
 
       const successMsg = `✅ Achievement notifications will now be sent to ${channel}!`;
       if (isInteraction) {
-        await interactionOrMessage.reply({ content: successMsg, ephemeral: true });
+        await interactionOrMessage.reply({
+          content: successMsg,
+          ephemeral: true,
+        });
       } else {
         await interactionOrMessage.reply(successMsg);
       }
     } catch (error) {
       console.error('Error setting achievement channel:', error);
-      const errorMsg = '❌ Failed to set achievement channel. Please try again.';
+      const errorMsg =
+        '❌ Failed to set achievement channel. Please try again.';
       if (isInteraction) {
-        await interactionOrMessage.reply({ content: errorMsg, ephemeral: true });
+        await interactionOrMessage.reply({
+          content: errorMsg,
+          ephemeral: true,
+        });
       } else {
         await interactionOrMessage.reply(errorMsg);
       }

@@ -13,13 +13,13 @@ class DBDQuizManager {
     if (this.hasActiveQuiz(userId)) {
       return false; // Quiz already active
     }
-    
+
     this.activeQuizzes.set(userId, {
       type: quizType,
       startTime: Date.now(),
-      channelId: channelId
+      channelId: channelId,
     });
-    
+
     return true; // Quiz started successfully
   }
 
@@ -34,7 +34,8 @@ class DBDQuizManager {
   }
 
   // Clean up old sessions (optional)
-  cleanupOldSessions(maxAgeMs = 300000) { // 5 minutes default
+  cleanupOldSessions(maxAgeMs = 300000) {
+    // 5 minutes default
     const now = Date.now();
     for (const [userId, session] of this.activeQuizzes.entries()) {
       if (now - session.startTime > maxAgeMs) {

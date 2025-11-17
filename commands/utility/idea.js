@@ -35,6 +35,5 @@ module.exports = {
     setTimeout(() => {
       message.delete();
     }, 5000); // Delete the command message after 5 seconds
-
   },
 };

@@ -59,8 +59,7 @@ module.exports = {
           },
           {
             name: 'Survivors',
-            value:
-              'List of all survivors. `!Survivors`',
+            value: 'List of all survivors. `!Survivors`',
           },
           {
             name: 'Perk Quiz',
@@ -104,14 +103,17 @@ module.exports = {
         title: '🎖️ Levels/Achievements Commands',
         description: 'Commands related to levels and achievements.',
         commands: [
-          { name: 'Achievements', value: "View your achievements `!Achievements`" },
+          {
+            name: 'Achievements',
+            value: 'View your achievements `!Achievements`',
+          },
           {
             name: 'Get all achievements',
             value: 'Get a list of all achievements. `!getallachievements`',
           },
           {
             name: 'Leaderboard',
-            value: 'Display the server\'s XP leaderboard. `!Leaderboard`',
+            value: "Display the server's XP leaderboard. `!Leaderboard`",
           },
           {
             name: 'Level',
@@ -133,12 +135,15 @@ module.exports = {
     ];
 
     let currentPage = 0;
-    
+
     // Handle both interaction and message contexts
-    const isInteraction = interaction.isCommand?.() || interaction.commandName || interaction.customId !== undefined;
+    const isInteraction =
+      interaction.isCommand?.() ||
+      interaction.commandName ||
+      interaction.customId !== undefined;
     const user = isInteraction ? interaction.user : interaction.author;
     const userId = user?.id;
-    
+
     if (!userId) {
       const errorMessage = 'Unable to identify user.';
       if (isInteraction) {
@@ -156,7 +161,7 @@ module.exports = {
         .setDescription(pages[page].description)
         .setFooter({
           text: `Page ${page + 1} of ${pages.length}`,
-          iconURL: user.displayAvatarURL()
+          iconURL: user.displayAvatarURL(),
         })
         .setTimestamp();
 
@@ -245,7 +250,7 @@ module.exports = {
     const filter = (i) => {
       return i.user && i.user.id === userId;
     };
-    
+
     const collector = messageComponent.createMessageComponentCollector({
       filter,
       time: 300000, // 5 minutes
@@ -295,4 +300,3 @@ module.exports = {
     });
   },
 };
-

@@ -9,8 +9,8 @@ module.exports = {
     try {
       const character = args.join(' ').toLowerCase();
 
-      const characterInformation = await DisneyCharacter.findOne({ 
-        name: { $regex: new RegExp(`^${character}$`, 'i') } 
+      const characterInformation = await DisneyCharacter.findOne({
+        name: { $regex: new RegExp(`^${character}$`, 'i') },
       });
 
       if (!characterInformation) {

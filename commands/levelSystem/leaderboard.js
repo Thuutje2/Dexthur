@@ -9,10 +9,12 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('leaderboard')
     .setDescription("Show the server's XP leaderboard")
-    .addIntegerOption(option =>
-      option.setName('page')
+    .addIntegerOption((option) =>
+      option
+        .setName('page')
         .setDescription('Page number to view')
-        .setRequired(false)),
+        .setRequired(false)
+    ),
 
   async execute(message, args) {
     const page = args[0] ? parseInt(args[0], 10) : 1;
@@ -52,7 +54,7 @@ module.exports = {
 
       const embed = new EmbedBuilder()
         .setTitle("🏆 Dexthur's Leaderboard")
-        .setColor(0x357CA5)
+        .setColor(0x357ca5)
         .setFooter({ text: `Page ${pageClamped} of ${totalPages}` });
 
       // Build fields: one field per user (max 25 fields allowed; we're using 10)
@@ -61,18 +63,26 @@ module.exports = {
         const position = (pageClamped - 1) * usersPerPage + i + 1;
         let displayName = `Unknown User (${userDoc.userId})`;
         try {
-          const member = await guild.members.fetch(userDoc.userId).catch(() => null);
+          const member = await guild.members
+            .fetch(userDoc.userId)
+            .catch(() => null);
           if (member) displayName = member.user.tag;
         } catch {
           // ignore fetch errors
         }
 
         const value = `Level: **${userDoc.level}** • XP: **${userDoc.xp}**`;
-        embed.addFields({ name: `#${position} — ${displayName}`, value, inline: false });
+        embed.addFields({
+          name: `#${position} — ${displayName}`,
+          value,
+          inline: false,
+        });
       }
 
       // Summary in description
-      embed.setDescription(`Showing top ${usersPerPage} — total users: **${totalUsers}**`);
+      embed.setDescription(
+        `Showing top ${usersPerPage} — total users: **${totalUsers}**`
+      );
 
       if (isSlash) {
         await context.editReply({ embeds: [embed] });

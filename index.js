@@ -37,34 +37,42 @@ eventHandler(client);
 
 client.once('ready', () => {
   console.log(`Logged in as ${client.user.tag}`);
-  console.log('messageCreate listeners:', client.listenerCount('messageCreate'));
+  console.log(
+    'messageCreate listeners:',
+    client.listenerCount('messageCreate')
+  );
 });
 
-client.on('interactionCreate', async interaction => {
+client.on('interactionCreate', async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
   const command = client.commands.get(interaction.commandName);
 
   if (!command || !command.executeSlash) {
-    console.error(`No slash command matching ${interaction.commandName} was found.`);
+    console.error(
+      `No slash command matching ${interaction.commandName} was found.`
+    );
     return;
   }
 
   try {
     await command.executeSlash(interaction);
   } catch (error) {
-    console.error(`Error executing slash command "${interaction.commandName}":`, error);
+    console.error(
+      `Error executing slash command "${interaction.commandName}":`,
+      error
+    );
     const errorMessage = 'There was an error executing this command!';
-    
+
     if (interaction.replied || interaction.deferred) {
-      await interaction.followUp({ 
-        content: errorMessage, 
-        ephemeral: true 
+      await interaction.followUp({
+        content: errorMessage,
+        ephemeral: true,
       });
     } else {
-      await interaction.reply({ 
-        content: errorMessage, 
-        ephemeral: true 
+      await interaction.reply({
+        content: errorMessage,
+        ephemeral: true,
       });
     }
   }

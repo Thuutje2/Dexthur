@@ -1,5 +1,9 @@
-const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-const GuildSettings = require('../../models/setup/GuildSettings'); 
+const {
+  SlashCommandBuilder,
+  EmbedBuilder,
+  PermissionFlagsBits,
+} = require('discord.js');
+const GuildSettings = require('../../models/setup/GuildSettings');
 
 const roleNames = [
   'Trial Rookie',
@@ -23,7 +27,7 @@ const pastelColors = [
   0xfccde5, // zachtroze
   0xc1f0f6, // pastel aqua
   0xfdb9c8, // roze zalm
-  0xe0bbE4, // lila
+  0xe0bbe4, // lila
   0xffdab9, // perzik
 ];
 
@@ -39,15 +43,22 @@ module.exports = {
 
   async execute(interactionOrMessage) {
     // Check if it's an interaction (slash command) or message (prefix command)
-    const isInteraction = interactionOrMessage.isCommand?.() || interactionOrMessage.commandName;
+    const isInteraction =
+      interactionOrMessage.isCommand?.() || interactionOrMessage.commandName;
     const guild = interactionOrMessage.guild;
-    const member = isInteraction ? interactionOrMessage.member : interactionOrMessage.member;
+    const member = isInteraction
+      ? interactionOrMessage.member
+      : interactionOrMessage.member;
 
     // Check if user has permission to manage roles
     if (!member.permissions.has(PermissionFlagsBits.ManageRoles)) {
-      const errorMsg = '❌ You do not have permission to manage roles in this server!';
+      const errorMsg =
+        '❌ You do not have permission to manage roles in this server!';
       if (isInteraction) {
-        return await interactionOrMessage.reply({ content: errorMsg, ephemeral: true });
+        return await interactionOrMessage.reply({
+          content: errorMsg,
+          ephemeral: true,
+        });
       } else {
         return await interactionOrMessage.reply(errorMsg);
       }
@@ -55,9 +66,13 @@ module.exports = {
 
     // Check if bot has permission to manage roles
     if (!guild.members.me.permissions.has(PermissionFlagsBits.ManageRoles)) {
-      const errorMsg = '❌ I do not have permission to manage roles in this server!';
+      const errorMsg =
+        '❌ I do not have permission to manage roles in this server!';
       if (isInteraction) {
-        return await interactionOrMessage.reply({ content: errorMsg, ephemeral: true });
+        return await interactionOrMessage.reply({
+          content: errorMsg,
+          ephemeral: true,
+        });
       } else {
         return await interactionOrMessage.reply(errorMsg);
       }
@@ -77,7 +92,9 @@ module.exports = {
     for (const [index, name] of roleNames.entries()) {
       try {
         // Check if role already exists
-        const existingRole = guild.roles.cache.find(role => role.name === name);
+        const existingRole = guild.roles.cache.find(
+          (role) => role.name === name
+        );
         if (existingRole) {
           skippedRoles.push(name);
           console.log(`Role "${name}" already exists in guild ${guild.name}`);
@@ -92,15 +109,17 @@ module.exports = {
         createdRoles.push({ level: index + 1, roleId: role.id, name });
         console.log(`Created role "${name}" in guild ${guild.name}`);
         try {
-                  await GuildSettings.findOneAndUpdate(
-                    { guildId: guild.id },
-                    { $set: { levelRoles: createdRoles } },
-                    { upsert: true, new: true }
-                  );
-                  console.log(`Level roles opgeslagen in database voor guild ${guild.name}`);
-                } catch (err) {
-                  console.error('Fout bij opslaan van roles in database:', err);
-              }
+          await GuildSettings.findOneAndUpdate(
+            { guildId: guild.id },
+            { $set: { levelRoles: createdRoles } },
+            { upsert: true, new: true }
+          );
+          console.log(
+            `Level roles opgeslagen in database voor guild ${guild.name}`
+          );
+        } catch (err) {
+          console.error('Fout bij opslaan van roles in database:', err);
+        }
       } catch (error) {
         console.error(`Failed to create role "${name}":`, error);
         errorCount++;
@@ -109,22 +128,24 @@ module.exports = {
 
     const embed = new EmbedBuilder()
       .setTitle('🎭 Role Setup Results')
-      .setColor(0x00AEFF)
+      .setColor(0x00aeff)
       .setTimestamp();
 
     if (createdRoles.length > 0) {
       embed.addFields({
         name: '✅ Created Roles',
-        value: createdRoles.map(role => `• ${role.name} (Level ${role.level})`).join('\n'),
-        inline: false
+        value: createdRoles
+          .map((role) => `• ${role.name} (Level ${role.level})`)
+          .join('\n'),
+        inline: false,
       });
     }
 
     if (skippedRoles.length > 0) {
       embed.addFields({
         name: '⏭️ Skipped Roles (already existed)',
-        value: skippedRoles.map(name => `• ${name}`).join('\n'),
-        inline: false
+        value: skippedRoles.map((name) => `• ${name}`).join('\n'),
+        inline: false,
       });
     }
 
@@ -132,12 +153,14 @@ module.exports = {
       embed.addFields({
         name: '❌ Errors',
         value: `${errorCount} roles could not be created. Please check the bot permissions.`,
-        inline: false
+        inline: false,
       });
     }
 
     if (createdRoles.length === 0 && skippedRoles.length === roleNames.length) {
-      embed.setDescription('🎉 All roles already exist! The system is already set up.');
+      embed.setDescription(
+        '🎉 All roles already exist! The system is already set up.'
+      );
     } else if (createdRoles.length > 0) {
       embed.setDescription('🎉 Role setup complete!');
     }

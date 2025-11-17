@@ -9,8 +9,10 @@ module.exports = {
   category: 'Leveling',
   data: new SlashCommandBuilder()
     .setName('level')
-    .setDescription('Check your level or another user\'s level')
-    .addUserOption(opt => opt.setName('user').setDescription('User to check').setRequired(false)),
+    .setDescription("Check your level or another user's level")
+    .addUserOption((opt) =>
+      opt.setName('user').setDescription('User to check').setRequired(false)
+    ),
 
   async execute(message, args) {
     const targetUser = message.mentions.users.first() || message.author;
@@ -40,7 +42,7 @@ module.exports = {
   async getUserRank(userId, guildId) {
     try {
       const users = await UserXP.find({ guildId }).sort({ level: -1, xp: -1 });
-      const idx = users.findIndex(u => u.userId === userId);
+      const idx = users.findIndex((u) => u.userId === userId);
       return idx === -1 ? 'N/A' : idx + 1;
     } catch (error) {
       console.error('Error fetching rank:', error);
@@ -73,14 +75,21 @@ module.exports = {
       const { bar, percent } = this.createProgressBar(progress, 20);
 
       const embed = new EmbedBuilder()
-        .setAuthor({ name: `${user.tag}`, iconURL: user.displayAvatarURL({ dynamic: true }) })
+        .setAuthor({
+          name: `${user.tag}`,
+          iconURL: user.displayAvatarURL({ dynamic: true }),
+        })
         .setTitle('📊 Level card')
         .setColor(0x2b88d8)
         .addFields(
           { name: 'Level', value: `**${userData.level}**`, inline: true },
           { name: 'Rank', value: `#${rank}`, inline: true },
           { name: '\u200B', value: '\u200B', inline: true },
-          { name: 'XP', value: `**${userData.xp} / ${xpForNext}**`, inline: false },
+          {
+            name: 'XP',
+            value: `**${userData.xp} / ${xpForNext}**`,
+            inline: false,
+          },
           { name: 'Progress', value: `${bar}  ${percent}%`, inline: false }
         )
         .setFooter({ text: `User ID: ${user.id}` });
@@ -95,11 +104,18 @@ module.exports = {
       const errMsg = 'Error generating level info!';
       if (isSlash) {
         try {
-          if (context.deferred || context.replied) await context.editReply({ content: errMsg });
+          if (context.deferred || context.replied)
+            await context.editReply({ content: errMsg });
           else await context.reply({ content: errMsg, ephemeral: true });
-        } catch { /* ignore */ }
+        } catch {
+          /* ignore */
+        }
       } else {
-        try { await context.reply(errMsg); } catch { /* ignore */ }
+        try {
+          await context.reply(errMsg);
+        } catch {
+          /* ignore */
+        }
       }
     }
   },

@@ -8,9 +8,9 @@ module.exports = {
   async execute(message, args) {
     try {
       const serie = args.join(' ').toLowerCase();
-      
-      const characters = await DisneyCharacter.find({ 
-        series_film: { $regex: new RegExp(`^${serie}$`, 'i') } 
+
+      const characters = await DisneyCharacter.find({
+        series_film: { $regex: new RegExp(`^${serie}$`, 'i') },
       });
 
       if (characters.length === 0) {

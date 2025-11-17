@@ -22,7 +22,9 @@ module.exports = {
       }
 
       // Get notification setting for the user
-      const notification = await UserNotifications.findOne({ user_id: targetUser.id });
+      const notification = await UserNotifications.findOne({
+        user_id: targetUser.id,
+      });
 
       // Check if the command is to toggle notifications
       if (args[0] && args[0].toLowerCase() === 'guess') {
@@ -30,7 +32,10 @@ module.exports = {
           // If notifications are already on, turn them off
           await UserNotifications.findOneAndUpdate(
             { user_id: targetUser.id },
-            { notifications_disney_guess: !notification.notifications_disney_guess }
+            {
+              notifications_disney_guess:
+                !notification.notifications_disney_guess,
+            }
           );
           const status = notification.notifications_disney_guess
             ? '🔕 Notifications turned off.'
@@ -40,7 +45,7 @@ module.exports = {
           // If the user doesn't have a notification setting, create one with notifications off
           await UserNotifications.create({
             user_id: targetUser.id,
-            notifications_disney_guess: false
+            notifications_disney_guess: false,
           });
           return message.reply(
             '🔕 Notifications turned off. Use `!dcr guess` again to turn them on.'

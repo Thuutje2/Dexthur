@@ -3,7 +3,9 @@ const path = require('path');
 const { Events } = require('discord.js');
 
 module.exports = (client) => {
-  const eventFiles = fs.readdirSync(path.join(__dirname, '../events')).filter(file => file.endsWith('.js'));
+  const eventFiles = fs
+    .readdirSync(path.join(__dirname, '../events'))
+    .filter((file) => file.endsWith('.js'));
 
   for (const file of eventFiles) {
     const event = require(`../events/${file}`);

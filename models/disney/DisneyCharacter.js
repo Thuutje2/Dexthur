@@ -1,31 +1,34 @@
 const mongoose = require('mongoose');
 
-const disneyCharacterSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    trim: true
+const disneyCharacterSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    series_film: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    image: {
+      type: String,
+      required: true,
+    },
+    hints: {
+      type: [String],
+      default: [],
+    },
+    is_new: {
+      type: Boolean,
+      default: false,
+    },
   },
-  series_film: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  image: {
-    type: String,
-    required: true
-  },
-  hints: {
-    type: [String],
-    default: []
-  },
-  is_new: {
-    type: Boolean,
-    default: false
+  {
+    timestamps: true,
   }
-}, {
-  timestamps: true
-});
+);
 
 // Create indexes for better performance
 disneyCharacterSchema.index({ name: 1 });

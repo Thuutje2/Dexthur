@@ -5,7 +5,7 @@ const userXPSchema = new mongoose.Schema({
   guildId: String,
   xp: { type: Number, default: 0 },
   level: { type: Number, default: 1 },
-  lastMessageTimestamp: { type: Date, default: () => Date.now() }  
+  lastMessageTimestamp: { type: Date, default: () => Date.now() },
 });
 
 module.exports = mongoose.model('UserXP', userXPSchema);
